@@ -260,8 +260,8 @@ FakesAssemblies/
 *.opt
 
 .suo
-HairSalonBackEnd.AssemblyInfo.cs
-HairSalonBackEnd.AssemblyInfoInputs.cache
-HairSalonBackEnd.assets.cache
-HairSalonBackEnd.csproj.AssemblyReference.cache
-HairSalonBackEnd.GeneratedMSBuildEditorConfig.editorconfig
+**/HairSalonBackEnd.AssemblyInfo.cs
+**/HairSalonBackEnd.AssemblyInfoInputs.cache
+**/HairSalonBackEnd.assets.cache
+**/HairSalonBackEnd.csproj.AssemblyReference.cache
+**/HairSalonBackEnd.GeneratedMSBuildEditorConfig.editorconfig
