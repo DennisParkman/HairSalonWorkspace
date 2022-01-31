@@ -11,6 +11,7 @@ namespace HairSalonBackEnd.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        // Test Comment
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
