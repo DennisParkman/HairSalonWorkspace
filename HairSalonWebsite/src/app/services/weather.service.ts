@@ -6,19 +6,24 @@ import { Observable } from "rxjs";
 @Injectable({
     providedIn: 'root'
 })
-export class WeatherService {
+export class WeatherService 
+{
 
     constructor(private http: HttpClient) { }
 
     readonly baseURL = 'http://localhost:63235/';
     
-    addWeather(weatherForecast: WeatherForecast): void {
+    addWeather(weatherForecast: WeatherForecast): void 
+    {
         let url = this.baseURL.concat("WeatherForecast");
-        this.http.post(this.baseURL, weatherForecast);
+        console.log("Post");
+        this.http.post(url, weatherForecast).subscribe();
     }
     
-    getWeather(): Observable<WeatherForecast> {
+    getWeather(): Observable<WeatherForecast> 
+    {
         let url = this.baseURL.concat("WeatherForecast");
-        return this.http.get(this.baseURL);
+        console.log("Get");
+        return this.http.get(url);
     }
 }
