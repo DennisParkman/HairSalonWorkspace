@@ -36,5 +36,11 @@ namespace HairSalonBackEnd.Controllers
             })
             .ToArray();
         }
+
+        [HttpPost]
+        public void Post([FromBody] WeatherForecast weatherForecast)
+        {
+            Console.WriteLine(weatherForecast);
+        }
     }
 }
