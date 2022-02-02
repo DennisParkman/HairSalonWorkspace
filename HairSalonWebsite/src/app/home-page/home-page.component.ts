@@ -6,25 +6,27 @@ import { WeatherService } from '../services/weather.service';
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit 
+{
 
   constructor(private weatherService: WeatherService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void 
+  { }
 
-  get() {
-
+  get() 
+  {
     this.weatherService.getWeather().subscribe(value => console.log(value));
-
   }
 
-  add() {
-
-    this.weatherService.addWeather({
-      date: new Date()
-    });
-
+  add() 
+  {
+    this.weatherService.addWeather
+    (
+      {
+        date: new Date()
+      }
+    );
   }
 
 }

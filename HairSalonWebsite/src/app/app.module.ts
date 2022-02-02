@@ -7,12 +7,15 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { WeatherService } from './services/weather.service';
 
-@NgModule({
-  declarations: [
+@NgModule(
+{
+  declarations: 
+  [
     AppComponent,
     HomePageComponent
   ],
-  imports: [
+  imports: 
+  [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule
@@ -20,4 +23,5 @@ import { WeatherService } from './services/weather.service';
   providers: [WeatherService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule 
+{ }

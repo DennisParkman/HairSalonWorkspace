@@ -3,13 +3,15 @@ import { HttpClient } from '@angular/common/http'
 import { WeatherForecast } from "../models/weather-forecast.model";
 import { Observable } from "rxjs";
 
-@Injectable({
+@Injectable(
+{
     providedIn: 'root'
 })
 export class WeatherService 
 {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) 
+    { }
 
     readonly baseURL = 'http://localhost:63235/';
     
