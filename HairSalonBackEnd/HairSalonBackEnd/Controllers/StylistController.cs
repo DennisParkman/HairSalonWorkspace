@@ -1,18 +1,4 @@
-﻿/*
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HairSalonBackEnd.Controllers
-{
-    public class StylistController
-    {
-    }
-}
-*/
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -25,28 +11,12 @@ namespace HairSalonBackEnd.Controllers
     [Route("[controller]")]
     public class StylistController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<StylistController> _logger;
 
-        public StylistController(ILogger<WeatherForecastController> logger)
+        public StylistController(ILogger<StylistController> logger)
         {
             _logger = logger;
         }
 
-        [HttpGet]
-        public IEnumerable<Stylist> Get()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Stylist
-            {
-                
-            })
-            .ToArray();
-        }
-
-        [HttpPost]
-        public void Post([FromBody] Stylist stylist)
-        {
-            Console.WriteLine(stylist);
-        }
     }
 }
