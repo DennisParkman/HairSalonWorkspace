@@ -20,7 +20,7 @@ export class HomePageComponent implements OnInit
   {
     //this.weatherService.getWeather().subscribe(value => console.log(value));
     //replaced weather with stylist for testing
-    this.weatherService.getWeather().subscribe(value => console.log(value));
+    this.stylistService.getStylists().subscribe(value => console.log(value));
   }
 
   add() 
