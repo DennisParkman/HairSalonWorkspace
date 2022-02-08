@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
+import { StylistService } from '../services/stylist-service/stylist.service';
 
 @Component({
   selector: 'app-home-page',
@@ -9,13 +10,16 @@ import { WeatherService } from '../services/weather.service';
 export class HomePageComponent implements OnInit 
 {
 
-  constructor(private weatherService: WeatherService) { }
+  constructor(private weatherService: WeatherService,
+              private stylistService: StylistService) { }
 
   ngOnInit(): void 
   { }
 
   get() 
   {
+    //this.weatherService.getWeather().subscribe(value => console.log(value));
+    //replaced weather with stylist for testing
     this.weatherService.getWeather().subscribe(value => console.log(value));
   }
 
