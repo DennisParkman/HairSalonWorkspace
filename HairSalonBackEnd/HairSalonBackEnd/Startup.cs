@@ -1,3 +1,4 @@
+using HairSalonBackEnd.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,8 @@ namespace HairSalonBackEnd
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            SQLiteDbUtility.InitializeDB();
         }
 
         public IConfiguration Configuration { get; }
