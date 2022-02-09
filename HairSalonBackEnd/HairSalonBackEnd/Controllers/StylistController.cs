@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+//do we need a using statement?
+using HairSalonBackEnd.Models;
+using HairSalonBackEnd.Database;
+
 namespace HairSalonBackEnd.Controllers
 {
     [ApiController]
@@ -21,6 +25,7 @@ namespace HairSalonBackEnd.Controllers
         [HttpGet]
         public IEnumerable<Stylist> Get()
         {
+            /*
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new Stylist
             {
@@ -30,6 +35,9 @@ namespace HairSalonBackEnd.Controllers
                 Bio = "This is where a cool fact would go!"
             })
             .ToArray();
+            */
+
+            return SQLiteDbUtility.GetAllStylists();
         }
     }
 

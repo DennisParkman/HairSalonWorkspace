@@ -18,7 +18,7 @@ export class StylistService
     getStylists(): Observable<Stylist>
     {
         let url = this.baseURL.concat("Stylist");
-        console.log("Get");
+        console.log("Got stylists");
         return this.http.get<Stylist>(url); // <Stylist> is required on this line when a constructor is included in the model file
     }
 }
