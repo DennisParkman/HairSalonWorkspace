@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HairSalonBackEnd.Database;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -35,12 +36,14 @@ namespace HairSalonBackEnd.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+
+            //return SQLiteDbUtility.GetAllWeatherForecasts();
         }
 
         [HttpPost]
         public void Post([FromBody] WeatherForecast weatherForecast)
         {
-            Console.WriteLine(weatherForecast);
+            //SQLiteDbUtility.AddWeatherForecast(weatherForecast);
         }
     }
 }
