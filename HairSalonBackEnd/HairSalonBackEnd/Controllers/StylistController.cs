@@ -18,5 +18,11 @@ namespace HairSalonBackEnd.Controllers
             _logger = logger;
         }
 
+        [HttpPost]
+        public void Post([FromBody] Stylist stylist)
+        {
+            Console.WriteLine(stylist);
+        }
+
     }
 }

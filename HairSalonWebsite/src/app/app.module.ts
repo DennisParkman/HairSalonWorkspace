@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { WeatherService } from './services/weather.service';
+import { StylistService } from './services/stylist-service/stylist.service';
 
 @NgModule(
 {
@@ -20,7 +21,7 @@ import { WeatherService } from './services/weather.service';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [WeatherService],
+  providers: [StylistService],
   bootstrap: [AppComponent]
 })
 export class AppModule 
