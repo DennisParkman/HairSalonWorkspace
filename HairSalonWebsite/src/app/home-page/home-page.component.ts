@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
-import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-home-page',
@@ -14,20 +13,5 @@ export class HomePageComponent implements OnInit
 
   ngOnInit(): void 
   { }
-
-  get() 
-  {
-    this.weatherService.getWeather().subscribe(value => console.log(value));
-  }
-
-  add() 
-  {
-    this.weatherService.addWeather
-    (
-      {
-        date: new Date()
-      }
-    );
-  }
 
 }

@@ -6,21 +6,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { WeatherService } from './services/weather.service';
-import { NavbarComponent } from './navbar/navbar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule(
 {
   declarations: 
   [
     AppComponent,
-    HomePageComponent,
-    NavbarComponent
+    HomePageComponent
   ],
   imports: 
   [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [WeatherService],
   bootstrap: [AppComponent]
