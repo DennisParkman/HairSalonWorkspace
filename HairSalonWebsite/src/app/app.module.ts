@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { WeatherService } from './services/weather.service';
 import { StylistService } from './services/stylist-service/stylist.service';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule(
 {
   declarations: 
   [
     AppComponent,
-    HomePageComponent
+    HomePageComponent,
+  
   ],
   imports: 
   [
@@ -21,7 +23,7 @@ import { StylistService } from './services/stylist-service/stylist.service';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [StylistService],
+  providers: [WeatherService],
   bootstrap: [AppComponent]
 })
 export class AppModule 
