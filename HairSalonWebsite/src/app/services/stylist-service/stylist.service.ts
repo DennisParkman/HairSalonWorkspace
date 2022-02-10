@@ -15,10 +15,9 @@ export class StylistService
 
     readonly baseURL = 'http://localhost:63235/';
 
-    getStylists(): Observable<Stylist>
+    getStylists(): Observable<Stylist[]>
     {
         let url = this.baseURL.concat("Stylist");
-        console.log("Got stylists");
-        return this.http.get<Stylist>(url); // <Stylist> is required on this line when a constructor is included in the model file
+        return this.http.get<Stylist[]>(url); // <Stylist> is required on this line when a constructor is included in the model file
     }
 }
