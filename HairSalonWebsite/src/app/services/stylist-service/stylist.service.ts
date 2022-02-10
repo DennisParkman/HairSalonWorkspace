@@ -14,7 +14,10 @@ export class StylistService
     { }
 
     readonly baseURL = 'http://localhost:63235/';
-
+    /**
+     * @author James Pangia and Jake Morris
+     * @returns a response from the C# backend database located at @baseURL variable in the form of an enumrable array
+     */
     getStylists(): Observable<Stylist[]>
     {
         let url = this.baseURL.concat("Stylist");

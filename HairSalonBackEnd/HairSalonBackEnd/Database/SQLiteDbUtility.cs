@@ -34,6 +34,8 @@ namespace HairSalonBackEnd.Database
             dbContext.SaveChanges();
         }
 
+        /// Authors: James Pangia and Jake Morris
+        /// <summary> Returns all stylists found in the private inner class that contains the Database information as a list </summary>
         public static IEnumerable<Stylist> GetAllStylists()
         {
             return dbContext.Stylists.ToList();

@@ -22,21 +22,12 @@ namespace HairSalonBackEnd.Controllers
             _logger = logger;
         }
 
+        /// Authors: James Pangia and Jake Morris
+        /// <summary> Returns all stylists found in the SQLite Database as an Enurable Array </summary>
+
         [HttpGet]
         public IEnumerable<Stylist> Get()
         {
-            /*
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Stylist
-            {
-                ID = rng.Next(0, 5),
-                Name = "Default",
-                Level = rng.Next(1,3),
-                Bio = "This is where a cool fact would go!"
-            })
-            .ToArray();
-            */
-
             return SQLiteDbUtility.GetAllStylists();
         }
     }
