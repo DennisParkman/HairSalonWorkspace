@@ -15,6 +15,7 @@ import { FooterComponent } from './footer/footer.component';
   [
     AppComponent,
     HomePageComponent,
+    FooterComponent,
   
   ],
   imports: 
