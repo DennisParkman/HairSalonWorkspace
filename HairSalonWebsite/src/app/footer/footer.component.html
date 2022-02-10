@@ -1,27 +1,60 @@
 <p>footer works!</p>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style>
-  footer {
+  footer 
+  {
     text-align: center;
     padding: 3px;
-    background-color: gray;
-    color: white;
+    background-color: white;
+    color: black;
   }
+  .fa 
+  {
+    padding: 10px;
+    font-size: 15px;
+    width: 25px;
+    text-align: center;
+    text-decoration: none;
+    margin: 3px 1px;
+    border-radius: 50%;
+  }
+
+.fa:hover 
+{
+    opacity: 0.7;
+}
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+.fa-instagram 
+{
+  background: #125688;
+  color: white;
+}
   </style>
   </head>
   <body>
   
   <footer>
     <div class = "column">
+      <!--Add social media icons-->
       <h4>Follow us</h4>
-      <p>Add the social media icons</p>
+      <a href="#" class="fa fa-facebook"></a>
+      <a href="#" class="fa fa-instagram"></a>
+      <!--Add the links-->
       <h4>Links</h4>
       <p><a href="mailto:hege@example.com">Search</a>&nbsp;<a href="mailto:hege@example.com">Shop</a></p>
-      <p>Signup for newsletter & offers</p>
+      <!--Signup with emails-->
+      <p>Signup for newsletter, offers, promotions, new products & sales</p>
+      <!--email input-->
       <label for="email">Email:</label>&nbsp;
       <input type="email" id="email" name="email" placeholder="Your email"> &nbsp;
       <button type="submit">Subscribe</button>
+      <!--email and phone number to be contacted-->
     <p><a href="mailto:hege@example.com">frankie@salon.com</a>&nbsp;Contact: 111-222-3333<br>
       Copyright 2022 Software Engineering, Frankie Salon. Powered by Team-1(DGJJZ)
     </p>
