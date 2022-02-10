@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HairSalonBackEnd.Database;
+using HairSalonBackEnd.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,12 @@ namespace HairSalonBackEnd.Controllers
         public StylistController(ILogger<StylistController> logger)
         {
             _logger = logger;
+        }
+
+        [HttpPost]
+        public void Post([FromBody] Stylist stylist)
+        {
+            SQLiteDbUtility.AddStylist(stylist);
         }
 
     }
