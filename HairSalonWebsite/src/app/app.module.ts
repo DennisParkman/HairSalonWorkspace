@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { WeatherService } from './services/weather.service';
 import { StylistService } from './services/stylist-service/stylist.service';
-import { FooterComponent } from './footer/footer.component';
 
 @NgModule(
 {

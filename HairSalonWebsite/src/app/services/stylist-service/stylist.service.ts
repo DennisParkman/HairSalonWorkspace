@@ -18,7 +18,6 @@ export class StylistService
     addStylist(stylist: Stylist): void
     {
         let url = this.baseURL.concat("Stylist");
-        console.log("Post");
         this.http.post(url, stylist).subscribe();
     }
 }
