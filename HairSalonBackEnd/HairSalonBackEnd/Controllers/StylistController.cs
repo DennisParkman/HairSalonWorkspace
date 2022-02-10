@@ -19,7 +19,7 @@ namespace HairSalonBackEnd.Controllers
         {
             _logger = logger;
         }
-
+	/// <summary> Adds stylist to the SQLite Database</summary> 
         [HttpPost]
         public void Post([FromBody] Stylist stylist)
         {

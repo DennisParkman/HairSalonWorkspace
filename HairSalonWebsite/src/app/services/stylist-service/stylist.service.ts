@@ -14,7 +14,10 @@ export class StylistService
     { }
 
     readonly baseURL = 'http://localhost:63235/';
-
+    /**
+     * To add a stylist object to the C# backend database located at @baseURL variable in the form of an enumrable array
+     * @param stylist is the object that is added
+     */
     addStylist(stylist: Stylist): void
     {
         let url = this.baseURL.concat("Stylist");
