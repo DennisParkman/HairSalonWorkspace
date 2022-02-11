@@ -23,16 +23,15 @@ namespace HairSalonBackEnd.Controllers
         {
             _logger = logger;
         }
-	/// <summary> Adds stylist to the SQLite Database</summary> 
+
+	    /// <summary> Adds stylist to the SQLite Database </summary> 
         [HttpPost]
         public void Post([FromBody] Stylist stylist)
         {
             SQLiteDbUtility.AddStylist(stylist);
         }
 
-        /// Authors: James Pangia and Jake Morris
         /// <summary> Returns all stylists found in the SQLite Database as an Enurable Array </summary>
-
         [HttpGet]
         public IEnumerable<Stylist> Get()
         {

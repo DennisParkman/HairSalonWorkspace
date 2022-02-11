@@ -24,7 +24,6 @@ export class StylistService
         this.http.post(url, stylist).subscribe();
     }
     /**
-     * @author James Pangia and Jake Morris
      * @returns a response from the C# backend database located at @baseURL variable in the form of an enumrable array
      */
     getStylists(): Observable<Stylist[]>
