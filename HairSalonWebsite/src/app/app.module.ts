@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { WeatherService } from './services/weather.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from 'src/app/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { StylistService } from './services/stylist-service/stylist.service';
 
@@ -22,7 +24,9 @@ import { StylistService } from './services/stylist-service/stylist.service';
   [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [WeatherService],
   bootstrap: [AppComponent]
