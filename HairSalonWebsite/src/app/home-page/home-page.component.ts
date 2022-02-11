@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherService } from '../services/weather.service';
 
 @Component({
   selector: 'app-home-page',
@@ -9,8 +8,8 @@ import { WeatherService } from '../services/weather.service';
 export class HomePageComponent implements OnInit 
 {
 
-  constructor(private weatherService: WeatherService,
-              private stylistService: StylistService) { }
+  constructor() 
+  { }
   
 
   ngOnInit(): void 
