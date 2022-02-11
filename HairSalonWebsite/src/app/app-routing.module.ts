@@ -6,12 +6,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomePageComponent } from './home-page/home-page.component';
+import { StylistPageComponent } from './stylist-page/stylist-page.component';
 
 //list of url endings and associated components
 const routes: Routes = 
 [
   {path: 'home', component: HomePageComponent},
-  {path: '', redirectTo: '/home', pathMatch: 'full'}
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: 'stylists', component: StylistPageComponent}
 ];
 
 @NgModule(
