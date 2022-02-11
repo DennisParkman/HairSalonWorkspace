@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { StylistService } from './services/stylist-service/stylist.service';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule(
 {
