@@ -13,6 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 import { StylistPageComponent } from './stylist-page/stylist-page.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule(
 {
@@ -29,6 +30,7 @@ import { RouterModule } from '@angular/router';
   [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
