@@ -10,6 +10,10 @@ import { MaterialModule } from 'src/app/material.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { StylistService } from './services/stylist-service/stylist.service';
 import { FooterComponent } from './footer/footer.component';
+import { StylistPageComponent } from './stylist-page/stylist-page.component';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule(
 {
@@ -18,16 +22,20 @@ import { FooterComponent } from './footer/footer.component';
     AppComponent,
     HomePageComponent,
     FooterComponent,
-    NavbarComponent
+    NavbarComponent,
+    StylistPageComponent
   
   ],
   imports: 
   [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    CommonModule,
+    RouterModule
   ],
   providers: [StylistService],
   bootstrap: [AppComponent]
