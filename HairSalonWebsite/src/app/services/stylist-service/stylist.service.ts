@@ -23,4 +23,12 @@ export class StylistService
         let url = this.baseURL.concat("Stylist");
         this.http.post(url, stylist).subscribe();
     }
+    /**
+     * @returns a response from the C# backend database located at @baseURL variable in the form of an enumrable array
+     */
+    getStylists(): Observable<Stylist[]>
+    {
+        let url = this.baseURL.concat("Stylist");
+        return this.http.get<Stylist[]>(url); // <Stylist> is required on this line when a constructor is included in the model file
+    }
 }

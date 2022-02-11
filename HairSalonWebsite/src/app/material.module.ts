@@ -44,8 +44,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 
-@NgModule({
-  exports: [
+@NgModule(
+{
+  exports: 
+  [
     A11yModule,
     CdkAccordionModule,
     ClipboardModule,
@@ -93,4 +95,4 @@ import {OverlayModule} from '@angular/cdk/overlay';
     ScrollingModule,
   ]
 })
-export class MaterialModule {}
+export class MaterialModule { }
