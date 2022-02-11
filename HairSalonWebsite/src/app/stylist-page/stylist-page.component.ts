@@ -41,11 +41,15 @@ export class StylistPageComponent implements OnInit
   */
   cancelAddStylist()
   {
+    this.clearFields(); 
+    this.addingStylist = false;
+  }
+
+  clearFields()
+  {
     this.bio = "";
     this.level = 0;
     this.name = "";
-    
-    this.addingStylist = false;
   }
 
   addStylist() 
@@ -54,6 +58,7 @@ export class StylistPageComponent implements OnInit
     this.stylistService.addStylist(stylist);
     this.stylists.push(stylist);
     this.addingStylist = false;
+    this.clearFields();
   }
 
 }

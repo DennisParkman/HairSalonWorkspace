@@ -7,7 +7,7 @@
                 {{stylist.name}}
             </mat-card>
             <mat-card style="margin:5px; display:inline-block;">
-                {{stylist.level}}
+                Level: {{stylist.level}}
                 <br>
                 {{stylist.bio}}
             </mat-card>
@@ -34,8 +34,8 @@
                 <label for="bio" class="form-label">Stylist bio</label>
                 <input type="text" class="form-control" required id="bio" [(ngModel)]="this.bio" name = "bio">
             </div>
-            <button type="submit" class="btn btn-primary" (click)="addStylist()">Submit</button>
-            <button (click)="cancelAddStylist()">Cancel</button>
+            <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addStylist()">Submit</button>
+            <button mat-flat-button style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
           </form>
           
         <!--Make new stylist-->
