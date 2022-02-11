@@ -11,6 +11,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { StylistService } from './services/stylist-service/stylist.service';
 import { FooterComponent } from './footer/footer.component';
 import { StylistPageComponent } from './stylist-page/stylist-page.component';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @NgModule(
 {
@@ -29,7 +31,9 @@ import { StylistPageComponent } from './stylist-page/stylist-page.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    CommonModule,
+    RouterModule
   ],
   providers: [StylistService],
   bootstrap: [AppComponent]

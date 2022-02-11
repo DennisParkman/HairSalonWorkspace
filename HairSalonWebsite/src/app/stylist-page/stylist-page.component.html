@@ -1,0 +1,26 @@
+<div *ngIf="loadingFinished">
+    <div *ngIf="!addingStylist" style="margin-left:25%; margin-right:25%">
+        <!--View current stylists-->
+        <button style="float:right">+</button>
+        <mat-card style="margin:30px; width:500px" *ngFor="let stylist of stylists">
+            <mat-card style="margin:5px">
+                {{stylist.name}}
+            </mat-card>
+            <mat-card style="margin:5px; display:inline-block;">
+                {{stylist.level}}
+                <br>
+                {{stylist.bio}}
+            </mat-card>
+            <!--Make size to fit-->
+            <mat-card style="margin:5px; display:inline-block;">
+                <img src="src/app/assets/{{stylist.id}}">
+            </mat-card>
+            
+        </mat-card>
+    </div>
+    
+    <div *ngIf="addingStylist">
+        <!--Make new stylist-->
+        <button>Cancel</button>
+    </div>
+</div>
