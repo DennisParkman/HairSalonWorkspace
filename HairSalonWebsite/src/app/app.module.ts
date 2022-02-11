@@ -5,9 +5,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { WeatherService } from './services/weather.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from 'src/app/material.module';
+import { NavbarComponent } from './navbar/navbar.component';
 import { StylistService } from './services/stylist-service/stylist.service';
-import { FooterComponent } from './footer/footer.component';
 
 @NgModule(
 {
@@ -16,15 +17,18 @@ import { FooterComponent } from './footer/footer.component';
     AppComponent,
     HomePageComponent,
     FooterComponent,
+    NavbarComponent
   
   ],
   imports: 
   [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
-  providers: [WeatherService],
+  providers: [StylistService],
   bootstrap: [AppComponent]
 })
 export class AppModule 

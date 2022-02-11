@@ -27,13 +27,16 @@ namespace HairSalonBackEnd.Database
         }
 
         #region Stylist Methods
-
+        /// <summary> A method for adding a stylist data type to the database.</summary>
+        /// <param name="stylist"> A stylist object to add to the database.</param> 
         public static void AddStylist(Stylist stylist)
         {
             dbContext.Stylists.Add(stylist);
             dbContext.SaveChanges();
         }
 
+        /// Authors: James Pangia and Jake Morris
+        /// <summary> Returns all stylists found in the private inner class that contains the Database information as a list </summary>
         public static IEnumerable<Stylist> GetAllStylists()
         {
             return dbContext.Stylists.ToList();
