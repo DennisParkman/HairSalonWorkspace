@@ -7,10 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-//do we need a using statement?
-using HairSalonBackEnd.Models;
-using HairSalonBackEnd.Database;
-
 namespace HairSalonBackEnd.Controllers
 {
     [ApiController]
