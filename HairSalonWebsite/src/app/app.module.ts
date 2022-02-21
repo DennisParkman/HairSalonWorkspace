@@ -5,22 +5,39 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './home-page/home-page.component';
-import { WeatherService } from './services/weather.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from 'src/app/material.module';
+import { NavbarComponent } from './navbar/navbar.component';
+import { StylistService } from './services/stylist-service/stylist.service';
+import { FooterComponent } from './footer/footer.component';
+import { StylistPageComponent } from './stylist-page/stylist-page.component';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule(
 {
   declarations: 
   [
     AppComponent,
-    HomePageComponent
+    HomePageComponent,
+    FooterComponent,
+    NavbarComponent,
+    StylistPageComponent
+  
   ],
   imports: 
   [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule,
+    CommonModule,
+    RouterModule
   ],
-  providers: [WeatherService],
+  providers: [StylistService],
   bootstrap: [AppComponent]
 })
 export class AppModule 
