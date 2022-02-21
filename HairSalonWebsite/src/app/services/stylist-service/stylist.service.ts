@@ -31,4 +31,13 @@ export class StylistService
         let url = this.baseURL.concat("Stylist");
         return this.http.get<Stylist[]>(url); // <Stylist> is required on this line when a constructor is included in the model file
     }
+
+    /**
+     * To delete a stylist object from the C# backend database located @baseURL variable in the form of an enumrable array
+     */
+    deleteStylist(): void
+    {
+        let url = this.baseURL.concat("Stylist");
+        this.http.delete(url).subscribe();
+    }
 }

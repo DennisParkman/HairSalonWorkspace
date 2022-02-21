@@ -33,6 +33,13 @@ namespace HairSalonBackEnd.Controllers
         {
             return SQLiteDbUtility.GetAllStylists();
         }
+
+        // <summary> Deletes a stylist in the SQLite Database </summary>
+        [HttpDelete]
+        public void Delete(Stylist stylist)
+        { 
+            SQLiteDbUtility.DeleteStylist(stylist);
+        }
     }
 
     

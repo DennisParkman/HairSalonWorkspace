@@ -42,6 +42,14 @@ namespace HairSalonBackEnd.Database
             return dbContext.Stylists.ToList();
         }
 
+        /// <summary> A method for deleting a stylist data type from the database. </summary>
+        /// <param name="stylist"> A stylist object that needs to be deleted. </param>
+        public static void DeleteStylist(Stylist stylist)
+        { 
+            dbContext.Stylists.Delete(stylist);
+            dbContext.Stylists.SaveChanges();
+        }
+
         #endregion
 
         private class SQLiteDbContext : DbContext
