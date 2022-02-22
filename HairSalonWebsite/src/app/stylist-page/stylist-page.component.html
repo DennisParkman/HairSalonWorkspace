@@ -1,7 +1,21 @@
 <div *ngIf="loadingFinished">
     <div *ngIf="!addingStylist" style="margin-left:25%; margin-right:25%">
+        <!--
+          Display sorting options for stylists
+          mat-button-toggle triggers options menu to appear when clicked
+        -->
+        <mat-button-toggle style="float:right" mat-button [matMenuTriggerFor]="menu">Stylist View</mat-button-toggle>
+        <mat-menu #menu="matMenu">
+          <mat-option (click) = "sortByLevelDesending()">Level (Desending)</mat-option>
+          <mat-option (click) = "sortByLevelAscending()">Level (Ascending)</mat-option>
+          <mat-option (click) = "sortByNameAscending()">Name (A-Z)</mat-option>
+          <mat-option (click) = "sortByNameDesending()">Name (Z-A)</mat-option>
+        </mat-menu>
+
+        <!--Button to display form to add stylists-->
+        <mat-button-toggle style="float:right" (click) = "showAddStylist()">+</mat-button-toggle>
+
         <!--View current stylists-->
-        <button style="float:right" (click) = "showAddStylist()">+</button>
         <mat-card style="margin:30px; width:500px" *ngFor="let stylist of stylists">
             <mat-card style="margin:5px">
                 {{stylist.name}}
@@ -16,10 +30,9 @@
                 <!-- <img src="src/assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg"> -->
                 <img src="../../assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg" alt = "stylist-{{stylist.id}}.jpg">
             </mat-card>
-            
         </mat-card>
     </div>
-    
+    <!--Make new stylist-->
     <div *ngIf="addingStylist" class = "container">
         <form>
             <div class="mb-3">
@@ -37,8 +50,5 @@
             <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addStylist()">Submit</button>
             <button mat-flat-button style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
           </form>
-          
-        <!--Make new stylist-->
-        
     </div>
 </div>
