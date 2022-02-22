@@ -38,6 +38,6 @@ export class StylistService
     deleteStylist(): void
     {
         let url = this.baseURL.concat("Stylist");
-        this.http.delete(url).subscribe();
+        this.http.delete(url+"/id").subscribe();
     }
 }
