@@ -33,6 +33,13 @@ namespace HairSalonBackEnd.Controllers
         {
             return SQLiteDbUtility.GetAllStylists();
         }
+
+        /// <summary> Updates a stylist in the SQLite Database </summary>
+        [HttpPut]
+        public void Put([FromBody] Stylist stylist)
+        {
+            SQLiteDbUtility.UpdateStylist(stylist);
+        }
     }
 
     

@@ -35,13 +35,24 @@ namespace HairSalonBackEnd.Database
             dbContext.SaveChanges();
         }
 
-        /// Authors: James Pangia and Jake Morris
         /// <summary> Returns all stylists found in the private inner class that contains the Database information as a list </summary>
         public static IEnumerable<Stylist> GetAllStylists()
         {
             return dbContext.Stylists.ToList();
         }
 
+        /// <summary> Inserts update information for a stylist in the database </summary>
+        public static void UpdateStylist(Stylist stylist)
+        {
+            //find stylist in database where stylists match
+            var stylistEntry = dbContext.Stylists.Where(x => x.ID == stylist.ID).FirstOrDefault();
+
+            //set stylist values
+            stylistEntry.Name = stylist.Name;
+            stylistEntry.Level = stylist.Level;
+            stylistEntry.Bio = stylist.Bio;
+            dbContext.SaveChanges();
+        }
         #endregion
 
         private class SQLiteDbContext : DbContext
