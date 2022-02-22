@@ -1,4 +1,4 @@
-﻿using HairSalonBackEnd.Models;
+using HairSalonBackEnd.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -44,9 +44,11 @@ namespace HairSalonBackEnd.Database
 
         /// <summary> A method for deleting a stylist data type from the database. </summary>
         /// <param name="stylist"> A stylist object that needs to be deleted. </param>
-        public static void DeleteStylist(Stylist stylist)
+        public static void DeleteStylist(string id)
         { 
-            dbContext.Stylists.Delete(stylist);
+            var delStylist = dbContext.Stylists.Where(x => x.ID == id).FirstOrDefault();
+
+            dbContext.Stylists.Remove(delStylist);
             dbContext.Stylists.SaveChanges();
         }
 
