@@ -42,4 +42,13 @@ export class StylistService
         let url = this.baseURL.concat("Stylist");
         this.http.put(url, stylist).subscribe();
     }
+
+    /**
+     * To delete a stylist object from the C# backend database located @baseURL variable in the form of an enumrable array
+     */
+    deleteStylist(stylist: Stylist): void
+    {
+        let url = this.baseURL.concat("Stylist/" + stylist.id);
+        this.http.delete(url).subscribe();
+    }
 }

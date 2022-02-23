@@ -1,4 +1,4 @@
-﻿using HairSalonBackEnd.Models;
+using HairSalonBackEnd.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -53,6 +53,16 @@ namespace HairSalonBackEnd.Database
             stylistEntry.Bio = stylist.Bio;
             dbContext.SaveChanges();
         }
+        /// <summary> A method for deleting a stylist data type from the database. </summary>
+        /// <param name="stylist"> A stylist object that needs to be deleted. </param>
+        public static void DeleteStylist(int id)
+        { 
+            var delStylist = dbContext.Stylists.Where(x => x.ID == id).FirstOrDefault();
+
+            dbContext.Stylists.Remove(delStylist);
+            dbContext.SaveChanges();
+        }
+
         #endregion
 
         private class SQLiteDbContext : DbContext

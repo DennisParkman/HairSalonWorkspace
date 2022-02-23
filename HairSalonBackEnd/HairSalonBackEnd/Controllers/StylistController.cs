@@ -1,4 +1,4 @@
-﻿using HairSalonBackEnd.Database;
+using HairSalonBackEnd.Database;
 using HairSalonBackEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -32,6 +32,14 @@ namespace HairSalonBackEnd.Controllers
         public IEnumerable<Stylist> Get()
         {
             return SQLiteDbUtility.GetAllStylists();
+        }
+
+        // <summary> Deletes a stylist using id in the SQLite Database </summary>
+        [HttpDelete]
+        [Route("{id}")]
+        public void Delete(int id)
+        { 
+            SQLiteDbUtility.DeleteStylist(id);
         }
 
         /// <summary> Updates a stylist in the SQLite Database </summary>
