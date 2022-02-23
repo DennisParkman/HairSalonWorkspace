@@ -44,12 +44,12 @@ namespace HairSalonBackEnd.Database
 
         /// <summary> A method for deleting a stylist data type from the database. </summary>
         /// <param name="stylist"> A stylist object that needs to be deleted. </param>
-        public static void DeleteStylist(string id)
+        public static void DeleteStylist(int id)
         { 
             var delStylist = dbContext.Stylists.Where(x => x.ID == id).FirstOrDefault();
 
             dbContext.Stylists.Remove(delStylist);
-            dbContext.Stylists.SaveChanges();
+            dbContext.SaveChanges();
         }
 
         #endregion

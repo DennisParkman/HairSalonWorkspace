@@ -37,7 +37,7 @@ namespace HairSalonBackEnd.Controllers
         // <summary> Deletes a stylist using id in the SQLite Database </summary>
         [HttpDelete]
         [Route("{id}")]
-        public void Delete(string id)
+        public void Delete(int id)
         { 
             SQLiteDbUtility.DeleteStylist(id);
         }
