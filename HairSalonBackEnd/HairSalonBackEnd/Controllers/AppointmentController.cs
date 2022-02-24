@@ -19,8 +19,44 @@ namespace HairSalonBackEnd.Controllers
         {
             _logger = logger;
         }
+        /// <summary> Adds appointment to the SQLite Database </summary> 
+        [HttpPost]
+        public void Post([FromBody] Appointment appointment)
+        {
+            SQLiteDbUtility.AddAppointment(appointment);
+        }
 
+        /// <summary> Returns all appointments found in the SQLite Database as an Enurable Array </summary>
+        [HttpGet]
+        public IEnumerable<Appointment> Get()
+        {
+            return SQLiteDbUtility.GetAllAppointments();
+        }
+
+        // <summary> Deletes an appointment using id in the SQLite Database </summary>
+        [HttpDelete]
+        [Route("{id}")]
+        public void Delete(int id)
+        {
+            SQLiteDbUtility.DeleteAppointment(id);
+        }
+
+        /// <summary> Updates an appointment in the SQLite Database </summary>
+        [HttpPut]
+        public void Put([FromBody] Appointment appointment)
+        {
+            SQLiteDbUtility.UpdateAppointment(appointment);
+        }
+
+         /// <summary> Returns all appointments for a specific stylist found in the SQLite Database as an Enurable Array </summary>
+        [HttpGet]
+        public IEnumerable<Appointment> GetAppointment(int id)
+        {
+            return SQLiteDbUtility.GetStylistAppointment(id);
+        }
     }
+
+}
 
     
 }

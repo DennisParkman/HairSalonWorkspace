@@ -44,6 +44,51 @@ namespace HairSalonBackEnd.Database
 
         #endregion
 
+        #region Appointment Methods
+        /// <summary> A method for adding an appointment data type to the database.</summary>
+        /// <param name="appointment"> An appointment object to add to the database.</param> 
+        public static void AddAppointment(Appointment appointment)
+        {
+            dbContext.Appointments.Add(appointment);
+            dbContext.SaveChanges();
+        }
+
+        /// <summary> Returns all appointments found in the private inner class that contains the Database information as a list </summary>
+        public static IEnumerable<Appointment> GetAllAppointments()
+        {
+            return dbContext.Appointments.ToList();
+        }
+
+        /// <summary> Inserts update information for an appointment in the database </summary>
+        public static void UpdateAppointment(Appointment appointment)
+        {
+            //find an appointment in database where appointments match
+            var appointmentEntry = dbContext.Appointments.Where(x => x.ID == Appointment.ID).FirstOrDefault();
+
+            /*//set appointment values
+            
+            dbContext.SaveChanges();*/
+        }
+        /// <summary> A method for deleting an appointment data type from the database. </summary>
+        /// <param name="id"> An appointment object's id that needs to be deleted. </param>
+        public static void DeleteAppointment(int id)
+        { 
+            var delAppointment = dbContext.Appointments.Where(x => x.ID == id).FirstOrDefault();
+
+            dbContext.Appointments.Remove(delAppointment);
+            dbContext.SaveChanges();
+        }
+
+        public static IEnumerable<Appointment> GstStylistAppointment(int id)
+        { 
+            /*Not sure if this seems right////
+             * 
+             * var appointmentEntry = dbContext.Appointments.Where(x => x.ID == id).FirstOrDefault();
+            return dbContext.Appointments.appointmentEntry*/
+
+        }
+        #endregion
+
         private class SQLiteDbContext : DbContext
         {
             public DbSet<Stylist> Stylists { get; set; }
