@@ -44,6 +44,16 @@ namespace HairSalonBackEnd.Database
 
         #endregion
 
+        #region Appointment Methods
+
+        /// Author: George Garrett
+        /// <summary>
+        /// 
+        /// </summary>
+
+
+        #endregion
+
         private class SQLiteDbContext : DbContext
         {
             public DbSet<Stylist> Stylists { get; set; }
