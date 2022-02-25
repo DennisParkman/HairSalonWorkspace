@@ -1,4 +1,4 @@
-﻿using HairSalonBackEnd.Models;
+using HairSalonBackEnd.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -79,7 +79,7 @@ namespace HairSalonBackEnd.Database
             dbContext.SaveChanges();
         }
 
-        public static IEnumerable<Appointment> GstStylistAppointment(int id)
+        public static IEnumerable<Appointment> GetStylistAppointment(int id)
         { 
             /*Not sure if this seems right////
              * 
