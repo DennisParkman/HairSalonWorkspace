@@ -1,0 +1,44 @@
+<div *ngIf="loadingFinished">
+    <div *ngIf="!addingStylist" style="margin-left:25%; margin-right:25%">
+        <!--View current stylists-->
+        <button style="float:right" (click) = "showAddStylist()">+</button>
+        <mat-card style="margin:30px; width:500px" *ngFor="let stylist of stylists">
+            <mat-card style="margin:5px">
+                {{stylist.name}}
+            </mat-card>
+            <mat-card style="margin:5px; display:inline-block;">
+                Level: {{stylist.level}}
+                <br>
+                {{stylist.bio}}
+            </mat-card>
+            <!--Make size to fit-->
+            <mat-card style="margin:5px; display:inline-block;">
+                <!-- <img src="src/assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg"> -->
+                <img src="../../assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg" alt = "stylist-{{stylist.id}}.jpg">
+            </mat-card>
+            
+        </mat-card>
+    </div>
+    
+    <div *ngIf="addingStylist" class = "container">
+        <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Stylist Name</label>
+              <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
+            </div>
+            <div class="mb-3">
+              <label for="level" class="form-label">Stylist Level</label>
+              <input type="number" class="form-control" required id="level" min = "1" max = "5" [(ngModel)]="this.level" name = "level">
+            </div>
+            <div class="mb-3">
+                <label for="bio" class="form-label">Stylist bio</label>
+                <input type="text" class="form-control" required id="bio" [(ngModel)]="this.bio" name = "bio">
+            </div>
+            <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addStylist()">Submit</button>
+            <button mat-flat-button style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
+          </form>
+          
+        <!--Make new stylist-->
+        
+    </div>
+</div>

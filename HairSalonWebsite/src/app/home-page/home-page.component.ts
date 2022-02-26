@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherService } from '../services/weather.service';
 
-@Component({
+@Component(
+{
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
@@ -9,24 +9,10 @@ import { WeatherService } from '../services/weather.service';
 export class HomePageComponent implements OnInit 
 {
 
-  constructor(private weatherService: WeatherService) { }
+  constructor() 
+  { }
 
   ngOnInit(): void 
   { }
-
-  get() 
-  {
-    this.weatherService.getWeather().subscribe(value => console.log(value));
-  }
-
-  add() 
-  {
-    this.weatherService.addWeather
-    (
-      {
-        date: new Date()
-      }
-    );
-  }
 
 }
