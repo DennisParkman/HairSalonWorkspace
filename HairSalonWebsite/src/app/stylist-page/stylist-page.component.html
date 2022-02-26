@@ -1,4 +1,4 @@
-<div *ngIf="loadingFinished">
+<div *ngIf="!stylistsLoading">
     <div *ngIf="!addingStylist && !updateSylist" style="margin-left:25%; margin-right:25%">
 
       <!--View current stylists-->
@@ -8,7 +8,7 @@
           <!--Buttons to edit and delete stylists-->
           <div *ngIf=" editSytlistFunctions" class="button-container-list">
             <div  mclass="button-container">
-              <mat-button-toggle (click) = "delstylist(stylist)">
+              <mat-button-toggle (click) = "deleteStylist(stylist)">
                 <mat-icon>delete</mat-icon>
               </mat-button-toggle>
             </div>
@@ -44,14 +44,7 @@
 
           <!--Button to display update and delete stylists -->
           <div *ngIf="!editSytlistFunctions" class="button-container">
-            <mat-button-toggle (click) = "showStylistFunctionButtons()">
-              <mat-icon>update</mat-icon>
-            </mat-button-toggle>
-          </div>
-
-          <!--Button to hide update and delete stylists -->
-          <div *ngIf=" editSytlistFunctions" class="button-container">
-            <mat-button-toggle (click) = "hideStylistFunctionButtons()">
+            <mat-button-toggle (click) = "toggleStylistFunctionButtons()">
               <mat-icon>update</mat-icon>
             </mat-button-toggle>
           </div>

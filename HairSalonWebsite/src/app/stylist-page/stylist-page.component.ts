@@ -18,17 +18,24 @@ export class StylistPageComponent implements OnInit
   level: number;
   stylistUpdateId: any = null;
 
-  loadingFinished: boolean = false;
   editSytlistFunctions: boolean = false;
   addingStylist: boolean = false;
   updateSylist: boolean = false;
+
+  stylistsLoading: boolean = true;
   
 
   constructor(private stylistService: StylistService) { }
 
   ngOnInit(): void 
   { 
-    this.stylistService.getStylists().subscribe(s => {this.stylists = s; this.loadingFinished = true; console.log(this.stylists)});
+    this.stylistService.getStylists().subscribe(s => 
+      {
+        this.stylists = s; 
+        this.stylistsLoading = false; 
+        console.log(this.stylists)
+      }
+    );
   }
 
   /*
@@ -44,11 +51,15 @@ export class StylistPageComponent implements OnInit
   */
   addStylist() 
   {
+    this.stylistsLoading = true;
     let stylist = {bio: this.bio, name: this.name, level: this.level};
-    this.stylistService.addStylist(stylist);
-    this.stylists.push(stylist);
-    this.addingStylist = false;
-    this.clearFields();
+    this.stylistService.addStylist(stylist).subscribe(value => 
+    {
+      this.stylists.push(value);
+      this.addingStylist = false;
+      this.clearFields();
+      this.stylistsLoading = false;
+    });
   }
 
   /*
@@ -101,27 +112,21 @@ export class StylistPageComponent implements OnInit
   /*
     send delete request to the specified stylist in the database using the service method
   */
-  delstylist(stylist: Stylist)
+  deleteStylist(stylist: Stylist)
   {
+    this.stylistsLoading = true;
     this.stylistService.deleteStylist(stylist);
     var index = this.stylists.findIndex(x => x === stylist);
-    delete this.stylists[index];
+    this.stylists.splice(index, 1);
+    this.stylistsLoading = false;
   }
 
   /*
-    show delete and update buttons
+    toggle delete and update buttons
   */
-  showStylistFunctionButtons()
+  toggleStylistFunctionButtons()
   {
-    this.editSytlistFunctions = true;
-  }
-
-  /*
-    hide delete and update buttons
-  */
-  hideStylistFunctionButtons()
-  {
-    this.editSytlistFunctions = false;
+    this.editSytlistFunctions = !this.editSytlistFunctions;
   }
 
   /*
