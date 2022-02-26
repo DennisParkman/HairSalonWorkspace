@@ -4,3 +4,40 @@ img
     height: 45%;
     width: 45%;
 }
+
+.row 
+{
+    display: table-cell;
+}
+
+.flex-container 
+{
+    display: inline-flex;
+    justify-content: space-between;
+    float:right;
+}
+
+.button-container 
+{
+    display: flex;
+    justify-content: center;
+    width: 60px;
+}
+
+.button-container-list
+{
+    display: flex;
+    justify-content: right;
+}
+
+label
+{
+    font-weight: 400;
+    margin-left: 1%;
+}
+
+input
+{
+    margin-left: 1%;
+    width: 98%
+}
