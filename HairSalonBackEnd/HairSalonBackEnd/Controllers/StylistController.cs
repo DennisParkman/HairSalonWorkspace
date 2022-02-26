@@ -1,4 +1,4 @@
-using HairSalonBackEnd.Database;
+﻿using HairSalonBackEnd.Database;
 using HairSalonBackEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -22,17 +22,9 @@ namespace HairSalonBackEnd.Controllers
 
 	    /// <summary> Adds stylist to the SQLite Database </summary> 
         [HttpPost]
-        public ActionResult<Task<Stylist>> Post([FromBody] Stylist stylist)
+        public void Post([FromBody] Stylist stylist)
         {
-            try
-            {
-                Stylist newStylist = SQLiteDbUtility.AddStylist(stylist);
-                return Ok(newStylist);
-            }
-            catch(Exception e)
-            {
-                return BadRequest("Could not add Stylist: " + e.Message);
-            }
+            SQLiteDbUtility.AddStylist(stylist);
         }
 
         /// <summary> Returns all stylists found in the SQLite Database as an Enurable Array </summary>
@@ -40,21 +32,6 @@ namespace HairSalonBackEnd.Controllers
         public IEnumerable<Stylist> Get()
         {
             return SQLiteDbUtility.GetAllStylists();
-        }
-
-        // <summary> Deletes a stylist using id in the SQLite Database </summary>
-        [HttpDelete]
-        [Route("{id}")]
-        public void Delete(int id)
-        { 
-            SQLiteDbUtility.DeleteStylist(id);
-        }
-
-        /// <summary> Updates a stylist in the SQLite Database </summary>
-        [HttpPut]
-        public void Put([FromBody] Stylist stylist)
-        {
-            SQLiteDbUtility.UpdateStylist(stylist);
         }
     }
 
