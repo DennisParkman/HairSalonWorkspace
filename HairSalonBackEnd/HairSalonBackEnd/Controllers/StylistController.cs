@@ -22,9 +22,17 @@ namespace HairSalonBackEnd.Controllers
 
 	    /// <summary> Adds stylist to the SQLite Database </summary> 
         [HttpPost]
-        public void Post([FromBody] Stylist stylist)
+        public ActionResult<Task<Stylist>> Post([FromBody] Stylist stylist)
         {
-            SQLiteDbUtility.AddStylist(stylist);
+            try
+            {
+                Stylist newStylist = SQLiteDbUtility.AddStylist(stylist);
+                return Ok(newStylist);
+            }
+            catch(Exception e)
+            {
+                return BadRequest("Could not add Stylist: " + e.Message);
+            }
         }
 
         /// <summary> Returns all stylists found in the SQLite Database as an Enurable Array </summary>

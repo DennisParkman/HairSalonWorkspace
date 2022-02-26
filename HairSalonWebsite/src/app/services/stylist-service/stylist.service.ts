@@ -18,10 +18,10 @@ export class StylistService
      * To add a stylist object to the C# backend database located at @baseURL variable in the form of an enumrable array
      * @param stylist is the object that is added
      */
-    addStylist(stylist: Stylist): void
+    addStylist(stylist: Stylist): Observable<Stylist>
     {
         let url = this.baseURL.concat("Stylist");
-        this.http.post(url, stylist).subscribe();
+        return this.http.post<Stylist>(url, stylist);
     }
     
     /**
