@@ -10,8 +10,6 @@ namespace HairSalonBackEndTest
     [TestClass]
     public class StylistControllerTests
     {
-
-        //or should I just add, view, update, view, and delete a stylist all in one test method, actually updating the database?
         /// <summary>
         /// tests StylistController.Post(stylist: Stylist) to see that it properly sends a stylist object
         /// </summary>
@@ -32,6 +30,8 @@ namespace HairSalonBackEndTest
             };
 
             controller.Post(s); //but how can I intercept the SQLiteDbUtility.AddStylist call in the Post function so an insert isn't actually performed?
+
+            //then test that ... a parameter is passed to a method....
         }
 
 
