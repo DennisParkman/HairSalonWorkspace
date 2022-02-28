@@ -11,6 +11,7 @@ namespace HairSalonBackEnd.Database
 {
     public static class SQLiteDbUtility
     {
+        private static string loadDbString = "FileName=Database/sqlite.db";
         private static SQLiteDbContext dbContext;
 
         private static bool isInitialized = false;
@@ -23,6 +24,31 @@ namespace HairSalonBackEnd.Database
                 dbContext.Database.EnsureCreated();
 
                 isInitialized = true;
+            }
+        }
+
+        /// <summary></summary>
+        /// <returns> the value in <value>loadDbString</value></returns>
+        public static string GetLoadDb()
+        {
+            return loadDbString;
+        }
+
+        /// <summary>
+        /// Sets <value>loadDbString</value> to the value passed in <param>newLoadDbName</param>
+        /// </summary>
+        /// <param name="newLoadDbName">the name to set <value>loadDbString</value> to</param>
+        /// <returns><value>true</value> if <param>newLoadDbName</param> ends in ".db", <value>false</value> otherwise </returns>
+        public static bool SetLoadDb(string newLoadDbName)
+        {
+            if (!newLoadDbName.EndsWith(".db"))
+            {
+                return false;
+            }
+            else
+            {
+                loadDbString = string.Format("FileName=Database/%s", newLoadDbName);
+                return true;
             }
         }
 
@@ -127,7 +153,7 @@ namespace HairSalonBackEnd.Database
             public DbSet<Appointment> Appointments { get; set; }
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
-                optionsBuilder.UseSqlite("FileName=Database/sqlite.db", option =>
+                optionsBuilder.UseSqlite(loadDbString, option =>
                 {
                     option.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
                 });
