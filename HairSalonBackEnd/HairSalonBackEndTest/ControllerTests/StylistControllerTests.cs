@@ -51,7 +51,6 @@ namespace HairSalonBackEndTest
         public void TestPost()
         {
             Console.WriteLine("TestPost");//debug
-            Console.Read();//debug
             /*
             SetupDB();
             //it should be fine; we never use the logger. Right?
