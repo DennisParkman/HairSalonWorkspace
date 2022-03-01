@@ -18,6 +18,7 @@ namespace HairSalonBackEnd
     {
         public Startup(IConfiguration configuration)
         {
+            Console.WriteLine("Startup"); //debug
             Configuration = configuration;
 
             SQLiteDbUtility.InitializeDB();
