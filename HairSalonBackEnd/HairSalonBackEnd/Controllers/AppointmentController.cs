@@ -48,15 +48,12 @@ namespace HairSalonBackEnd.Controllers
             SQLiteDbUtility.UpdateAppointment(appointment);
         }
 
-         /// <summary> Returns all appointments for a specific stylist found in the SQLite Database as an Enurable Array </summary>
+        /// <summary> Returns all appointments for a specific stylist found in the SQLite Database as an Enurable Array </summary>
         [HttpGet]
-        public IEnumerable<Appointment> GetAppointment(int id)
+        public IEnumerable<Appointment> Get(int stylistID)
         {
-            return SQLiteDbUtility.GetStylistAppointment(id);
+            return SQLiteDbUtility.GetAppointmentsByStylist(stylistID);
         }
     }
 
-}
-
-    
 }
