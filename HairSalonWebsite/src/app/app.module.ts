@@ -14,6 +14,7 @@ import { StylistPageComponent } from './stylist-page/stylist-page.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
 
 @NgModule(
 {
@@ -23,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     HomePageComponent,
     FooterComponent,
     NavbarComponent,
-    StylistPageComponent
+    StylistPageComponent,
+    AppointmentPageComponent
   
   ],
   imports: 

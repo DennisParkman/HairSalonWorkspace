@@ -1,0 +1,39 @@
+<div *ngIf="loadingFinished">
+    <div *ngIf="!addingAppointment" style="margin-left:25%; margin-right:25%">
+       
+
+        <!--Button to display form to add appointment-->
+        <mat-button-toggle style="float:right" (click) = "showAddAppointment()">Add Appointment</mat-button-toggle>
+
+        <!--View current Appointments-->
+        <!--Add a calender to view appointments-->
+    </div>
+    <!--Make new Appointment-->
+    <div *ngIf="addingAppointment" class = "container">
+        <form>
+            <div class="mb-5">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
+            </div>
+            <div class="mb-5">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" required id="email" [(ngModel)]="this.email" name = "email">
+            </div>
+            <div class="mb-5">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="number" class="form-control" required id="phone" [(ngModel)]="this.phone" name = "phone">
+            </div>
+            <div class="mb-5">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
+              </div>
+            <div class="mb-5">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
+            </div>
+            <!--To do: to enter the stylist name and select appoinments-->
+            <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addAppointment()">Submit</button>
+            <button mat-flat-button style = "margin: 1%" (click)="cancelAddAppointment()">Cancel</button>
+          </form>
+    </div>
+</div>

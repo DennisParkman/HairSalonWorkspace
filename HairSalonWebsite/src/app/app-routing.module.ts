@@ -4,6 +4,7 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { StylistPageComponent } from './stylist-page/stylist-page.component';
@@ -13,7 +14,8 @@ const routes: Routes =
 [
   {path: 'home', component: HomePageComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
-  {path: 'stylists', component: StylistPageComponent}
+  {path: 'stylists', component: StylistPageComponent},
+  {path: 'appointments', component: AppointmentPageComponent}
 ];
 
 @NgModule(
