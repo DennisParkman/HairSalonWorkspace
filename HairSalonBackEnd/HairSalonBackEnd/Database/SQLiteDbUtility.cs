@@ -52,6 +52,7 @@ namespace HairSalonBackEnd.Database
             stylistEntry.Name = stylist.Name;
             stylistEntry.Level = stylist.Level;
             stylistEntry.Bio = stylist.Bio;
+
             dbContext.SaveChanges();
         }
         /// <summary> A method for deleting a stylist data type from the database. </summary>
@@ -68,7 +69,6 @@ namespace HairSalonBackEnd.Database
 
         #region Appointment Methods
 
-        /// Author: George Garrett
         /// <summary>
         /// Methoding for adding an appointment record to the database.
         /// </summary>
@@ -77,7 +77,6 @@ namespace HairSalonBackEnd.Database
             dbContext.Appointments.Add(app);
         }
 
-        /// Author: George Garrett
         /// <summary>
         /// Method for getting all the appointments.
         /// </summary>
@@ -87,7 +86,6 @@ namespace HairSalonBackEnd.Database
             return dbContext.Appointments.ToList();
         }
 
-        /// Author: George Garrett
         /// <summary>
         /// The Update method for updating an appointment record.
         /// </summary>
@@ -105,19 +103,63 @@ namespace HairSalonBackEnd.Database
             AppEntry.Date = app.Date;
             AppEntry.DateCreated = app.DateCreated;
             AppEntry.Description = app.Description;
+
             dbContext.SaveChanges();
         }
 
-        /// Author: George Garrett
         /// <summary>
         /// The delete method for removing an appointment record.
         /// </summary>
         public static void DeleteAppointment(int id)
         {
             var AppEntry = dbContext.Appointments.Where(x => x.ID == id).FirstOrDefault();
-
             dbContext.Appointments.Remove(AppEntry);
             dbContext.SaveChanges();
+        }
+
+        public static IEnumerable<Appointment> GetAppointmentsByStylist(int stylistID)
+        { 
+            var stylistAppointments = dbContext.Appointments.Where(x => x.StylistID == stylistID);
+            return stylistAppointments;
+        }
+        #endregion
+
+        #region Unavailability Methods
+
+        public static Unavailability AddUnavailability(Unavailability unavailability)
+        {
+            dbContext.Unavailabilities.Add(unavailability);
+            dbContext.SaveChanges();
+            return unavailability;
+        }
+
+        public static IEnumerable<Unavailability> GetAllUnavailabilities()
+        {
+            return dbContext.Unavailabilities.ToList();
+        }
+
+        public static void UpdateUnavailability(Unavailability unavailability)
+        {
+            var unavailabilityEntry = dbContext.Unavailabilities.Where(x => x.ID == unavailability.ID).FirstOrDefault();
+
+            unavailabilityEntry.StylistID = unavailability.StylistID;
+            unavailabilityEntry.StartDate = unavailability.StartDate;
+            unavailabilityEntry.EndDate = unavailability.EndDate;
+            unavailabilityEntry.Period = unavailability.Period;
+            dbContext.SaveChanges();
+        }
+
+        public static void DeleteUnavailability(int id)
+        { 
+            var delUnavailability = dbContext.Unavailabilities.Where(x => x.ID == id).FirstOrDefault();
+
+            dbContext.Unavailabilities.Remove(delUnavailability);
+            dbContext.SaveChanges();
+        }
+
+        public static IEnumerable<Unavailability> GetAllUnavailabilitiesByStylist(int id)
+        {
+            return dbContext.Unavailabilities.Where(x => x.ID == id).ToList();
         }
 
         #endregion
@@ -126,6 +168,7 @@ namespace HairSalonBackEnd.Database
         {
             public DbSet<Stylist> Stylists { get; set; }
             public DbSet<Appointment> Appointments { get; set; }
+            public DbSet<Unavailability> Unavailabilities { get; set; }
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
                 optionsBuilder.UseSqlite("FileName=Database/sqlite.db", option =>
@@ -138,7 +181,12 @@ namespace HairSalonBackEnd.Database
             protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 modelBuilder.Entity<Stylist>().ToTable("Stylists", "localSchema");
+
                 modelBuilder.Entity<Appointment>().ToTable("Appointments", "localSchema");
+
+                modelBuilder.Entity<Unavailability>().ToTable("Unavailability", "localSchema");
+                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>();
+
                 base.OnModelCreating(modelBuilder);
             }
         }

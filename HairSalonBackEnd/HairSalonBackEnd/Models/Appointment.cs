@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HairSalonBackEnd.Models
 {
-    /// Author: George Garrett
     /// <summary>
     /// The appointment model class for appointment entries in the database.
     /// </summary>
