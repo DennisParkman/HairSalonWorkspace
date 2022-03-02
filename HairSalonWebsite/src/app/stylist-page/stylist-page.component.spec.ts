@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { StylistPageComponent } from './stylist-page.component';
 
@@ -11,7 +12,8 @@ describe('StylistPageComponent', () =>
   {
     await TestBed.configureTestingModule(
     {
-      declarations: [ StylistPageComponent ]
+      declarations: [ StylistPageComponent ],
+      imports: [HttpClientTestingModule]
     })
     .compileComponents();
   });
