@@ -1,13 +1,11 @@
 export class Appointment 
 {
-
     id?: number;
-    stylistid: number;
+    stylistId: number;
     name: string;
     email: string;
     phone: string;
     date: Date;
-    datecreated: Date;
+    dateCreated: Date;
     description: string;
-
 }

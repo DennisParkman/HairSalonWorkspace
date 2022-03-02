@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Appointment } from 'src/app/models/appointment.model';
 import { Stylist } from 'src/app/models/stylist.model';
 
 @Injectable(
@@ -56,9 +57,9 @@ export class AppointmentService
    /**
     * A method to select an appointment for a specific stylist
     */
-   getStylistAppointment(stylist: Stylist): Observable<Appointment[]>
+   getAppointmentByStylist(stylist: Stylist): Observable<Appointment[]>
    {
-      let url = this.baseURL.concat("Stylist/"+stylist.id)
+      let url = this.baseURL.concat("Stylist/" + stylist.id)
       return this.http.get<Appointment[]>(url); 
    }
 }
