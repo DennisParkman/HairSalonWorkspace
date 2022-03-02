@@ -14,6 +14,7 @@ import { StylistPageComponent } from './stylist-page/stylist-page.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AppointmentService } from './services/appointment-service/appointment.service';
 
 @NgModule(
 {
@@ -37,7 +38,7 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     RouterModule
   ],
-  providers: [StylistService],
+  providers: [StylistService, AppointmentService],
   bootstrap: [AppComponent]
 })
 export class AppModule 
