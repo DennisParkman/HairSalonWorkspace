@@ -29,10 +29,11 @@ namespace HairSalonBackEnd.Database
         #region Stylist Methods
         /// <summary> A method for adding a stylist data type to the database.</summary>
         /// <param name="stylist"> A stylist object to add to the database.</param> 
-        public static void AddStylist(Stylist stylist)
+        public static Stylist AddStylist(Stylist stylist)
         {
             dbContext.Stylists.Add(stylist);
             dbContext.SaveChanges();
+            return stylist;
         }
 
         /// <summary> Returns all stylists found in the private inner class that contains the Database information as a list </summary>
@@ -51,6 +52,7 @@ namespace HairSalonBackEnd.Database
             stylistEntry.Name = stylist.Name;
             stylistEntry.Level = stylist.Level;
             stylistEntry.Bio = stylist.Bio;
+
             dbContext.SaveChanges();
         }
         /// <summary> A method for deleting a stylist data type from the database. </summary>
@@ -67,7 +69,6 @@ namespace HairSalonBackEnd.Database
 
         #region Appointment Methods
 
-        /// Author: George Garrett
         /// <summary>
         /// Methoding for adding an appointment record to the database.
         /// </summary>
@@ -76,7 +77,6 @@ namespace HairSalonBackEnd.Database
             dbContext.Appointments.Add(app);
         }
 
-        /// Author: George Garrett
         /// <summary>
         /// Method for getting all the appointments.
         /// </summary>
@@ -86,7 +86,6 @@ namespace HairSalonBackEnd.Database
             return dbContext.Appointments.ToList();
         }
 
-        /// Author: George Garrett
         /// <summary>
         /// The Update method for updating an appointment record.
         /// </summary>
@@ -104,21 +103,25 @@ namespace HairSalonBackEnd.Database
             AppEntry.Date = app.Date;
             AppEntry.DateCreated = app.DateCreated;
             AppEntry.Description = app.Description;
+
             dbContext.SaveChanges();
         }
 
-        /// Author: George Garrett
         /// <summary>
         /// The delete method for removing an appointment record.
         /// </summary>
         public static void DeleteAppointment(int id)
         {
             var AppEntry = dbContext.Appointments.Where(x => x.ID == id).FirstOrDefault();
-
             dbContext.Appointments.Remove(AppEntry);
             dbContext.SaveChanges();
         }
 
+        public static IEnumerable<Appointment> GetAppointmentsByStylist(int stylistID)
+        { 
+            var stylistAppointments = dbContext.Appointments.Where(x => x.StylistID == stylistID);
+            return stylistAppointments;
+        }
         #endregion
 
         private class SQLiteDbContext : DbContext

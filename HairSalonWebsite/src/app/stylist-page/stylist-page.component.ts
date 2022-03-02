@@ -16,15 +16,26 @@ export class StylistPageComponent implements OnInit
   bio: string;
   name: string;
   level: number;
+  stylistUpdateId: any = null;
 
+  editSytlistFunctions: boolean = false;
   addingStylist: boolean = false;
-  loadingFinished: boolean = false;
+  updateSylist: boolean = false;
+
+  stylistsLoading: boolean = true;
+  
 
   constructor(private stylistService: StylistService) { }
 
   ngOnInit(): void 
   { 
-    this.stylistService.getStylists().subscribe(s => {this.stylists = s; this.loadingFinished = true; console.log(this.stylists)});
+    this.stylistService.getStylists().subscribe(s => 
+      {
+        this.stylists = s; 
+        this.stylistsLoading = false; 
+        console.log(this.stylists)
+      }
+    );
   }
 
   /*
@@ -33,7 +44,22 @@ export class StylistPageComponent implements OnInit
   showAddStylist()
   {
     this.addingStylist = true;
-    console.log("show");
+  }
+
+  /*
+    send new stylist entered in form to stylist service method
+  */
+  addStylist() 
+  {
+    this.stylistsLoading = true;
+    let stylist = {bio: this.bio, name: this.name, level: this.level};
+    this.stylistService.addStylist(stylist).subscribe(value => 
+    {
+      this.stylists.push(value);
+      this.addingStylist = false;
+      this.clearFields();
+      this.stylistsLoading = false;
+    });
   }
 
   /*
@@ -43,6 +69,64 @@ export class StylistPageComponent implements OnInit
   {
     this.clearFields(); 
     this.addingStylist = false;
+  }
+
+  /*
+    Display update sytlist form for specific stylist
+  */
+  displayUpdateSytlist(stylist: Stylist)
+  {
+    this.updateSylist = true;
+    this.stylistUpdateId = stylist.id;
+    this.name = stylist.name;
+    this.level = stylist.level;
+    this.bio = stylist.bio;
+  }
+
+  /*
+    send updated stylist entered in form to stylist service method
+  */
+  updatingStylist()
+  {
+    let stylist = {id: this.stylistUpdateId, bio: this.bio, name: this.name, level: this.level};
+    var index = this.stylists.findIndex(x => x.id === this.stylistUpdateId);
+    
+    this.stylistService.updateStylist(stylist);
+    this.stylists[index] = stylist;
+
+    this.updateSylist = false;
+    this.stylistUpdateId = null;
+    this.clearFields();
+  }
+
+  /*
+    hide stylist update form
+  */
+  cancelUpdatingStylist()
+  {
+    this.updateSylist = false;
+    this.stylistUpdateId = null;
+    this.clearFields();
+  }
+
+  /*
+    send delete request to the specified stylist in the database using the service method
+  */
+  deleteStylist(stylist: Stylist)
+  {
+    this.stylistsLoading = true;
+    this.stylistService.deleteStylist(stylist);
+    var index = this.stylists.findIndex(x => x === stylist);
+    this.stylists.splice(index, 1);
+    this.stylistsLoading = false;
+  }
+
+  /*
+    toggle delete and update buttons
+  */
+  toggleStylistFunctionButtons()
+  {
+    this.editSytlistFunctions = !this.editSytlistFunctions;
   }
 
   /*
@@ -56,18 +140,6 @@ export class StylistPageComponent implements OnInit
   }
 
   /*
-    send new stylist entered in form to stylist service method
-  */
-  addStylist() 
-  {
-    let stylist = {bio: this.bio, name: this.name, level: this.level};
-    this.stylistService.addStylist(stylist);
-    this.stylists.push(stylist);
-    this.addingStylist = false;
-    this.clearFields();
-  }
-
- /*
     sort stylists by level from highest level to lowest level
   */
   sortByLevelDesending(): void
