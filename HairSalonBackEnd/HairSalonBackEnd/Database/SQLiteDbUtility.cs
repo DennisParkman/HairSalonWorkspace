@@ -146,6 +146,7 @@ namespace HairSalonBackEnd.Database
             unavailabilityEntry.StartDate = unavailability.StartDate;
             unavailabilityEntry.EndDate = unavailability.EndDate;
             unavailabilityEntry.Period = unavailability.Period;
+
             dbContext.SaveChanges();
         }
 
@@ -157,9 +158,9 @@ namespace HairSalonBackEnd.Database
             dbContext.SaveChanges();
         }
 
-        public static IEnumerable<Unavailability> GetAllUnavailabilitiesByStylist(int id)
+        public static IEnumerable<Unavailability> GetAllUnavailabilitiesByStylist(int stylistID)
         {
-            return dbContext.Unavailabilities.Where(x => x.ID == id).ToList();
+            return dbContext.Unavailabilities.Where(x => x.StylistID == stylistID).ToList();
         }
 
         #endregion
