@@ -15,6 +15,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 @NgModule(
 {
@@ -37,7 +39,12 @@ import { AppointmentPageComponent } from './appointment-page/appointment-page.co
     BrowserAnimationsModule,
     MaterialModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    })
   ],
   providers: [StylistService],
   bootstrap: [AppComponent]

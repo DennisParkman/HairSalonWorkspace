@@ -1,14 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { Appointment } from '../models/appointment.model';
-
+import { CalendarView } from 'angular-calendar';
+import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
+import { startOfDay } from 'date-fns';
 @Component({
   selector: 'app-appointment-page',
   templateUrl: './appointment-page.component.html',
   styleUrls: ['./appointment-page.component.scss']
 })
-export class AppointmentPageComponent implements OnInit 
+export class AppointmentPageComponent
 {
-  appointments: Appointment[] = [{stylistid: 1, name: "test", email: "email.com", phone: "00555", date: new Date, datecreated: new Date, description: "help"}];
+  viewDate: Date = new Date();
+  view: CalendarView = CalendarView.Month;
+  CalendarView = CalendarView;
+  setView(view: CalendarView) 
+  {
+    this.view = view;
+  }
+  events: CalendarEvent[] = [
+    {
+      start: startOfDay(new Date()),
+      title: 'First event',
+    },
+    {
+      start: startOfDay(new Date()),
+      title: 'Second event',
+    }
+  ]
+  /*appointments: Appointment[] = [{stylistid: 1, name: "test", email: "email.com", phone: "00555", date: new Date, datecreated: new Date, description: "help"}];
   stylistid: number;
   name: string;
   email: string;
@@ -28,7 +47,7 @@ export class AppointmentPageComponent implements OnInit
   }
   /*
     toggles add appointment 
-  */
+  
   showAddAppointment()
   {
     this.addingAppointment = true;
@@ -37,7 +56,7 @@ export class AppointmentPageComponent implements OnInit
 
   /*
     
-  */
+  
   cancelAddAppoinment()
   {
     this.clearFields();
@@ -58,7 +77,7 @@ export class AppointmentPageComponent implements OnInit
   addAppointment()
   {
 
-  }
+  }*/
 
 
 }
