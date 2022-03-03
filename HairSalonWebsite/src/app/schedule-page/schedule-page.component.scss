@@ -1,9 +1,15 @@
-.inline-calendar-card 
+.format-container
 {
-    width: 400px;
-    justify-content: center;
+    margin-left: 9%;
+    margin-right: 9%;
+    margin-bottom: 2%;
 }
+
 .row 
 {
-    justify-content: center;
+    margin-top: 2%
+}
+
+.cal-events {
+    display: none !important;
 }
