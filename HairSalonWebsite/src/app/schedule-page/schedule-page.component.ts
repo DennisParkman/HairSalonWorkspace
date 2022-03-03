@@ -8,6 +8,7 @@ import { Stylist } from '../models/stylist.model';
 import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { StylistService } from '../services/stylist-service/stylist.service';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -38,20 +39,19 @@ export class SchedulePageComponent implements OnInit
 
   ngOnInit(): void 
   {
-    this.appointmentService.getAppointment().subscribe(s => 
-      {
-        this.appointmentList = s; 
-        console.log(this.appointmentList)
 
-        this.unavailabilityService.getUnavailabilities().subscribe(s => 
-          {
-            this.unavailabilitiesList = s; 
-            console.log(this.unavailabilitiesList)
-          }
-        );
+    forkJoin(
+      {
+        appointments: this.appointmentService.getAppointment(), 
+        unavailabilities: this.unavailabilityService.getUnavailabilities()
+      }).subscribe(({appointments, unavailabilities}) => {
+        this.appointmentList = appointments; 
+        console.log(this.appointmentList);
+
+        this.unavailabilitiesList = unavailabilities; 
+        console.log(this.unavailabilitiesList);
       }
     );
-    
   }
 
   setView(view: CalendarView) 
