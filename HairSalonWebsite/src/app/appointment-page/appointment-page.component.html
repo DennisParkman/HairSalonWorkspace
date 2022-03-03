@@ -1,85 +1,79 @@
-<!--<div *ngIf="loadingFinished">
-    <div *ngIf="!addingAppointment" style="margin-left:25%; margin-right:25%">
-       
+<!--<div *ngIf="loadingFinished">-->
+    
 
-        <Button to display form to add appointment-->
-        <!--<mat-button-toggle style="float:right" (click) = "showAddAppointment()">Add Appointment</mat-button-toggle>
 
-        --View current Appointments-->
-        <!--Add a calender to view appointments-->
-    <!--</div> -->
-    <!--Make new Appointment-->
-    <!--<div *ngIf="addingAppointment" class = "container">
-        <form>
-            <div class="mb-5">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
-            </div>
-            <div class="mb-5">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" required id="email" [(ngModel)]="this.email" name = "email">
-            </div>
-            <div class="mb-5">
-              <label for="phone" class="form-label">Phone</label>
-              <input type="number" class="form-control" required id="phone" [(ngModel)]="this.phone" name = "phone">
-            </div>
-            <div class="mb-5">
-                <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
-              </div>
-            <div class="mb-5">
-                <label for="description" class="form-label">Description</label>
-                <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
-            </div>
-            <--To do: to enter the stylist name and select appoinments-->
-            <!--<button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addAppointment()">Submit</button>
-            <button mat-flat-button style = "margin: 1%" (click)="cancelAddAppointment()">Cancel</button>
-          </form>
-    </div>
-</div>-->
-
-<div class="row text-center">
-  <div class="col-md-4">
-    <div class="btn-group">
-        <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
-            Previous
-        </div>
-        <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
-            Today
-        </div>
-        <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
-            Next
-        </div>
-    </div>
-</div>
-<div class="col-md-4">
-  <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
-</div>
-  <div class="col-md-4">
+  <div *ngIf="!addingAppointment" style="margin-left:25%; margin-right:25%"></div>
+  <div class="row text-center">
+    <div class="col-md-4">
       <div class="btn-group">
-        <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
-          Month
-      </div>
-      <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
-          Week
-      </div>
-      <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
-          Day
-      </div>
+          <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+              Previous
+          </div>
+          <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+              Today
+          </div>
+          <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+              Next
+          </div>
       </div>
   </div>
-
-</div>
-
-<div [ngSwitch]="view">
-
-  <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events">
-  </mwl-calendar-month-view>
-
-  <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events">
-  </mwl-calendar-week-view>
-
-  <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events">
-  </mwl-calendar-day-view>
-
-</div>
+  <div class="col-md-4">
+    <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
+  </div>
+    <div class="col-md-4">
+        <div class="btn-group">
+          <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+            Month
+        </div>
+        <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+            Week
+        </div>
+        <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+            Day
+        </div>
+        </div>
+    </div>
+  
+  </div>
+  
+  <div [ngSwitch]="view">
+  
+    <mwl-calendar-month-view (dayClicked)="dayClicked($event.day)" *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events">
+    </mwl-calendar-month-view>
+  
+    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events">
+    </mwl-calendar-week-view>
+  
+    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events">
+    </mwl-calendar-day-view>
+  
+  </div>
+  <mat-button-toggle style="float:right" (click) = "showAddAppointment()">Add Appointment</mat-button-toggle>
+  <!--Make new Appointment-->
+      <div *ngIf="addingAppointment" class = "container">
+          <form>
+              <div class="mb-5">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
+              </div>
+              <div class="mb-5">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" required id="email" [(ngModel)]="this.email" name = "email">
+              </div>
+              <div class="mb-5">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="number" class="form-control" required id="phone" [(ngModel)]="this.phone" name = "phone">
+              </div>
+              <div class="mb-5">
+                  <label for="date" class="form-label">Date</label>
+                  <input type="date" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
+                </div>
+              <div class="mb-5">
+                  <label for="description" class="form-label">Description</label>
+                  <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
+              </div>
+              <!--To do: to enter the stylist name and select appoinments-->
+              <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addAppointment()">Submit</button>
+              <button mat-flat-button style = "margin: 1%" (click)="cancelAddAppointment()">Cancel</button>
+            </form>
+      </div>
