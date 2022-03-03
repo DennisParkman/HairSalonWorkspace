@@ -18,7 +18,7 @@ export class StylistPageComponent implements OnInit
   name: string;
   level: number;
   stylistUpdateId: any = null;
-  StylistImage: string;
+  stylistImage: string;
 
   editSytlistFunctions: boolean = false;
   addingStylist: boolean = false;
@@ -35,7 +35,7 @@ export class StylistPageComponent implements OnInit
       {
         this.stylists = s; 
         this.stylistsLoading = false; 
-        console.log(this.stylists)
+        console.log(this.stylists); //debug
       }
     );
   }
@@ -102,9 +102,9 @@ export class StylistPageComponent implements OnInit
     fileStream.onloadend = (e) =>
     {
       // Get the conversion result and store in the field.
-      this.StylistImage = btoa(fileStream.result as string);
+      this.stylistImage = btoa(fileStream.result as string);
       // Log the uploaded file.
-      console.log(this.StylistImage);
+      console.log(this.stylistImage);
     }
 
     // Call the file to text function.
@@ -129,16 +129,16 @@ export class StylistPageComponent implements OnInit
   updatingStylist()
   {
     // Temorary stylist object that will replace the object being updated.
-    let stylist: Stylist = {id: this.stylistUpdateId, bio: this.bio, name: this.name, level: this.level, StylistImage: this.StylistImage};
+    let stylist: Stylist = {id: this.stylistUpdateId, bio: this.bio, name: this.name, level: this.level, stylistImage: this.stylistImage};
 
     // Query the database for the stylist being updated.
     var index = this.stylists.findIndex(x => x.id === this.stylistUpdateId);
 
     // Call the update service to pass to back end, and update the stylist. 
     // If the stylistImage is 
-    if(stylist.StylistImage == null)
+    if(stylist.stylistImage == null)
     {
-      stylist.StylistImage = this.stylists[index].StylistImage;
+      stylist.stylistImage = this.stylists[index].stylistImage;
     }
     this.stylistService.updateStylist(stylist);
     this.stylists[index] = stylist;
@@ -187,7 +187,7 @@ export class StylistPageComponent implements OnInit
     this.bio = "";
     this.level = 0;
     this.name = "";
-    this.StylistImage = "";
+    this.stylistImage = "";
   }
 
   /*
