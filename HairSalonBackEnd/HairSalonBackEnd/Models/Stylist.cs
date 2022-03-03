@@ -28,5 +28,11 @@ namespace HairSalonBackEnd.Models
         [Required]
         [Column(TypeName = "nvarchar(1000)")]
         public string Bio { get; set; }
+
+        /// <summary>
+        /// The get/set methods for adding an image to the database. Represented in binary.
+        /// </summary>
+        [Column(TypeName = "varbinary(MAX)")]
+        public string StylistImage { get; set; }
     }
 }

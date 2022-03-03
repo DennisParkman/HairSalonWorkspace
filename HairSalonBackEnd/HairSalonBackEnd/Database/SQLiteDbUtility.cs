@@ -52,6 +52,7 @@ namespace HairSalonBackEnd.Database
             stylistEntry.Name = stylist.Name;
             stylistEntry.Level = stylist.Level;
             stylistEntry.Bio = stylist.Bio;
+            stylistEntry.StylistImage = stylist.StylistImage;
             dbContext.SaveChanges();
         }
         /// <summary> A method for deleting a stylist data type from the database. </summary>
