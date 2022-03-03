@@ -95,6 +95,10 @@
                 <label for="bio" class="form-label">Stylist bio</label>
                 <input type="text" class="form-control" required id="bio" [(ngModel)]="this.bio" name = "bio">
             </div>
+            <div class="mb-3">
+              <label for="Picture" class="form-label">Picture</label>
+              <input type="file" accept = ".png,.jpg" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
+            </div>
             <button mat-flat-button color="primary" style = "margin-left: 1%" type="submit" (click)="addStylist()">Submit</button>
             <button mat-flat-button color="accent" style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
           </mat-card-content>
@@ -125,7 +129,7 @@
             </div>
             <div class="mb-3">
               <label for="Picture" class="form-label">Picture</label>
-              <input type="file" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
+              <input type="file" accept = ".png,.jpg" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
             </div>
             <button mat-flat-button color="primary" style = "margin-left: 1%" type="submit" (click)="updatingStylist()">Submit</button>
             <button mat-flat-button color="accent" style = "margin: 1%" (click)="cancelUpdatingStylist()">Cancel</button>

@@ -53,8 +53,13 @@ export class StylistPageComponent implements OnInit
   */
   addStylist() 
   {
+    //tells the page that stylists are being loaded
     this.stylistsLoading = true;
-    let stylist = {bio: this.bio, name: this.name, level: this.level};
+
+    //create stylist object to add to the database
+    let stylist: Stylist = {bio: this.bio, name: this.name, level: this.level, stylistImage: this.stylistImage};
+
+    //send the new stylist to the backend via stylistService
     this.stylistService.addStylist(stylist).subscribe(value => 
     {
       this.stylists.push(value);
@@ -119,7 +124,7 @@ export class StylistPageComponent implements OnInit
     // Log the img given.
     console.log(img)
     // Check if not null, otherwise post.
-    if(img != null) return 'data:image/png;base64,' + img;
+    if(img != null || img != "") return 'data:image/png;base64,' + img;
     else return "ImageNotFound";
   }
 
@@ -136,7 +141,7 @@ export class StylistPageComponent implements OnInit
 
     // Call the update service to pass to back end, and update the stylist. 
     // If the stylistImage is 
-    if(stylist.stylistImage == null)
+    if(stylist.stylistImage == null || stylist.stylistImage == "")
     {
       stylist.stylistImage = this.stylists[index].stylistImage;
     }
