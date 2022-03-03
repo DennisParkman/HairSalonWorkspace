@@ -72,9 +72,11 @@ namespace HairSalonBackEnd.Database
         /// <summary>
         /// Methoding for adding an appointment record to the database.
         /// </summary>
-        public static void AddAppointment(Appointment app)
+        public static Appointment AddAppointment(Appointment app)
         {
             dbContext.Appointments.Add(app);
+            dbContext.SaveChanges();
+            return app;
         }
 
         /// <summary>
