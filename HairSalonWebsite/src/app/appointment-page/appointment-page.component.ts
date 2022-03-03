@@ -12,7 +12,7 @@ import { AppointmentService } from '../services/appointment-service/appointment.
 })
 export class AppointmentPageComponent implements OnInit
 {
-  appointments: Appointment[] = [{stylistId: 1, name: "test", email: "email.com", phone: "00555", date: new Date, dateCreated: new Date, description: "help"}];
+  appointments: Appointment[];
   stylistid: number;
   name: string;
   email: string;
@@ -24,11 +24,34 @@ export class AppointmentPageComponent implements OnInit
   addingAppointment: boolean = false;
   loadingFinished: boolean = false;
 
+  events: CalendarEvent[] = [];
+  viewDate: Date = new Date();
+  view: CalendarView = CalendarView.Month;
+  CalendarView = CalendarView;
+
   constructor(private appointmentService: AppointmentService) { }
 
   ngOnInit(): void 
   {
-    this.appointmentService.getAppointment().subscribe(s => {this.appointments = s; this.loadingFinished = true; console.log(this.appointments)});
+    this.appointmentService.getAppointment().subscribe(s => 
+      {
+        this.appointments = s; 
+        console.log(this.appointments);
+
+        for(let appointment of this.appointments)
+        {
+          this.events.push(
+            {
+              start: new Date(appointment.date),
+              title: appointment.name + " - " + appointment.description
+            }
+          );
+          
+        }
+
+        
+        this.loadingFinished = true; 
+      });
   }
   /*
     toggles add appointment 
@@ -69,34 +92,13 @@ export class AppointmentPageComponent implements OnInit
       this.clearFields();
     });
   }
-  viewDate: Date = new Date();
-  view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
+
   setView(view: CalendarView) 
   {
     this.view = view;
   }
-  events: CalendarEvent[] = [
-    {
-      start: startOfDay(new Date()),
-      title: 'First event',
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'Second event',
-    }
-  ]
   
-  for(appointment: Appointment ,of: Appointment ,appointments: Appointment)
-  {
-    this.events = [
-      ...this.events,
-      {
-        start: appointment['date'],
-        title: appointment['name']+appointment['description']
-      }
-    ]
-  }
+  
   
  
   
