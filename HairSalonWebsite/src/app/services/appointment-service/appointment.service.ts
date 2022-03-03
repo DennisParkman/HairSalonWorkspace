@@ -20,10 +20,10 @@ export class AppointmentService
      * To add an appointment object to the C# backend database located at @baseURL variable in the form of an enumrable array
      * @param appointment is the object that is added
      */
-   addAppointment(appointment: Appointment): Observable<Appointment>
+   addAppointment(appointment: Appointment): void
    {
        let url = this.baseURL.concat("Appointment");
-      return this.http.post<Appointment>(url, appointment);
+       this.http.post(url, appointment).subscribe();
    }
    
    /**

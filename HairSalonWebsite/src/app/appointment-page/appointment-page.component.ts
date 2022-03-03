@@ -3,16 +3,31 @@ import { Appointment } from '../models/appointment.model';
 import { CalendarView } from 'angular-calendar';
 import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { startOfDay } from 'date-fns';
-import { AppointmentService } from '../services/appointment-service/appointment.service';
 @Component({
-
   selector: 'app-appointment-page',
   templateUrl: './appointment-page.component.html',
   styleUrls: ['./appointment-page.component.scss']
 })
-export class AppointmentPageComponent implements OnInit
+export class AppointmentPageComponent
 {
-  appointments: Appointment[] = [{stylistId: 1, name: "test", email: "email.com", phone: "00555", date: new Date, dateCreated: new Date, description: "help"}];
+  viewDate: Date = new Date();
+  view: CalendarView = CalendarView.Month;
+  CalendarView = CalendarView;
+  setView(view: CalendarView) 
+  {
+    this.view = view;
+  }
+  events: CalendarEvent[] = [
+    {
+      start: startOfDay(new Date()),
+      title: 'First event',
+    },
+    {
+      start: startOfDay(new Date()),
+      title: 'Second event',
+    }
+  ]
+  /*appointments: Appointment[] = [{stylistid: 1, name: "test", email: "email.com", phone: "00555", date: new Date, datecreated: new Date, description: "help"}];
   stylistid: number;
   name: string;
   email: string;
@@ -28,11 +43,11 @@ export class AppointmentPageComponent implements OnInit
 
   ngOnInit(): void 
   {
-    this.appointmentService.getAppointment().subscribe(s => {this.appointments = s; this.loadingFinished = true; console.log(this.appointments)});
+    this.appointmentService.getAppointments().subscribe(s => {this.appointments = s; this.loadingFinished = true; console.log(this.appointments)});
   }
   /*
     toggles add appointment 
-  */
+  
   showAddAppointment()
   {
     this.addingAppointment = true;
@@ -41,8 +56,8 @@ export class AppointmentPageComponent implements OnInit
 
   /*
     
-  */
-  cancelAddAppointment()
+  
+  cancelAddAppoinment()
   {
     this.clearFields();
     this.addingAppointment = false;
@@ -61,49 +76,8 @@ export class AppointmentPageComponent implements OnInit
 
   addAppointment()
   {
-    let appointment = {stylistId: this.stylistid, name: this.name, email: this.email, phone: this.phone, date: this.date, dateCreated: this.datecreated, description: this.description};
-    this.appointmentService.addAppointment(appointment).subscribe(value => 
-    {
-      this.appointments.push(value);
-      this.addingAppointment = false;
-      this.clearFields();
-    });
-  }
-  viewDate: Date = new Date();
-  view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
-  setView(view: CalendarView) 
-  {
-    this.view = view;
-  }
-  events: CalendarEvent[] = [
-    {
-      start: startOfDay(new Date()),
-      title: 'First event',
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'Second event',
-    }
-  ]
-  for(appointment: any ,of: any ,appointments: any)
-  {
-    this.events = [
-      ...this.events,
-      {
-        start: appointment.date,
-        title: appointment.name+appointment.description
-      }
-    ]
-  }
-  
- 
-  
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void 
-  {
-    console.log(date);
-    //let x=this.adminService.dateFormat(date)
-    //this.openAppointmentList(x)
-  }
+
+  }*/
+
 
 }
