@@ -86,13 +86,14 @@ export class AppointmentPageComponent implements OnInit
       title: 'Second event',
     }
   ]
-  for(appointment: any ,of: any ,appointments: any)
+  
+  for(appointment: Appointment ,of: Appointment ,appointments: Appointment)
   {
     this.events = [
       ...this.events,
       {
-        start: appointment.date,
-        title: appointment.name+appointment.description
+        start: appointment['date'],
+        title: appointment['name']+appointment['description']
       }
     ]
   }
