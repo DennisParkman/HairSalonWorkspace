@@ -64,13 +64,6 @@ namespace HairSalonBackEnd.Controllers
         {
             SQLiteDbUtility.UpdateUnavailability(unavailability);
         }
-
-        /// <summary> Returns all Unavailabilitys found in the SQLite Database as an Enurable Array </summary>
-        [HttpGet("{id}")]
-        public IEnumerable<Unavailability> Get(int id)
-        {
-            return SQLiteDbUtility.GetAllUnavailabilitiesByStylist(id);
-        }
     }
 
 

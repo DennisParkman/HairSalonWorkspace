@@ -38,20 +38,20 @@ export class SchedulePageComponent implements OnInit
 
   ngOnInit(): void 
   {
-
-    /*this.unavailabilityService.getUnavailabilities().subscribe(s => 
-      {
-        this.unavailabilitiesList = s; 
-        console.log(this.unavailabilitiesList)
-      }
-    );
-
     this.appointmentService.getAppointment().subscribe(s => 
       {
         this.appointmentList = s; 
         console.log(this.appointmentList)
+
+        this.unavailabilityService.getUnavailabilities().subscribe(s => 
+          {
+            this.unavailabilitiesList = s; 
+            console.log(this.unavailabilitiesList)
+          }
+        );
       }
-    );*/
+    );
+    
   }
 
   setView(view: CalendarView) 
@@ -64,7 +64,4 @@ export class SchedulePageComponent implements OnInit
     console.log(date);
     //this.openAppointmentList(date)
   }
-
-  
-
 }
