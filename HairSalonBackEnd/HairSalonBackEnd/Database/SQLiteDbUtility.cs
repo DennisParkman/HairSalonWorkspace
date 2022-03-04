@@ -238,7 +238,7 @@ namespace HairSalonBackEnd.Database
 
                 modelBuilder.Entity<Appointment>().ToTable("Appointments", "localSchema");
 
-                modelBuilder.Entity<Unavailability>().ToTable("Unavailability", "localSchema");
+                modelBuilder.Entity<Unavailability>().ToTable("Unavailabilities", "localSchema");
                 modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>();
 
                 base.OnModelCreating(modelBuilder);

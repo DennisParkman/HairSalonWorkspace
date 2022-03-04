@@ -25,9 +25,6 @@ export class AppointmentPageComponent implements OnInit
   loadingFinished: boolean = false;
 
   events: CalendarEvent[] = [];
-  viewDate: Date = new Date();
-  view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
 
   constructor(private appointmentService: AppointmentService) { }
 
@@ -42,6 +39,7 @@ export class AppointmentPageComponent implements OnInit
         {
           this.events.push(
             {
+              id:appointment.id,
               start: new Date(appointment.date),
               title: appointment.name + " - " + appointment.description
             }
@@ -51,24 +49,19 @@ export class AppointmentPageComponent implements OnInit
 
         
         this.loadingFinished = true; 
-      });
+      }
+    );
   }
-  /*
-    toggles add appointment 
-  */
+
   showAddAppointment()
   {
     this.addingAppointment = true;
-    console.log("show");
   }
 
-  /*
-    
-  */
   cancelAddAppointment()
   {
-    this.clearFields();
     this.addingAppointment = false;
+    this.clearFields();
   }
 
   clearFields()
@@ -91,22 +84,6 @@ export class AppointmentPageComponent implements OnInit
       this.addingAppointment = false;
       this.clearFields();
     });
-  }
-
-  setView(view: CalendarView) 
-  {
-    this.view = view;
-  }
-  
-  
-  
- 
-  
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void 
-  {
-    console.log(date);
-    //let x=this.adminService.dateFormat(date)
-    //this.openAppointmentList(x)
   }
 
 }

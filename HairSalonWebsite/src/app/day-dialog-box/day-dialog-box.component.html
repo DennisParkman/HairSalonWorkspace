@@ -9,11 +9,13 @@
             End: {{x.end}}
         </div>
         <div *ngIf="data.crudFeatures">
-            <button mat-button>Delete</button>
-            <button mat-button>Update</button>
-            <button mat-button>Create</button>
+            <button mat-button (click)="deleteEventHandler(x)">Delete</button>
+            <button mat-button (click)="updateEventHandler(x)">Update</button>
         </div>
         -----------------------------
+    </div>
+    <div *ngIf="data.crudFeatures">
+        <button mat-button (click)="createEventHandler()">Create</button>
     </div>
 </div>
 <div mat-dialog-actions>

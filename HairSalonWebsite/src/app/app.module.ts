@@ -20,7 +20,7 @@ import { AppointmentService } from './services/appointment-service/appointment.s
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 
 @NgModule(
 {
@@ -32,9 +32,9 @@ import { MatDialogRef } from '@angular/material/dialog';
     NavbarComponent,
     StylistPageComponent,
     SchedulePageComponent,
-    DayDialogBoxComponent
-    AppointmentPageComponent
-  
+    DayDialogBoxComponent,
+    AppointmentPageComponent,
+    EventCalendarComponent
   ],
   imports: 
   [

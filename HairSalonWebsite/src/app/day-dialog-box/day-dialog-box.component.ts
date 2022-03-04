@@ -13,9 +13,9 @@ export class DialogDataObject {
 })
 export class DayDialogBoxComponent {
   
-  @Output() deleteEvent = new EventEmitter<string>();
-  @Output() createEvent = new EventEmitter<string>();
-  @Output() updateEvent = new EventEmitter<string>();
+  @Output() deleteEvent = new EventEmitter<CalendarEvent>();
+  @Output() createEvent = new EventEmitter();
+  @Output() updateEvent = new EventEmitter<CalendarEvent>();
 
   constructor(public dialogRef: MatDialogRef<DayDialogBoxComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogDataObject) {}
 
@@ -23,16 +23,16 @@ export class DayDialogBoxComponent {
     this.dialogRef.close();
   }
   
-  deleteEventHandler() {
-    this.deleteEvent.emit("");
+  deleteEventHandler(event: CalendarEvent) {
+    this.deleteEvent.emit(event);
   }
 
   createEventHandler() {
-    this.createEvent.emit("");
+    this.createEvent.emit();
   }
 
-  updateEventHandler() {
-    this.updateEvent.emit("");
+  updateEventHandler(event: CalendarEvent) {
+    this.updateEvent.emit(event);
   }
 
 }

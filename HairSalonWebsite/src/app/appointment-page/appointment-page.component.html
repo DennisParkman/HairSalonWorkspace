@@ -1,51 +1,8 @@
 <!--<div *ngIf="loadingFinished">-->
-  <div *ngIf="!addingAppointment" style="margin-left:25%; margin-right:25%">
-  <div class="row text-center">
-    <div class="col-md-4">
-      <div class="btn-group">
-          <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
-              Previous
-          </div>
-          <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
-              Today
-          </div>
-          <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
-              Next
-          </div>
-      </div>
-  </div>
-  <div class="col-md-4">
-    <h2>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
-  </div>
-    <div class="col-md-4">
-        <div class="btn-group">
-          <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
-            Month
-        </div>
-        <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
-            Week
-        </div>
-        <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
-            Day
-        </div>
-        </div>
-    </div>
+<div *ngIf="!addingAppointment">
+  <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="showAddAppointment()">Add Appointment</mat-button-toggle>
+  <app-event-calendar [events]="events" (deleteEvent)="deleteAppointment()" (updateEvent)="setUpdateAppointment()" (createEvent)="setCreateAppointment()"></app-event-calendar>
   
-  </div>
-  
-  <div [ngSwitch]="view">
-  
-    <mwl-calendar-month-view (dayClicked)="dayClicked($event.day)" *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events">
-    </mwl-calendar-month-view>
-  
-    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events">
-    </mwl-calendar-week-view>
-  
-    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events">
-    </mwl-calendar-day-view>
-  
-  </div>
-  <mat-button-toggle style="float:right" (click) = "showAddAppointment()">Add Appointment</mat-button-toggle>
 </div>
   <!--Make new Appointment-->
       <div *ngIf="addingAppointment" class = "container">
