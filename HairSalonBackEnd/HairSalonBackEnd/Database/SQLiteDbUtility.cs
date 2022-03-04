@@ -72,6 +72,8 @@ namespace HairSalonBackEnd.Database
             stylistEntry.Name = stylist.Name;
             stylistEntry.Level = stylist.Level;
             stylistEntry.Bio = stylist.Bio;
+            stylistEntry.StylistImage = stylist.StylistImage;
+            Console.WriteLine(stylist.StylistImage);
 
             dbContext.SaveChanges();
             dbAccess.Release();

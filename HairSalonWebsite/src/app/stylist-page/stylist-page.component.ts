@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+//import { Console } from 'console';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
 
@@ -17,6 +18,7 @@ export class StylistPageComponent implements OnInit
   name: string;
   level: number;
   stylistUpdateId: any = null;
+  stylistImage: string;
 
   editSytlistFunctions: boolean = false;
   addingStylist: boolean = false;
@@ -33,7 +35,7 @@ export class StylistPageComponent implements OnInit
       {
         this.stylists = s; 
         this.stylistsLoading = false; 
-        console.log(this.stylists)
+        console.log(this.stylists); //debug
       }
     );
   }
@@ -51,8 +53,13 @@ export class StylistPageComponent implements OnInit
   */
   addStylist() 
   {
+    //tells the page that stylists are being loaded
     this.stylistsLoading = true;
-    let stylist = {bio: this.bio, name: this.name, level: this.level};
+
+    //create stylist object to add to the database
+    let stylist: Stylist = {bio: this.bio, name: this.name, level: this.level, stylistImage: this.stylistImage};
+
+    //send the new stylist to the backend via stylistService
     this.stylistService.addStylist(stylist).subscribe(value => 
     {
       this.stylists.push(value);
@@ -84,17 +91,65 @@ export class StylistPageComponent implements OnInit
   }
 
   /*
+    Convert the uploaded image to binary base64 string before updatingStylist is called. This is to ensure that the database receives
+    the image in binary.
+  */
+  EncodeImage(event: any)
+  {
+    // Temporary Variable for converting the image to binary, log the receipt of the file.
+    var EncodedImage: string = "";
+    // Pull the first file uploaded.
+    var file: File = event.target.files[0];
+    // Setup filestream object.
+    var fileStream: FileReader = new FileReader();
+
+    // Defining the file script onloadend function, required to ensure the field is updated properly.
+    fileStream.onloadend = (e) =>
+    {
+      // Get the conversion result and store in the field.
+      this.stylistImage = btoa(fileStream.result as string);
+      // Log the uploaded file.
+      console.log(this.stylistImage);
+    }
+
+    // Call the file to text function.
+    fileStream.readAsBinaryString(file)
+  }
+
+  /*
+    Used to decode an image stored as a base 64 string. For use in displaying stylist image.
+  */
+  DecodeImage(img?: string)
+  {
+    // Log the img given.
+    console.log(img)
+    // Check if not null, otherwise post.
+    if(img != null || img != "") return 'data:image/png;base64,' + img;
+    else return "ImageNotFound";
+  }
+
+  /*
     send updated stylist entered in form to stylist service method
   */
   updatingStylist()
   {
-    let stylist = {id: this.stylistUpdateId, bio: this.bio, name: this.name, level: this.level};
+    // Temorary stylist object that will replace the object being updated.
+    let stylist: Stylist = {id: this.stylistUpdateId, bio: this.bio, name: this.name, level: this.level, stylistImage: this.stylistImage};
+
+    // Query the database for the stylist being updated.
     var index = this.stylists.findIndex(x => x.id === this.stylistUpdateId);
-    
+
+    // Call the update service to pass to back end, and update the stylist. 
+    // If the stylistImage is 
+    if(stylist.stylistImage == null || stylist.stylistImage == "")
+    {
+      stylist.stylistImage = this.stylists[index].stylistImage;
+    }
     this.stylistService.updateStylist(stylist);
     this.stylists[index] = stylist;
 
-    this.updateSylist = false;
+    // Clearing the fields/flags
+    this.updateSylist = false;    // Form not to be displayed.
     this.stylistUpdateId = null;
     this.clearFields();
   }
@@ -137,6 +192,7 @@ export class StylistPageComponent implements OnInit
     this.bio = "";
     this.level = 0;
     this.name = "";
+    this.stylistImage = "";
   }
 
   /*
