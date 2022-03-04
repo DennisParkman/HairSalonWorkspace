@@ -1,8 +1,5 @@
 <!--<div *ngIf="loadingFinished">-->
-    
-
-
-  <div *ngIf="!addingAppointment" style="margin-left:25%; margin-right:25%"></div>
+  <div *ngIf="!addingAppointment" style="margin-left:25%; margin-right:25%">
   <div class="row text-center">
     <div class="col-md-4">
       <div class="btn-group">
@@ -49,6 +46,7 @@
   
   </div>
   <mat-button-toggle style="float:right" (click) = "showAddAppointment()">Add Appointment</mat-button-toggle>
+</div>
   <!--Make new Appointment-->
       <div *ngIf="addingAppointment" class = "container">
           <form>
