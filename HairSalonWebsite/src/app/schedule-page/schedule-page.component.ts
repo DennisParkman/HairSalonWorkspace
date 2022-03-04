@@ -9,6 +9,8 @@ import { UnavailabilityService } from '../services/unavailability-service/unavai
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { forkJoin } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DayDialogBoxComponent } from '../day-dialog-box/day-dialog-box.component';
 
 
 @Component({
@@ -26,16 +28,16 @@ export class SchedulePageComponent implements OnInit
   unavailabilitiesList: Unavailability[]
   appointmentList: Appointment[];
   stylistList: Stylist[];
+  dayOfEvents: CalendarEvent[] = [];
 
-  events: CalendarEvent[] = 
-  [
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-    }
-  ]
+  events: CalendarEvent[] = [];
 
-  constructor(private stylistService: StylistService, private unavailabilityService: UnavailabilityService, private appointmentService: AppointmentService ) { }
+  scheduleLoading: boolean = true;
+
+  constructor(private stylistService: StylistService, 
+    private unavailabilityService: UnavailabilityService, 
+    private appointmentService: AppointmentService,
+    public dialog: MatDialog ) { }
 
   ngOnInit(): void 
   {
@@ -50,6 +52,31 @@ export class SchedulePageComponent implements OnInit
 
         this.unavailabilitiesList = unavailabilities; 
         console.log(this.unavailabilitiesList);
+        
+        for(let appointment of this.appointmentList)
+        {
+          this.events.push(
+            {
+              start: new Date(appointment.date),
+              title: appointment.name + " - " + appointment.description
+            }
+          );
+        }
+
+        for(let unavailability of this.unavailabilitiesList)
+        {
+          this.events.push(
+            {
+              start: new Date(unavailability.startDate),
+              end: new Date(unavailability.endDate),
+              title: unavailability.stylistName + " time off"
+            }
+          );
+        }
+
+        console.log(this.events);
+        this.scheduleLoading = false;
+
       }
     );
   }
@@ -63,5 +90,17 @@ export class SchedulePageComponent implements OnInit
   {
     console.log(date);
     //this.openAppointmentList(date)
+    this.dayOfEvents = events;
+
+    this.dialog.open(DayDialogBoxComponent, 
+      {
+        width:'1000px', 
+        data:
+        {
+          events: this.dayOfEvents, 
+          crudFeatures:false
+        }
+      }
+    );
   }
 }

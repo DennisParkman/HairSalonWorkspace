@@ -18,6 +18,8 @@ import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { AppointmentService } from './services/appointment-service/appointment.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @NgModule(
 {
@@ -28,7 +30,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     FooterComponent,
     NavbarComponent,
     StylistPageComponent,
-    SchedulePageComponent
+    SchedulePageComponent,
+    DayDialogBoxComponent
   
   ],
   imports: 
@@ -43,7 +46,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     RouterModule,
     BrowserModule,
     AppRoutingModule,
-    
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,

@@ -56,6 +56,7 @@ export class UnavailabilityService
     getUnavailabilitiesByStylist(stylist: Stylist): Observable<Unavailability[]>
     {
         let url = this.baseURL.concat("Unavailability/" + stylist.id);
+        console.log(url)
         return this.http.get<Unavailability[]>(url); // <unavailability> is required on this line when a constructor is included in the model file
     }
 }
