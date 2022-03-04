@@ -52,7 +52,7 @@ export class EventCalendarComponent implements OnInit
         data:
         {
           events: this.dayOfEvents, 
-          crudFeatures:false
+          crudFeatures:this.supportCRUD
         }
       }
     );
@@ -66,7 +66,7 @@ export class EventCalendarComponent implements OnInit
     });
 
     dialogRef.componentInstance.createEvent.subscribe(() => {
-      this.deleteEvent.emit();
+      this.createEvent.emit();
     });
   }
 

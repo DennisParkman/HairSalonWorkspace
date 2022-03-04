@@ -29,10 +29,12 @@ export class DayDialogBoxComponent {
 
   createEventHandler() {
     this.createEvent.emit();
+    this.dialogRef.close();
   }
 
   updateEventHandler(event: CalendarEvent) {
     this.updateEvent.emit(event);
+    this.dialogRef.close();
   }
 
 }

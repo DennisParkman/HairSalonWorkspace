@@ -52,7 +52,7 @@ export class AppointmentService
     */
    deleteAppointment(appointment: Appointment): void
    {
-       let url = this.baseURL.concat("Appointment/" + appointment.iD);
+       let url = this.baseURL.concat("Appointment/" + appointment.id);
        this.http.delete(url).subscribe();
    }
 
