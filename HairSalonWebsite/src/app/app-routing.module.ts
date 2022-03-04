@@ -8,6 +8,7 @@ import { AppointmentPageComponent } from './appointment-page/appointment-page.co
 
 import { HomePageComponent } from './home-page/home-page.component';
 import { StylistPageComponent } from './stylist-page/stylist-page.component';
+import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 
 //list of url endings and associated components
 const routes: Routes = 
@@ -15,6 +16,7 @@ const routes: Routes =
   {path: 'home', component: HomePageComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'stylists', component: StylistPageComponent},
+  {path: 'schedule', component: SchedulePageComponent}
   {path: 'appointments', component: AppointmentPageComponent}
 ];
 

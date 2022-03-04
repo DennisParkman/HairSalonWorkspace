@@ -50,7 +50,7 @@ namespace HairSalonBackEnd.Controllers
 
         /// <summary> Returns all appointments for a specific stylist found in the SQLite Database as an Enurable Array </summary>
         [HttpGet]
-        [Route("{id}")]
+        [Route("{stylistID}")]
         public IEnumerable<Appointment> Get(int stylistID)
         {
             return SQLiteDbUtility.GetAppointmentsByStylist(stylistID);
