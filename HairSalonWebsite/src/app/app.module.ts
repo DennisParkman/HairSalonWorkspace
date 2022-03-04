@@ -14,7 +14,12 @@ import { StylistPageComponent } from './stylist-page/stylist-page.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { AppointmentService } from './services/appointment-service/appointment.service';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @NgModule(
 {
@@ -24,7 +29,9 @@ import { AppointmentService } from './services/appointment-service/appointment.s
     HomePageComponent,
     FooterComponent,
     NavbarComponent,
-    StylistPageComponent
+    StylistPageComponent,
+    SchedulePageComponent,
+    DayDialogBoxComponent
   
   ],
   imports: 
@@ -36,7 +43,13 @@ import { AppointmentService } from './services/appointment-service/appointment.s
     BrowserAnimationsModule,
     MaterialModule,
     CommonModule,
-    RouterModule
+    RouterModule,
+    BrowserModule,
+    AppRoutingModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    })
   ],
   providers: [StylistService, AppointmentService],
   bootstrap: [AppComponent]

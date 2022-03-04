@@ -1,5 +1,6 @@
 ﻿using HairSalonBackEnd.Database;
 using HairSalonBackEnd.Models;
+using HairSalonBackEnd.WebModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -22,12 +23,12 @@ namespace HairSalonBackEnd.Controllers
 
         /// <summary> Adds Unavailability to the SQLite Database </summary> 
         [HttpPost]
-        public ActionResult<Task<Unavailability>> Post([FromBody] Unavailability unavailability)
+        public ActionResult<Task<UnavailabilityWebModel>> Post([FromBody] Unavailability unavailability)
         {
             try
             {
                 Unavailability newUnavailability = SQLiteDbUtility.AddUnavailability(unavailability);
-                return Ok(newUnavailability);
+                return Ok(new UnavailabilityWebModel(newUnavailability));
             }
             catch (Exception e)
             {
@@ -37,17 +38,21 @@ namespace HairSalonBackEnd.Controllers
 
         /// <summary> Returns all Unavailabilitys found in the SQLite Database as an Enurable Array </summary>
         [HttpGet]
-        public IEnumerable<Unavailability> Get()
+        public IEnumerable<UnavailabilityWebModel> Get()
         {
-            return SQLiteDbUtility.GetAllUnavailabilities();
+            IEnumerable<Unavailability> unavailabilities = SQLiteDbUtility.GetAllUnavailabilities();
+            var returnUnavailabilities = unavailabilities.Select(u => new UnavailabilityWebModel(u, SQLiteDbUtility.GetStylist(u.StylistID)));
+            return returnUnavailabilities;
         }
 
         /// <summary> Returns all Unavailabilitys found in the SQLite Database as an Enurable Array </summary>
         [HttpGet]
         [Route("{stylistID}")]
-        public IEnumerable<Unavailability> Get(int stylistID)
+        public IEnumerable<UnavailabilityWebModel> Get(int stylistID)
         {
-            return SQLiteDbUtility.GetAllUnavailabilitiesByStylist(stylistID);
+            IEnumerable<Unavailability> unavailabilities = SQLiteDbUtility.GetAllUnavailabilitiesByStylist(stylistID);
+            var returnUnavailabilities = unavailabilities.Select(u => new UnavailabilityWebModel(u, SQLiteDbUtility.GetStylist(u.StylistID)));
+            return returnUnavailabilities;
         }
 
         // <summary> Deletes a Unavailability using id in the SQLite Database </summary>
@@ -60,16 +65,9 @@ namespace HairSalonBackEnd.Controllers
 
         /// <summary> Updates a Unavailability in the SQLite Database </summary>
         [HttpPut]
-        public void Put([FromBody] Unavailability unavailability)
+        public void Put([FromBody] UnavailabilityWebModel unavailability)
         {
-            SQLiteDbUtility.UpdateUnavailability(unavailability);
-        }
-
-        /// <summary> Returns all Unavailabilitys found in the SQLite Database as an Enurable Array </summary>
-        [HttpGet("{id}")]
-        public IEnumerable<Unavailability> Get(int id)
-        {
-            return SQLiteDbUtility.GetAllUnavailabilitiesByStylist(id);
+            SQLiteDbUtility.UpdateUnavailability(new Unavailability(unavailability));
         }
     }
 

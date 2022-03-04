@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HairSalonBackEnd.WebModels;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,6 +18,16 @@ namespace HairSalonBackEnd.Models
             Monthly,
             Yearly
         }
+
+        public Unavailability(UnavailabilityWebModel unavailabilityWebModel)
+        {
+            this.StylistID = unavailabilityWebModel.StylistID;
+            this.StartDate = unavailabilityWebModel.StartDate;
+            this.EndDate = unavailabilityWebModel.EndDate;
+            this.Period = unavailabilityWebModel.Period;
+        }
+
+        public Unavailability() { }
 
         [Key]
         public int ID { get; set; }
