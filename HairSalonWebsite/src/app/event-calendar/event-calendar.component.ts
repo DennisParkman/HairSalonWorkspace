@@ -15,7 +15,7 @@ import { DayDialogBoxComponent } from '../day-dialog-box/day-dialog-box.componen
 export class EventCalendarComponent implements OnInit
 {
 
-  @Input() events: CalendarEvent[] = [];
+  @Input() calEvents: CalendarEvent[] = []; //the list of CalendarEvents to display in the calendar
   @Input() supportCRUD: boolean = false;
   viewDate: Date = new Date();
   view: CalendarView = CalendarView.Month;
@@ -29,7 +29,9 @@ export class EventCalendarComponent implements OnInit
   constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void 
-  { }
+  {
+    this.setView(this.view);
+  }
 
   setView(view: CalendarView) 
   {

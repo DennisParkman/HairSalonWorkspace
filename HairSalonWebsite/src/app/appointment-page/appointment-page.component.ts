@@ -4,8 +4,9 @@ import { CalendarView } from 'angular-calendar';
 import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { startOfDay } from 'date-fns';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
-@Component({
-
+import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
+@Component(
+{
   selector: 'app-appointment-page',
   templateUrl: './appointment-page.component.html',
   styleUrls: ['./appointment-page.component.scss']
@@ -47,7 +48,7 @@ export class AppointmentPageComponent implements OnInit
           );
           
         }
-
+          
         
         this.loadingFinished = true; 
       }
@@ -137,7 +138,7 @@ export class AppointmentPageComponent implements OnInit
 
   setCreateAppointment()
   {
-    
+
   }
 
 }

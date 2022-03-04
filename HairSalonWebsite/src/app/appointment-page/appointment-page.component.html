@@ -1,7 +1,7 @@
 <!--<div *ngIf="loadingFinished">-->
 <div *ngIf="!addingAppointment && !updatingAppointment">
   <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="showAddAppointment()">Add Appointment</mat-button-toggle>
-  <app-event-calendar [events]="events" (deleteEvent)="deleteAppointment($event)" (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment()"></app-event-calendar>
+  <app-event-calendar [calEvents]="events" (deleteEvent)="deleteAppointment($event)" (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment()"></app-event-calendar>
   
 </div>
   <!--Make new Appointment-->
@@ -21,7 +21,7 @@
               </div>
               <div class="mb-5">
                   <label for="date" class="form-label">Date</label>
-                  <input type="date" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
+                  <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
                 </div>
               <div class="mb-5">
                   <label for="description" class="form-label">Description</label>
@@ -54,7 +54,7 @@
             </div>
             <div class="mb-5">
                 <label for="date" class="form-label">Date</label>
-                <input type="date" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
+                <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
               </div>
             <div class="mb-5">
                 <label for="description" class="form-label">Description</label>
