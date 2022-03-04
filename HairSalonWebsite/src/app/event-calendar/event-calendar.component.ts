@@ -37,6 +37,8 @@ export class EventCalendarComponent implements OnInit
   {
     this.view = view;
   }
+
+
   
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void 
   {

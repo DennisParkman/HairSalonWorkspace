@@ -1,4 +1,4 @@
-<!--<div *ngIf="loadingFinished">-->
+<div *ngIf="!appointmentLoading">
 <div *ngIf="!addingAppointment && !updatingAppointment">
   <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="showAddAppointment()">Add Appointment</mat-button-toggle>
   <app-event-calendar [calEvents]="events" (deleteEvent)="deleteAppointment($event)" (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment()"></app-event-calendar>

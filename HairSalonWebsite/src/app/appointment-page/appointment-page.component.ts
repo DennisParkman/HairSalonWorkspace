@@ -5,6 +5,7 @@ import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { startOfDay } from 'date-fns';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
+import { forkJoin } from 'rxjs';
 @Component(
 {
   selector: 'app-appointment-page',
@@ -25,6 +26,7 @@ export class AppointmentPageComponent implements OnInit
   addingAppointment: boolean = false;
   loadingFinished: boolean = false;
   updatingAppointment: boolean = false;
+  appointmentLoading: boolean = true;
 
   events: CalendarEvent[] = [];
 
@@ -32,9 +34,12 @@ export class AppointmentPageComponent implements OnInit
 
   ngOnInit(): void 
   {
-    this.appointmentService.getAppointment().subscribe(s => 
+    forkJoin(
       {
-        this.appointments = s; 
+        appointments: this.appointmentService.getAppointment()
+      }).subscribe(({appointments}) => 
+      {
+        this.appointments = appointments; 
         console.log(this.appointments);
 
         for(let appointment of this.appointments)
@@ -48,9 +53,10 @@ export class AppointmentPageComponent implements OnInit
           );
           
         }
-          
+        console.log(this.events);
         
         this.loadingFinished = true; 
+        this.appointmentLoading = false;
       }
     );
   }
