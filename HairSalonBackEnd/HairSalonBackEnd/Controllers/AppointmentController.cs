@@ -21,9 +21,17 @@ namespace HairSalonBackEnd.Controllers
         }
         /// <summary> Adds appointment to the SQLite Database </summary> 
         [HttpPost]
-        public void Post([FromBody] Appointment appointment)
+        public ActionResult<Task<Appointment>> Post([FromBody] Appointment appointment)
         {
-            SQLiteDbUtility.AddAppointment(appointment);
+            try
+            {
+                Appointment newApp = SQLiteDbUtility.AddAppointment(appointment);
+                return Ok(newApp);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Could not add Appointment: " + e.Message);
+            };
         }
 
         /// <summary> Returns all appointments found in the SQLite Database as an Enurable Array </summary>

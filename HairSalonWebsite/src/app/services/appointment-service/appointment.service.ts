@@ -23,7 +23,10 @@ export class AppointmentService
    addAppointment(appointment: Appointment): Observable<Appointment>
    {
        let url = this.baseURL.concat("Appointment");
+       console.log(url);
+       console.log(appointment);
        return this.http.post<Appointment>(url, appointment);
+       
    }
    
    /**
@@ -50,7 +53,7 @@ export class AppointmentService
     */
    deleteAppointment(appointment: Appointment): void
    {
-       let url = this.baseURL.concat("Appointment/" + appointment.id);
+       let url = this.baseURL.concat("Appointment/" + appointment.iD);
        this.http.delete(url).subscribe();
    }
 

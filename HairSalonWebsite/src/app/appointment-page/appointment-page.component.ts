@@ -18,11 +18,12 @@ export class AppointmentPageComponent implements OnInit
   email: string;
   phone: string;
   date: Date;
-  datecreated: Date;
+  dateCreated: Date;
   description: string;
 
   addingAppointment: boolean = false;
   loadingFinished: boolean = false;
+  updatingAppointment: boolean = false;
 
   events: CalendarEvent[] = [];
 
@@ -39,7 +40,7 @@ export class AppointmentPageComponent implements OnInit
         {
           this.events.push(
             {
-              id:appointment.id,
+              id:appointment.iD,
               start: new Date(appointment.date),
               title: appointment.name + " - " + appointment.description
             }
@@ -71,19 +72,70 @@ export class AppointmentPageComponent implements OnInit
     this.email = "";
     this.phone = "";
     this.date = new Date;
-    this.datecreated = new Date;
+    this.dateCreated = new Date;
     this.description = "";
   }
 
   addAppointment()
   {
-    let appointment = {stylistId: this.stylistid, name: this.name, email: this.email, phone: this.phone, date: this.date, dateCreated: this.datecreated, description: this.description};
+    let appointment = {stylistID: this.stylistid, name: this.name, email: this.email, phone: this.phone, date: this.date, dateCreated: this.dateCreated, description: this.description};
     this.appointmentService.addAppointment(appointment).subscribe(value => 
     {
       this.appointments.push(value);
       this.addingAppointment = false;
       this.clearFields();
     });
+  }
+
+  deleteAppointment(event: any)
+  {
+    //extract calendar event from emmitted event
+    let eValue = event.value;
+
+    //find appointment based on calendar event
+    let appIndexToDelete = this.appointments.findIndex(x => x.iD === eValue.id);
+
+    // find the Calendar event index
+    let calIndexToDelete = this.events.findIndex(x => x.id === eValue.id);
+
+    //delete appointent from database
+    this.appointmentService.deleteAppointment(this.appointments[appIndexToDelete])
+
+    //remove appointment from appointment list
+    this.appointments.splice(appIndexToDelete, 1);
+
+    // remove calendar event from events list
+    this.events.splice(calIndexToDelete, 1);
+
+  }
+
+  startUpdateAppointment(event: any)
+  {
+    //extract calendar event from emmitted event
+    let eValue = event.value;
+
+    //find appointment based on calendar event
+    let appIndex = this.appointments.findIndex(x => x.iD === eValue.id);
+    let appointmentToUpdate: Appointment = this.appointments[appIndex]
+
+    //Set fields of current object form
+    this.stylistid =  appointmentToUpdate.stylistID;
+    this.name = appointmentToUpdate.name;
+    this.email = appointmentToUpdate.email;
+    this.phone = appointmentToUpdate.phone;
+    this.date = appointmentToUpdate.date;
+    this.dateCreated = appointmentToUpdate.dateCreated;
+    this.description = appointmentToUpdate.description; 
+
+    //show update form
+    this.updatingAppointment = true;
+
+
+  }
+
+  setCreateAppointment()
+  {
+
   }
 
 }

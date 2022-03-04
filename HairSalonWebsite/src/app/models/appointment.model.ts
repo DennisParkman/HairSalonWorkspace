@@ -1,7 +1,7 @@
 export class Appointment 
 {
-    id?: number;
-    stylistId: number;
+    iD?: number;
+    stylistID: number;
     name: string;
     email: string;
     phone: string;
