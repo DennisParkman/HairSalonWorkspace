@@ -78,6 +78,8 @@ export class AppointmentPageComponent implements OnInit
 
   addAppointment()
   {
+    this.dateCreated = new Date();
+    this.date = new Date(this.date);
     let appointment = {stylistID: this.stylistid, name: this.name, email: this.email, phone: this.phone, date: this.date, dateCreated: this.dateCreated, description: this.description};
     this.appointmentService.addAppointment(appointment).subscribe(value => 
     {
@@ -135,7 +137,7 @@ export class AppointmentPageComponent implements OnInit
 
   setCreateAppointment()
   {
-
+    
   }
 
 }

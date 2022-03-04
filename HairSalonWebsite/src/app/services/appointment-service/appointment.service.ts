@@ -26,7 +26,6 @@ export class AppointmentService
        console.log(url);
        console.log(appointment);
        return this.http.post<Appointment>(url, appointment);
-       
    }
    
    /**
