@@ -1,4 +1,4 @@
-enum TimePeriod 
+export enum TimePeriod 
 {
     Once,
     Daily,
@@ -11,7 +11,7 @@ export class Unavailability
 {
     id?: number;
     stylistID: number;
-    stylistName: string;
+    stylistName?: string;
     startDate: Date;
     endDate: Date;
     period: TimePeriod;

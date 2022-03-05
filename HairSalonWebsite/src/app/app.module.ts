@@ -21,6 +21,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component';
 import { EventCalendarComponent } from './event-calendar/event-calendar.component';
+import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
 
 @NgModule(
 {
@@ -34,7 +35,8 @@ import { EventCalendarComponent } from './event-calendar/event-calendar.componen
     SchedulePageComponent,
     DayDialogBoxComponent,
     AppointmentPageComponent,
-    EventCalendarComponent
+    EventCalendarComponent,
+    UnavailabilityPageComponent
   ],
   imports: 
   [

@@ -1,0 +1,88 @@
+<div *ngIf="!unavailabilityLoading">
+    <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="setCreateUnavailability()">Add Unavailability</mat-button-toggle>
+    <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteUnavailability($event)" 
+                        (updateEvent)="startUpdateUnavailability($event)" (createEvent)="setCreateUnavailability()"></app-event-calendar>
+  </div>
+  
+  <ng-template #addDialog>
+    <div *ngIf="addingUnavailability" class = "container">
+      <form>
+          <div>
+            <div style="float:left">
+              <div class="mb-5">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" required id="name" [(ngModel)]="this.stylistName" name = "name">
+              </div>
+              <div class="mb-5">
+                <label for="date" class="form-label">Start Date</label>
+                <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.startDate" name = "date">
+              </div>
+              <div class="mb-5">
+                <label for="date" class="form-label">End Date</label>
+                <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.endDate" name = "date">
+              </div>
+            </div>
+            <div style="float:left">
+              <mat-form-field appearance="fill">
+                <mat-label>Period</mat-label>
+                <mat-select [(ngModel)]="period">
+                  <mat-option *ngFor="let p of timePeriods" [value]="p">
+                    {{p.toString()}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="mb-5">
+                <label for="stylistid" class="form-label">Stylist ID</label>
+                <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
+              </div>
+            </div>
+          </div>
+          
+          <!--To do: to enter the stylist name and select appoinments-->
+          <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addUnavailability()">Submit</button>
+          <button mat-flat-button style = "margin: 1%" (click)="cancelAddUnavailability()">Cancel</button>
+        </form>
+    </div>
+  
+    <div *ngIf="updatingUnavailability" class = "container">
+      <form>
+        <div>
+          <div style="float:left">
+            <div class="mb-5">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" required id="name" [(ngModel)]="this.stylistName" name = "name">
+            </div>
+            <div class="mb-5">
+              <label for="date" class="form-label">Start Date</label>
+              <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.startDate" name = "date">
+            </div>
+            <div class="mb-5">
+              <label for="date" class="form-label">End Date</label>
+              <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.endDate" name = "date">
+            </div>
+          </div>
+          <div style="float:left">
+            <div class="mb-5">
+                <mat-form-field appearance="fill">
+                  <mat-label>Period</mat-label>
+                  <mat-select [(ngModel)]="period">
+                    <mat-option *ngFor="let p of timePeriods" [value]="p">
+                      {{p.toString()}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="mb-5">
+              <label for="stylistid" class="form-label">Stylist ID</label>
+              <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
+            </div>
+          </div>
+        </div>
+          <!--To do: to enter the stylist name and select appoinments-->
+          <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateUnavailability()">Submit</button>
+          <button mat-flat-button style = "margin: 1%" (click)="cancelUpdateUnavailability()">Cancel</button>
+        </form>
+    </div>
+  
+  
+  </ng-template>
