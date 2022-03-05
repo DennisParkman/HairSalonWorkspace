@@ -12,27 +12,32 @@ export class DialogDataObject {
   templateUrl: 'day-dialog-box.component.html',
 })
 export class DayDialogBoxComponent {
-  
+
+  // Event emmitters for other components to interact with
   @Output() deleteEvent = new EventEmitter<CalendarEvent>();
   @Output() createEvent = new EventEmitter();
   @Output() updateEvent = new EventEmitter<CalendarEvent>();
 
   constructor(public dialogRef: MatDialogRef<DayDialogBoxComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogDataObject) {}
 
-  onClose(): void {
+  onClose(): void 
+  {
     this.dialogRef.close();
   }
   
-  deleteEventHandler(event: CalendarEvent) {
+  deleteEventHandler(event: CalendarEvent) 
+  {
     this.deleteEvent.emit(event);
   }
 
-  createEventHandler() {
+  createEventHandler() 
+  {
     this.createEvent.emit();
     this.dialogRef.close();
   }
 
-  updateEventHandler(event: CalendarEvent) {
+  updateEventHandler(event: CalendarEvent) 
+  {
     this.updateEvent.emit(event);
     this.dialogRef.close();
   }

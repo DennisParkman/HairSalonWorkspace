@@ -1,6 +1,10 @@
+<!--Title for pop up menus-->
 <h1 mat-dialog-title>Events</h1>
+
+<!--content of pop up menu-->
 <div mat-dialog-content>
-    <div *ngFor="let x of data.events">
+    <!-- for all calendar events on that day show title, start date and end date with buttons to update and delete-->
+    <div *ngFor="let x of data.events"> 
         {{x.title}}
         <div>
             Start: {{x.start}}
@@ -14,11 +18,11 @@
         </div>
         -----------------------------
     </div>
-    <div *ngIf="data.crudFeatures">
+    <div *ngIf="data.crudFeatures"> <!--display button create new entry-->
         <button mat-button mat-dialog-close (click)="createEventHandler()">Create</button>
     </div>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions> <!--allow user to close dialog box-->
   <button mat-button mat-dialog-close="onClose()">Close</button>
 </div>
 

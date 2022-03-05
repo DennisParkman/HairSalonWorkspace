@@ -62,13 +62,19 @@ export class AppointmentPageComponent implements OnInit
     );
   }
 
+  /**
+   * function to hide adding appointment form
+   */
   cancelAddAppointment()
   {
-    this.addingAppointment = false;
-    this.clearFields();
-    this.dialog.closeAll();
+    this.addingAppointment = false; //changes form boolean
+    this.clearFields(); // clears all appointment fields
+    this.dialog.closeAll(); //closes dialog boxes
   }
 
+  /**
+   * function to clear all appoinment attributes 
+   */
   clearFields()
   {
     this.stylistid = 0;
@@ -80,10 +86,17 @@ export class AppointmentPageComponent implements OnInit
     this.description = "";
   }
 
+  /**
+   * function to add a new appointment to the database when the 
+   * add form is submitted
+   */
   addAppointment()
   {
+    //reformat data objects to send through the service call
     this.dateCreated = new Date();
     this.date = new Date(this.date);
+
+    //create appointment object with form values
     let appointment = 
     {
       stylistID: this.stylistid, 
@@ -94,47 +107,50 @@ export class AppointmentPageComponent implements OnInit
       dateCreated: this.dateCreated, 
       description: this.description
     };
+
+    //call service to add appointment to the database
     this.appointmentService.addAppointment(appointment).subscribe(value => 
     {
-      //this.appointments.push(value);
-      this.addingAppointment = false;
+      this.addingAppointment = false; //hide add appointment form
+
+      //create calendar event to populate the front end
       let event : CalendarEvent = 
       {
         id: value.id, 
         start: this.date, 
         title: this.name + " - " + this.description
       };
-      this.clearFields();
-      console.log(event);
-      this.appointments.push(value);
-      this.appCalendar.updateCalendarEvent(event);
-      this.dialog.closeAll();
+
+      this.clearFields(); //clear all form fields
+      this.appointments.push(value); //add appointments to appointment list
+      this.appCalendar.updateCalendarEvent(event); //add event to event calendar
+      this.dialog.closeAll(); //close all dialog boxes
     });
   }
 
+  /**
+   * function to delete an appointment from the appointments list, calendar events list, and database table
+   * @param event is an object of type any that contains a calendar event to delete
+   */
   deleteAppointment(event: any)
   {
-    
-    //reload page
+    //delete the calendar event selected
     this.appCalendar.deleteCalendarEvent(event)
 
     //find appointment based on calendar event
     let appIndexToDelete = this.appointments.findIndex(x => x.id === event.id);
-
-    // find the Calendar event index
-    //let calIndexToDelete = this.events.findIndex(x => x.id === event.id);
 
     //delete appointent from database
     this.appointmentService.deleteAppointment(this.appointments[appIndexToDelete])
 
     //remove appointment from appointment list
     this.appointments.splice(appIndexToDelete, 1);
-
-    // remove calendar event from events list
-    //this.events.splice(calIndexToDelete, 1);
-
   }
 
+  /**
+   * fucntion to show update form and populate form fields
+   * @param event is an object of type any that contains a calendar event to update
+   */
   startUpdateAppointment(event: any)
   {
 
@@ -157,9 +173,12 @@ export class AppointmentPageComponent implements OnInit
     this.dialog.open(this.addDialog);
   }
 
+  /**
+   * function to update an appointment from the appointments list, the calendar events list, and database table 
+   */
   updateAppointment()
   {
-    //converte this.date to date object
+    //convert this.date to date object
     this.date = new Date(this.date);
 
     //package fields into an appointment object
@@ -174,33 +193,36 @@ export class AppointmentPageComponent implements OnInit
       dateCreated: this.dateCreated, 
       description: this.description
     };
+
+    //create the calendar event to update the calendar list
     let event = 
     {
       id:this.id, 
       start: this.date, 
       title: this.name + " - " + this.description
     };
+
     //call service to update appointment in database
     this.appointmentService.updateAppointment(appointment);
     
+    //find the appointment index to update
     let appIndexToUpdate = this.appointments.findIndex(x => x.id === appointment.id);
-
-    // find the Calendar event index
-    //let calIndexToUpdate = this.events.findIndex(x => x.id === appointment.id);
 
     //remove appointment from appointment list
     this.appointments[appIndexToUpdate] = appointment;
-
-    //this.events[calIndexToUpdate] = event;
 
     //clear fields and set booleans
     this.updatingAppointment = false;
     this.clearFields();
     
+    //update calendar list and close dialog box
     this.appCalendar.updateCalendarEvent(event);
     this.dialog.closeAll();
   }
 
+  /**
+   * function to hide the update form, clear input fields, and close dialog boxes
+   */
   cancelUpdateAppointment()
   {
     this.updatingAppointment = false;
@@ -208,6 +230,9 @@ export class AppointmentPageComponent implements OnInit
     this.dialog.closeAll();
   }
 
+  /**
+   * function to show add appointment form through dialog box
+   */
   setCreateAppointment()
   {
     this.addingAppointment = true;
