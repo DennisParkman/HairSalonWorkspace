@@ -97,13 +97,15 @@ namespace HairSalonBackEnd.Database
         /// <summary>
         /// Methoding for adding an appointment record to the database.
         /// </summary>
-        public static void AddAppointment(Appointment app)
+        public static Appointment AddAppointment(Appointment app)
         {
             dbAccess.WaitOne();
 
             dbContext.Appointments.Add(app);
+            dbContext.SaveChanges();
 
             dbAccess.Release();
+            return app;
         }
 
         /// <summary>
@@ -240,7 +242,7 @@ namespace HairSalonBackEnd.Database
 
                 modelBuilder.Entity<Appointment>().ToTable("Appointments", "localSchema");
 
-                modelBuilder.Entity<Unavailability>().ToTable("Unavailability", "localSchema");
+                modelBuilder.Entity<Unavailability>().ToTable("Unavailabilities", "localSchema");
                 modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>();
 
                 base.OnModelCreating(modelBuilder);
