@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HairSalonBackEnd.Program">
+    <Position X="5" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.Startup">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAACAAAAAA=</HashCode>
+      <FileName>Startup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.Controllers.AppointmentController">
+    <Position X="2.75" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAKAEAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Controllers\AppointmentController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.Controllers.StylistController">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAKAEAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Controllers\StylistController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.Controllers.UnavailabilityController">
+    <Position X="0.5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAKAEAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Controllers\UnavailabilityController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.Database.SQLiteDbUtility">
+    <Position X="9.75" Y="0.5" Width="2.25" />
+    <NestedTypes>
+      <Class Name="HairSalonBackEnd.Database.SQLiteDbUtility.SQLiteDbContext" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Database\SQLiteDbUtility.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IAAAAAIAAAAAAAAAQQAEEAABAJAwAEAFACgQAAAAAAw=</HashCode>
+      <FileName>Database\SQLiteDbUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.Models.Appointment">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAACAggAAAAAAAAAQAAAAAAAABAAAEIAAAAAA=</HashCode>
+      <FileName>Models\Appointment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.Models.Stylist">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAACAAAAAwAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Stylist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.Models.Unavailability">
+    <Position X="7.25" Y="0.5" Width="2.25" />
+    <NestedTypes>
+      <Enum Name="HairSalonBackEnd.Models.Unavailability.TimePeriod" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Models\Unavailability.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAgAAAAAAAAAAgAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>Models\Unavailability.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HairSalonBackEnd.WebModels.UnavailabilityWebModel">
+    <Position X="7.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAQAAAAAgAAAAAAAAAAgAAAAAAAAAAAAAEAAAAI=</HashCode>
+      <FileName>WebModels\UnavailabilityWebModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
