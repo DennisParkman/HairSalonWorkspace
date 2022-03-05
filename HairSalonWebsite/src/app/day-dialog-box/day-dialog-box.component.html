@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Hi test</h1>
+<h1 mat-dialog-title>Appointments</h1>
 <div mat-dialog-content>
     <div *ngFor="let x of data.events">
         {{x.title}}
@@ -9,11 +9,13 @@
             End: {{x.end}}
         </div>
         <div *ngIf="data.crudFeatures">
-            <button mat-button>Delete</button>
-            <button mat-button>Update</button>
-            <button mat-button>Create</button>
+            <button mat-button mat-dialog-close (click)="deleteEventHandler(x)">Delete</button>
+            <button mat-button mat-dialog-close (click)="updateEventHandler(x)">Update</button>
         </div>
         -----------------------------
+    </div>
+    <div *ngIf="data.crudFeatures">
+        <button mat-button mat-dialog-close (click)="createEventHandler()">Create</button>
     </div>
 </div>
 <div mat-dialog-actions>

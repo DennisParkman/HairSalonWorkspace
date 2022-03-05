@@ -80,27 +80,4 @@ export class SchedulePageComponent implements OnInit
       }
     );
   }
-
-  setView(view: CalendarView) 
-  {
-    this.view = view;
-  }
-
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void 
-  {
-    console.log(date);
-    //this.openAppointmentList(date)
-    this.dayOfEvents = events;
-
-    this.dialog.open(DayDialogBoxComponent, 
-      {
-        width:'1000px', 
-        data:
-        {
-          events: this.dayOfEvents, 
-          crudFeatures:false
-        }
-      }
-    );
-  }
 }

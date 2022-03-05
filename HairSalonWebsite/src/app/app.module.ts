@@ -15,11 +15,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
+import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
 import { AppointmentService } from './services/appointment-service/appointment.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 
 @NgModule(
 {
@@ -31,8 +32,9 @@ import { MatDialogRef } from '@angular/material/dialog';
     NavbarComponent,
     StylistPageComponent,
     SchedulePageComponent,
-    DayDialogBoxComponent
-  
+    DayDialogBoxComponent,
+    AppointmentPageComponent,
+    EventCalendarComponent
   ],
   imports: 
   [
@@ -44,8 +46,7 @@ import { MatDialogRef } from '@angular/material/dialog';
     MaterialModule,
     CommonModule,
     RouterModule,
-    BrowserModule,
-    AppRoutingModule,
+    
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
