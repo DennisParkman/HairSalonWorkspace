@@ -15,10 +15,11 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class AppointmentPageComponent implements OnInit
 {
+  //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>;
+  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
 
-  appointments: Appointment[];
+  //appointment attributes for forms
   id: number;
   stylistid: number;
   name: string;
@@ -28,22 +29,35 @@ export class AppointmentPageComponent implements OnInit
   dateCreated: Date;
   description: string;
 
+  //booleans to display and hide forms on the appointments page
+  loadingFinished: boolean = false; // boolean for displaying page
+  appointmentLoading: boolean = true; // boolean to show appointments are being loaded from the backend
   addingAppointment: boolean = false;
-  loadingFinished: boolean = false;
   updatingAppointment: boolean = false;
-  appointmentLoading: boolean = true;
+  
 
+  //array to populate all appointments on the calendar
   events: CalendarEvent[] = [];
+
+  //array of appointments serviced from the backend
+  appointments: Appointment[];
 
   constructor(private appointmentService: AppointmentService, private dialog: MatDialog) { }
 
+  /**
+   * On loading page, all appointments on the database are loaded in and put into the event calendar array
+   * and the appointments array
+   */
   ngOnInit(): void 
   {
+    //call service appointment to load all appointments from the database
     this.appointmentService.getAppointment().subscribe(appointments => 
       {
+        //load all appointmetns into the appointment array
         appointments.forEach(appointment => appointment.date = new Date(appointment.date));
         this.appointments = appointments; 
 
+        //load appointment id, date, client name, and description for each appointment into the calendar array
         for(let appointment of this.appointments)
         {
           this.events.push(
@@ -56,12 +70,14 @@ export class AppointmentPageComponent implements OnInit
           
         }
         
+        // display the page and show that appointments are done loading
         this.loadingFinished = true; 
         this.appointmentLoading = false;
       }
     );
   }
 
+  
   cancelAddAppointment()
   {
     this.addingAppointment = false;
