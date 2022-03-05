@@ -6,6 +6,7 @@ import { startOfDay } from 'date-fns';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DayDialogBoxComponent } from '../day-dialog-box/day-dialog-box.component';
+import { Subject } from 'rxjs';
 @Component({
 
   selector: 'app-event-calendar',
@@ -21,6 +22,7 @@ export class EventCalendarComponent implements OnInit
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   dayOfEvents: CalendarEvent[] = [];
+  refresh: Subject<any> = new Subject();
   
   @Output() deleteEvent = new EventEmitter<CalendarEvent>();
   @Output() createEvent = new EventEmitter();
@@ -38,12 +40,22 @@ export class EventCalendarComponent implements OnInit
     this.view = view;
   }
 
+  public updateCalendarEvent(event: CalendarEvent) {
+    if(this.calEvents.findIndex(x => x.id == event.id) > 0)
+    {
+      this.calEvents.splice(this.calEvents.findIndex(x => x.id == event.id), 1);
+    }
+    this.calEvents.push(event);
+    this.refresh.next("");
+  }
 
+  public deleteCalendarEvent(event: CalendarEvent) {
+    this.calEvents.splice(this.calEvents.findIndex(x => x.id == event.id), 1);
+    this.refresh.next("");
+  }
   
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void 
   {
-    console.log(date);
-    //this.openAppointmentList(date)
     this.dayOfEvents = events;
 
     let dialogRef = this.dialog.open(DayDialogBoxComponent, 

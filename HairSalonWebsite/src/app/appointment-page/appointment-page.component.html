@@ -1,46 +1,14 @@
 <div *ngIf="!appointmentLoading">
-<div *ngIf="!addingAppointment && !updatingAppointment">
-  <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="showAddAppointment()">Add Appointment</mat-button-toggle>
-  <app-event-calendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteAppointment($event)" 
+  <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="setCreateAppointment()">Add Appointment</mat-button-toggle>
+  <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteAppointment($event)" 
                       (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment()"></app-event-calendar>
-  
 </div>
-  <!--Make new Appointment-->
-      <div *ngIf="addingAppointment" class = "container">
-          <form>
-              <div class="mb-5">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
-              </div>
-              <div class="mb-5">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" required id="email" [(ngModel)]="this.email" name = "email">
-              </div>
-              <div class="mb-5">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" maxlength = "10" required id="phone" [(ngModel)]="this.phone" name = "phone">
-              </div>
-              <div class="mb-5">
-                  <label for="date" class="form-label">Date</label>
-                  <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
-                </div>
-              <div class="mb-5">
-                  <label for="description" class="form-label">Description</label>
-                  <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
-              </div>
-              <div class="mb-5">
-                <label for="stylistid" class="form-label">Stylist ID</label>
-                <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
-              </div>
-              <!--To do: to enter the stylist name and select appoinments-->
-              <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addAppointment()">Submit</button>
-              <button mat-flat-button style = "margin: 1%" (click)="cancelAddAppointment()">Cancel</button>
-            </form>
-      </div>
 
-      <!--Make new Appointment-->
-      <div *ngIf="updatingAppointment" class = "container">
-        <form>
+<ng-template #addDialog>
+  <div *ngIf="addingAppointment" class = "container">
+    <form>
+        <div>
+          <div style="float:left">
             <div class="mb-5">
               <label for="name" class="form-label">Name</label>
               <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
@@ -53,10 +21,12 @@
               <label for="phone" class="form-label">Phone</label>
               <input type="text" class="form-control" maxlength = "10" required id="phone" [(ngModel)]="this.phone" name = "phone">
             </div>
+          </div>
+          <div style="float:left">
             <div class="mb-5">
-                <label for="date" class="form-label">Date</label>
-                <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
-              </div>
+              <label for="date" class="form-label">Date</label>
+              <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
+            </div>
             <div class="mb-5">
                 <label for="description" class="form-label">Description</label>
                 <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
@@ -65,9 +35,52 @@
               <label for="stylistid" class="form-label">Stylist ID</label>
               <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
             </div>
-            <!--To do: to enter the stylist name and select appoinments-->
-            <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateAppointment()">Submit</button>
-            <button mat-flat-button style = "margin: 1%" (click)="cancelUpdateAppointment()">Cancel</button>
-          </form>
-    </div>
-</div>
+          </div>
+        </div>
+        
+        <!--To do: to enter the stylist name and select appoinments-->
+        <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addAppointment()">Submit</button>
+        <button mat-flat-button style = "margin: 1%" (click)="cancelAddAppointment()">Cancel</button>
+      </form>
+  </div>
+
+  <div *ngIf="updatingAppointment" class = "container">
+    <form>
+        <div>
+          <div style="float:left">
+            <div class="mb-5">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
+            </div>
+            <div class="mb-5">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" required id="email" [(ngModel)]="this.email" name = "email">
+            </div>
+            <div class="mb-5">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="text" class="form-control" maxlength = "10" required id="phone" [(ngModel)]="this.phone" name = "phone">
+            </div>
+          </div>
+          <div style="float:right">
+            <div class="mb-5">
+              <label for="date" class="form-label">Date</label>
+              <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
+            </div>
+          <div class="mb-5">
+              <label for="description" class="form-label">Description</label>
+              <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
+          </div>
+          <div class="mb-5">
+            <label for="stylistid" class="form-label">Stylist ID</label>
+            <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
+          </div>
+          </div>
+        </div>
+        <!--To do: to enter the stylist name and select appoinments-->
+        <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateAppointment()">Submit</button>
+        <button mat-flat-button style = "margin: 1%" (click)="cancelUpdateAppointment()">Cancel</button>
+      </form>
+  </div>
+
+
+</ng-template>

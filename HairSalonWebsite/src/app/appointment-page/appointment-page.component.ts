@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
 import { Appointment } from '../models/appointment.model';
 import { CalendarView } from 'angular-calendar';
 import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { startOfDay } from 'date-fns';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable, Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 @Component(
 {
   selector: 'app-appointment-page',
@@ -14,6 +15,9 @@ import { forkJoin } from 'rxjs';
 })
 export class AppointmentPageComponent implements OnInit
 {
+  @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
+  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>;
+
   appointments: Appointment[];
   id: number;
   stylistid: number;
@@ -31,17 +35,14 @@ export class AppointmentPageComponent implements OnInit
 
   events: CalendarEvent[] = [];
 
-  constructor(private appointmentService: AppointmentService) { }
+  constructor(private appointmentService: AppointmentService, private dialog: MatDialog) { }
 
   ngOnInit(): void 
   {
-    forkJoin(
+    this.appointmentService.getAppointment().subscribe(appointments => 
       {
-        appointments: this.appointmentService.getAppointment()
-      }).subscribe(({appointments}) => 
-      {
+        appointments.forEach(appointment => appointment.date = new Date(appointment.date));
         this.appointments = appointments; 
-        console.log(this.appointments);
 
         for(let appointment of this.appointments)
         {
@@ -54,7 +55,6 @@ export class AppointmentPageComponent implements OnInit
           );
           
         }
-        console.log(this.events);
         
         this.loadingFinished = true; 
         this.appointmentLoading = false;
@@ -62,15 +62,11 @@ export class AppointmentPageComponent implements OnInit
     );
   }
 
-  showAddAppointment()
-  {
-    this.addingAppointment = true;
-  }
-
   cancelAddAppointment()
   {
     this.addingAppointment = false;
     this.clearFields();
+    this.dialog.closeAll();
   }
 
   clearFields()
@@ -88,22 +84,45 @@ export class AppointmentPageComponent implements OnInit
   {
     this.dateCreated = new Date();
     this.date = new Date(this.date);
-    let appointment = {stylistID: this.stylistid, name: this.name, email: this.email, phone: this.phone, date: this.date, dateCreated: this.dateCreated, description: this.description};
+    let appointment = 
+    {
+      stylistID: this.stylistid, 
+      name: this.name, 
+      email: this.email, 
+      phone: this.phone, 
+      date: this.date, 
+      dateCreated: this.dateCreated, 
+      description: this.description
+    };
     this.appointmentService.addAppointment(appointment).subscribe(value => 
     {
-      this.appointments.push(value);
+      //this.appointments.push(value);
       this.addingAppointment = false;
+      let event : CalendarEvent = 
+      {
+        id: value.id, 
+        start: this.date, 
+        title: this.name + " - " + this.description
+      };
       this.clearFields();
+      console.log(event);
+      this.appointments.push(value);
+      this.appCalendar.updateCalendarEvent(event);
+      this.dialog.closeAll();
     });
   }
 
   deleteAppointment(event: any)
   {
+    
+    //reload page
+    this.appCalendar.deleteCalendarEvent(event)
+
     //find appointment based on calendar event
     let appIndexToDelete = this.appointments.findIndex(x => x.id === event.id);
 
     // find the Calendar event index
-    let calIndexToDelete = this.events.findIndex(x => x.id === event.id);
+    //let calIndexToDelete = this.events.findIndex(x => x.id === event.id);
 
     //delete appointent from database
     this.appointmentService.deleteAppointment(this.appointments[appIndexToDelete])
@@ -112,9 +131,7 @@ export class AppointmentPageComponent implements OnInit
     this.appointments.splice(appIndexToDelete, 1);
 
     // remove calendar event from events list
-    this.events.splice(calIndexToDelete, 1);
-    
-    //reload page
+    //this.events.splice(calIndexToDelete, 1);
 
   }
 
@@ -137,6 +154,7 @@ export class AppointmentPageComponent implements OnInit
 
     //show update form
     this.updatingAppointment = true;
+    this.dialog.open(this.addDialog);
   }
 
   updateAppointment()
@@ -145,35 +163,55 @@ export class AppointmentPageComponent implements OnInit
     this.date = new Date(this.date);
 
     //package fields into an appointment object
-    let appointment = {id: this.id, stylistID: this.stylistid, name: this.name, email: this.email, phone: this.phone, date: this.date, dateCreated: this.dateCreated, description: this.description};
-    let event = {id:this.id, start: this.date, title: this.name + " - " + this.description};
+    let appointment = 
+    {
+      id: this.id, 
+      stylistID: this.stylistid, 
+      name: this.name, 
+      email: this.email, 
+      phone: this.phone, 
+      date: this.date, 
+      dateCreated: this.dateCreated, 
+      description: this.description
+    };
+    let event = 
+    {
+      id:this.id, 
+      start: this.date, 
+      title: this.name + " - " + this.description
+    };
     //call service to update appointment in database
     this.appointmentService.updateAppointment(appointment);
     
     let appIndexToUpdate = this.appointments.findIndex(x => x.id === appointment.id);
 
     // find the Calendar event index
-    let calIndexToUpdate = this.events.findIndex(x => x.id === appointment.id);
+    //let calIndexToUpdate = this.events.findIndex(x => x.id === appointment.id);
 
     //remove appointment from appointment list
     this.appointments[appIndexToUpdate] = appointment;
 
-    this.events[calIndexToUpdate] = event;
+    //this.events[calIndexToUpdate] = event;
 
     //clear fields and set booleans
     this.updatingAppointment = false;
     this.clearFields();
+    
+    this.appCalendar.updateCalendarEvent(event);
+    this.dialog.closeAll();
   }
 
   cancelUpdateAppointment()
   {
     this.updatingAppointment = false;
     this.clearFields();
+    this.dialog.closeAll();
   }
 
   setCreateAppointment()
   {
     this.addingAppointment = true;
+    this.dialog.open(this.addDialog);
   }
 
 }
