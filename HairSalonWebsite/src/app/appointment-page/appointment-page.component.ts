@@ -1,12 +1,10 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Appointment } from '../models/appointment.model';
-import { CalendarView } from 'angular-calendar';
-import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
-import { startOfDay } from 'date-fns';
+import { CalendarEvent } from 'angular-calendar';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
-import { forkJoin, Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+
 @Component(
 {
   selector: 'app-appointment-page',
@@ -35,7 +33,6 @@ export class AppointmentPageComponent implements OnInit
   addingAppointment: boolean = false;
   updatingAppointment: boolean = false;
   
-
   //array to populate all appointments on the calendar
   events: CalendarEvent[] = [];
 

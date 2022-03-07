@@ -1,5 +1,7 @@
+<!--This component displays in a dialog box-->
 <h1 mat-dialog-title>Events</h1>
 <div mat-dialog-content>
+    <!--Show each event of the day, their start and end time, and buttons to delete or update them-->
     <div *ngFor="let x of data.events">
         {{x.title}}
         <div>
