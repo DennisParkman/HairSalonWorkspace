@@ -20,39 +20,47 @@ import { DayDialogBoxComponent } from '../day-dialog-box/day-dialog-box.componen
 })
 export class SchedulePageComponent implements OnInit 
 {
+  //attributes to change and update calendar view
   viewDate: Date = new Date();
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   startOfDay: CalendarEvent;
 
+  //lists that will be used to populate the event calendar list
   unavailabilitiesList: Unavailability[]
   appointmentList: Appointment[];
   stylistList: Stylist[];
   dayOfEvents: CalendarEvent[] = [];
+  
+  events: CalendarEvent[] = []; //calendar events list of unavailabilities and appointments
 
-  events: CalendarEvent[] = [];
-
-  scheduleLoading: boolean = true;
+  scheduleLoading: boolean = true; //boolean to load page
 
   constructor(private stylistService: StylistService, 
     private unavailabilityService: UnavailabilityService, 
     private appointmentService: AppointmentService,
     public dialog: MatDialog ) { }
 
+    /**
+   * On loading page, all unavailabilities and appointments on the database are loaded in and put into the event calendar array
+   * and their corresponding object arrays.
+   */
   ngOnInit(): void 
   {
 
     forkJoin(
       {
+        //call service methods to fetch all unavaiblites and appointments
         appointments: this.appointmentService.getAppointment(), 
         unavailabilities: this.unavailabilityService.getUnavailabilities()
       }).subscribe(({appointments, unavailabilities}) => {
-        this.appointmentList = appointments; 
+        this.appointmentList = appointments; //set appointments to appointment list
         console.log(this.appointmentList);
 
-        this.unavailabilitiesList = unavailabilities; 
+        this.unavailabilitiesList = unavailabilities; //set unavailabilities to unavailabilities list
         console.log(this.unavailabilitiesList);
         
+        //add appointments to calendar event list
         for(let appointment of this.appointmentList)
         {
           this.events.push(
@@ -63,6 +71,7 @@ export class SchedulePageComponent implements OnInit
           );
         }
 
+        //add unavailabilities to calendar events list
         for(let unavailability of this.unavailabilitiesList)
         {
           this.events.push(
@@ -75,7 +84,7 @@ export class SchedulePageComponent implements OnInit
         }
 
         console.log(this.events);
-        this.scheduleLoading = false;
+        this.scheduleLoading = false; //show calendar
 
       }
     );

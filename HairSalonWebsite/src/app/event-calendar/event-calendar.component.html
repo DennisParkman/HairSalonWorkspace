@@ -1,5 +1,5 @@
 <div class="row text-center">
-
+    <!--buttons to cycle through dates in a year with stepsize depending on view-->
     <div class="col-md-4">
         <div class="btn-group">
             <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
@@ -14,10 +14,12 @@
         </div>
     </div>
 
+    <!--Dynamic title of the calendar-->
     <div class="col-md-4">
         <h1>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h1>
     </div>
 
+    <!--buttons change calendar view to month, week, year-->
     <div class="col-md-4">
         <div class="btn-group">
             <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
@@ -32,9 +34,9 @@
         </div>
     </div>
 
-
 </div>
 
+<!--calendar views visible to users depending on set view-->
 <div class = "format-container" [ngSwitch]="view">
 
     <mwl-calendar-month-view (dayClicked)="dayClicked($event.day)" *ngSwitchCase="CalendarView.Month" [refresh]="refresh" [viewDate]="viewDate" [events]="calEvents">
