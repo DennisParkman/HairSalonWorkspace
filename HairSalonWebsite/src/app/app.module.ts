@@ -22,6 +22,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component';
 import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule(
 {
@@ -48,6 +49,7 @@ import { UnavailabilityPageComponent } from './unavailability-page/unavailabilit
     MaterialModule,
     CommonModule,
     RouterModule,
+    ToastrModule.forRoot(),
     
     CalendarModule.forRoot({
       provide: DateAdapter,
