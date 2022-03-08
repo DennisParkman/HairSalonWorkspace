@@ -23,11 +23,11 @@ namespace HairSalonBackEnd.Controllers
 
         /// <summary> Adds Unavailability to the SQLite Database </summary> 
         [HttpPost]
-        public ActionResult<Task<UnavailabilityWebModel>> Post([FromBody] Unavailability unavailability)
+        public ActionResult<Task<UnavailabilityWebModel>> Post([FromBody] UnavailabilityWebModel unavailability)
         {
             try
             {
-                Unavailability newUnavailability = SQLiteDbUtility.AddUnavailability(unavailability);
+                Unavailability newUnavailability = SQLiteDbUtility.AddUnavailability(new Unavailability(unavailability));
                 return Ok(new UnavailabilityWebModel(newUnavailability));
             }
             catch (Exception e)

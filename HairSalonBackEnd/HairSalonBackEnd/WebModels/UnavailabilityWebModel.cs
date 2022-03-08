@@ -17,6 +17,7 @@ namespace HairSalonBackEnd.WebModels
             this.EndDate = unavailability.EndDate;
             this.Period = unavailability.Period;
         }
+        public UnavailabilityWebModel() { }
 
         public int ID { get; set; }
 

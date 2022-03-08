@@ -21,6 +21,7 @@ namespace HairSalonBackEnd.Models
 
         public Unavailability(UnavailabilityWebModel unavailabilityWebModel)
         {
+            this.ID = unavailabilityWebModel.ID;
             this.StylistID = unavailabilityWebModel.StylistID;
             this.StartDate = unavailabilityWebModel.StartDate;
             this.EndDate = unavailabilityWebModel.EndDate;

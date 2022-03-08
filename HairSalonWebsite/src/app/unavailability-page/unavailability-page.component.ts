@@ -91,7 +91,7 @@ export class UnavailabilityPageComponent implements OnInit
 
   addUnavailability()
   {
-    let unavailability = 
+    let unavailability : Unavailability = 
     {
       stylistID: this.stylistid, 
       stylistName: this.stylistName, 
@@ -101,9 +101,9 @@ export class UnavailabilityPageComponent implements OnInit
     };
     this.unavailabilityService.addUnavailability(unavailability).subscribe(value => 
     {
+      console.log(value);
       //this.unavailabilities.push(value);
       this.addingUnavailability = false;
-      console.log(value);
       let event : CalendarEvent = 
       {
         id: value.id, 
@@ -112,8 +112,8 @@ export class UnavailabilityPageComponent implements OnInit
         title: this.stylistName
       };
       this.clearFields();
-      console.log(event);
       this.unavailabilities.push(value);
+      console.log(this.unavailabilities);
       this.appCalendar.updateCalendarEvent(event);
       this.dialog.closeAll();
     });
@@ -144,6 +144,7 @@ export class UnavailabilityPageComponent implements OnInit
 
   startUpdateUnavailability(event: any)
   {
+    console.log(event);
 
     //find unavailability based on calendar event
     let appIndex = this.unavailabilities.findIndex(x => x.id === event.id);
@@ -165,7 +166,7 @@ export class UnavailabilityPageComponent implements OnInit
   updateUnavailability()
   {
     //package fields into an unavailability object
-    let unavailability = 
+    let unavailability : Unavailability = 
     {
       id: this.id, 
       stylistID: this.stylistid, 
@@ -174,9 +175,10 @@ export class UnavailabilityPageComponent implements OnInit
       endDate: this.endDate, 
       period: this.period
     };
+    console.log(unavailability);
     let event = 
     {
-      id:this.id, 
+      id: this.id, 
       start: new Date(this.startDate), 
       end: new Date(this.endDate), 
       title: this.stylistName
