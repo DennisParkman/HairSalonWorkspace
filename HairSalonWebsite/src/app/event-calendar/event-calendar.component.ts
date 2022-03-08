@@ -43,7 +43,7 @@ export class EventCalendarComponent implements OnInit
   // Update calender event list when event is updated / created
   public updateCalendarEvent(event: CalendarEvent) 
   {
-    if(this.calEvents.findIndex(x => x.id == event.id) > 0)
+    if(this.calEvents.findIndex(x => x.id == event.id) > -1)
     {
       this.calEvents.splice(this.calEvents.findIndex(x => x.id == event.id), 1);
     }
