@@ -4,4 +4,5 @@ export class Stylist
     id?: number;
     level: number;
     bio: string;
+    stylistImage?: string;
 }
