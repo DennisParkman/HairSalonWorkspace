@@ -51,7 +51,6 @@ export class StylistPageComponent implements OnInit
   showAddStylist()
   {
     this.addingStylist = true;
-    console.log("show");
   }
 
   /*
@@ -201,13 +200,36 @@ export class StylistPageComponent implements OnInit
     this.stylistImage = "";
   }
 
-  addStylist() 
+  /*
+    sort stylists by level from highest level to lowest level
+  */
+  sortByLevelDesending(): void
   {
-    let stylist = {bio: this.bio, name: this.name, level: this.level};
-    this.stylistService.addStylist(stylist);
-    this.stylists.push(stylist);
-    this.addingStylist = false;
-    this.clearFields();
+    this.stylists.sort((a, b) => (a.level > b.level) ? -1 : 1);
+  }
+
+  /*
+    sort stylists by level from lowest level to highest level
+  */
+  sortByLevelAscending(): void
+  {
+    this.stylists.sort((a, b) => (a.level < b.level) ? -1 : 1);
+  }
+
+  /*
+    sort stylists by name in alphabetical order from A to Z
+  */
+  sortByNameAscending(): void
+  {
+    this.stylists.sort((a, b) => (a.name < b.name) ? -1 : 1);
+  }
+
+  /*
+    sort stylists by name in reverse alphabetical order from Z to A
+  */
+  sortByNameDesending(): void
+  {
+    this.stylists.sort((a, b) => (a.name > b.name) ? -1 : 1);
   }
 
 }

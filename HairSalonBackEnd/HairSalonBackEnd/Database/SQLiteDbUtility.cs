@@ -1,4 +1,4 @@
-﻿using HairSalonBackEnd.Models;
+using HairSalonBackEnd.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ namespace HairSalonBackEnd.Database
         #region Stylist Methods
         /// <summary> A method for adding a stylist data type to the database.</summary>
         /// <param name="stylist"> A stylist object to add to the database.</param> 
-        public static void AddStylist(Stylist stylist)
+        public static Stylist AddStylist(Stylist stylist)
         {
             dbAccess.WaitOne();
             dbContext.Stylists.Add(stylist);
