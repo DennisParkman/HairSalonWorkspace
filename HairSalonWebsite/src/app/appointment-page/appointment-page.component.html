@@ -35,8 +35,14 @@
                 <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
             </div>
             <div class="mb-5"> <!--Input for stylist ID associated with the appointment-->
-              <label for="stylistid" class="form-label">Stylist ID</label>
-              <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
+              <mat-label>Stylist</mat-label>
+              <mat-select>
+                <mat-option *ngFor = "let stylist of simpleStylists">
+
+                </mat-option>
+              </mat-select>
+              <!-- <label for="stylistid" class="form-label">Stylist ID</label>
+              <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid"> -->
             </div>
           </div>
         </div>

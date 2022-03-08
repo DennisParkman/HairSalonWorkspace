@@ -35,6 +35,7 @@ export class AppointmentPageComponent implements OnInit
   
   events: CalendarEvent[] = []; //array to populate all appointments on the calendar
   appointments: Appointment[]; //array of appointments serviced from the backend 
+  simpleStylists: SimpleStylist[]; //an array of stylistName-stylistID pairs for 
 
   constructor(private appointmentService: AppointmentService, private dialog: MatDialog) { }
 
