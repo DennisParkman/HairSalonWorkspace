@@ -12,23 +12,28 @@ import { StylistService } from '../services/stylist-service/stylist.service';
 })
 export class StylistPageComponent implements OnInit 
 {
-  stylists: Stylist[] = [{name:"test", level:1,bio:"help"}, {name:"test", level:1,bio:"help"}, {name:"test", level:1,bio:"help"}];
+  //list of stylists
+  stylists: Stylist[];
 
+  //stylist field attributes
   bio: string;
   name: string;
   level: number;
   stylistUpdateId: any = null;
   stylistImage: string;
 
+  //booleans to change visibility
   editSytlistFunctions: boolean = false;
   addingStylist: boolean = false;
   updateSylist: boolean = false;
-
   stylistsLoading: boolean = true;
   
 
   constructor(private stylistService: StylistService) { }
 
+  /**
+   * On loading page, all stylists on the database are loaded into a stylist array
+   */
   ngOnInit(): void 
   { 
     this.stylistService.getStylists().subscribe(s => 

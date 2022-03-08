@@ -1,12 +1,10 @@
-import { Component, OnInit, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Appointment } from '../models/appointment.model';
-import { CalendarView } from 'angular-calendar';
-import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
-import { startOfDay } from 'date-fns';
+import { CalendarEvent } from 'angular-calendar';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
-import { forkJoin, Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+
 @Component(
 {
   selector: 'app-appointment-page',
@@ -15,10 +13,11 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class AppointmentPageComponent implements OnInit
 {
+  //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>;
+  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
 
-  appointments: Appointment[];
+  //appointment attributes for forms
   id: number;
   stylistid: number;
   name: string;
@@ -28,22 +27,31 @@ export class AppointmentPageComponent implements OnInit
   dateCreated: Date;
   description: string;
 
+  //booleans to display and hide forms on the appointments page
+  loadingFinished: boolean = false; // boolean for displaying page
+  appointmentLoading: boolean = true; // boolean to show appointments are being loaded from the backend
   addingAppointment: boolean = false;
-  loadingFinished: boolean = false;
   updatingAppointment: boolean = false;
-  appointmentLoading: boolean = true;
-
-  events: CalendarEvent[] = [];
+  
+  events: CalendarEvent[] = []; //array to populate all appointments on the calendar
+  appointments: Appointment[]; //array of appointments serviced from the backend 
 
   constructor(private appointmentService: AppointmentService, private dialog: MatDialog) { }
 
+  /**
+   * On loading page, all appointments on the database are loaded in and put into the event calendar array
+   * and the appointments array
+   */
   ngOnInit(): void 
   {
+    //call service to load all appointments from the database
     this.appointmentService.getAppointment().subscribe(appointments => 
       {
+        //load all appointmetns into the appointment array
         appointments.forEach(appointment => appointment.date = new Date(appointment.date));
         this.appointments = appointments; 
 
+        //load appointment id, date, client name, and description for each appointment into the calendar array
         for(let appointment of this.appointments)
         {
           this.events.push(
@@ -56,6 +64,7 @@ export class AppointmentPageComponent implements OnInit
           
         }
         
+        // display the page and show that appointments are done loading
         this.loadingFinished = true; 
         this.appointmentLoading = false;
       }
@@ -63,7 +72,7 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * function to hide adding appointment form
+   * Function to hide the the add appoinment field
    */
   cancelAddAppointment()
   {
@@ -73,7 +82,7 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * function to clear all appoinment attributes 
+   * function to clear form fields
    */
   clearFields()
   {
@@ -87,16 +96,15 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * function to add a new appointment to the database when the 
-   * add form is submitted
+   * function to add a new appointment to the database and front end lists
    */
   addAppointment()
   {
-    //reformat data objects to send through the service call
+    //convert form dates to date objects
     this.dateCreated = new Date();
     this.date = new Date(this.date);
 
-    //create appointment object with form values
+    //create appointment variable to store form fields
     let appointment = 
     {
       stylistID: this.stylistid, 
@@ -108,33 +116,34 @@ export class AppointmentPageComponent implements OnInit
       description: this.description
     };
 
-    //call service to add appointment to the database
+    //call appointment service to add appointment to database
     this.appointmentService.addAppointment(appointment).subscribe(value => 
     {
       this.addingAppointment = false; //hide add appointment form
 
-      //create calendar event to populate the front end
+      //create calendar event to add to event list
       let event : CalendarEvent = 
       {
         id: value.id, 
         start: this.date, 
         title: this.name + " - " + this.description
       };
+      this.clearFields(); //clear form fields
+      this.appointments.push(value); //push appointment to appointment list
 
-      this.clearFields(); //clear all form fields
-      this.appointments.push(value); //add appointments to appointment list
-      this.appCalendar.updateCalendarEvent(event); //add event to event calendar
-      this.dialog.closeAll(); //close all dialog boxes
+      //call calendar event component function to reload event list with new item
+      this.appCalendar.updateCalendarEvent(event);
+      this.dialog.closeAll(); //close dialog box
     });
   }
 
   /**
-   * function to delete an appointment from the appointments list, calendar events list, and database table
-   * @param event is an object of type any that contains a calendar event to delete
+   * Function to delete an appointment from the database and from the front end lists
+   * @param event : event to be deleted
    */
   deleteAppointment(event: any)
   {
-    //delete the calendar event selected
+    //reload page
     this.appCalendar.deleteCalendarEvent(event)
 
     //find appointment based on calendar event
@@ -148,8 +157,8 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * fucntion to show update form and populate form fields
-   * @param event is an object of type any that contains a calendar event to update
+   * Function to show update appoinment form and set all form fields
+   * @param event : object to be updated
    */
   startUpdateAppointment(event: any)
   {
@@ -174,7 +183,8 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * function to update an appointment from the appointments list, the calendar events list, and database table 
+   * Function to update database with changed appointment information and update front end list 
+   * with new information
    */
   updateAppointment()
   {
@@ -194,7 +204,7 @@ export class AppointmentPageComponent implements OnInit
       description: this.description
     };
 
-    //create the calendar event to update the calendar list
+    //create a calendar event from appointment object
     let event = 
     {
       id:this.id, 
@@ -205,23 +215,21 @@ export class AppointmentPageComponent implements OnInit
     //call service to update appointment in database
     this.appointmentService.updateAppointment(appointment);
     
-    //find the appointment index to update
+    //find index of appoinment to change and replace existing information in appoinment list
     let appIndexToUpdate = this.appointments.findIndex(x => x.id === appointment.id);
-
-    //remove appointment from appointment list
     this.appointments[appIndexToUpdate] = appointment;
 
     //clear fields and set booleans
     this.updatingAppointment = false;
     this.clearFields();
     
-    //update calendar list and close dialog box
+    //reload calendar view and close dialog box
     this.appCalendar.updateCalendarEvent(event);
     this.dialog.closeAll();
   }
 
   /**
-   * function to hide the update form, clear input fields, and close dialog boxes
+   * function to close update form and clear all form fields
    */
   cancelUpdateAppointment()
   {
@@ -231,7 +239,7 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * function to show add appointment form through dialog box
+   * function to show create form from dialog box of events
    */
   setCreateAppointment()
   {

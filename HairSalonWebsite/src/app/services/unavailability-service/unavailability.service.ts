@@ -16,6 +16,11 @@ export class UnavailabilityService
 
     readonly baseURL = 'http://localhost:63235/';
     
+    /**
+     * function to send new appointment to the backend database controller located at 
+     * @baseURL variable in the form of an enumrable array
+     * @param unavailability : object to be sent to the backend
+     */
     addUnavailability(unavailability: Unavailability): Observable<Unavailability>
     {
         let url = this.baseURL.concat("Unavailability");

@@ -10,6 +10,7 @@
     margin-top: 2%
 }
 
-.cal-events {
-    display: none !important;
+.cal-events
+{
+    display: none !important; //will override all previous styling rules for cal-events
 }

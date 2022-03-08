@@ -15,10 +15,13 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class UnavailabilityPageComponent implements OnInit
 {
+  //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>;
+  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
 
-  unavailabilities: Unavailability[];
+  unavailabilities: Unavailability[]; //list of unavailabilities
+
+  //unavailability attributes for forms
   id: number;
   stylistid: number;
   stylistName: string;
@@ -26,18 +29,24 @@ export class UnavailabilityPageComponent implements OnInit
   endDate: Date;
   period: TimePeriod;
 
-  addingUnavailability: boolean = false;
-  loadingFinished: boolean = false;
+  //booleans to display and hide forms on the unavailabilities page
+  loadingFinished: boolean = false; // boolean for displaying page
+  unavailabilityLoading: boolean = true; // boolean to show unavailabilities are being loaded from the backend
   updatingUnavailability: boolean = false;
-  unavailabilityLoading: boolean = true;
-
-  events: CalendarEvent[] = [];
-  timePeriods: TimePeriod[];
+  addingUnavailability: boolean = false;
+  
+  events: CalendarEvent[] = []; //array to populate all unavailabilities on the calendar
+  timePeriods: TimePeriod[]; //array of unavailabilities serviced from the backend
 
   constructor(private unavailabilityService: UnavailabilityService, private dialog: MatDialog) { }
 
+  /**
+   * On loading page, all unavailabilities on the database are loaded in and put into the event calendar array
+   * and the unavailabilities array
+   */
   ngOnInit(): void 
   {
+    // set enumerable values for time period field
     this.timePeriods = [
       TimePeriod.Once,
       TimePeriod.Daily,
@@ -45,15 +54,18 @@ export class UnavailabilityPageComponent implements OnInit
       TimePeriod.Monthly,
       TimePeriod.Yearly
     ]
+    //call unavailabilities service to load all unavailabilities from the database
     this.unavailabilityService.getUnavailabilities().subscribe(unavailabilities => 
       {
+        //load all unavailabilities into the unavailabilities array
         unavailabilities.forEach(unavailability => 
           {
             unavailability.startDate = new Date(unavailability.startDate);
             unavailability.endDate = new Date(unavailability.endDate);
           });
         this.unavailabilities = unavailabilities; 
-
+        
+        //load unavailability id, dates, and stylist name for each appointment into the calendar array
         for(let unavailability of this.unavailabilities)
         {
           this.events.push(
@@ -67,12 +79,16 @@ export class UnavailabilityPageComponent implements OnInit
           
         }
         
+        // display the page and show that unavailabilities are done loading
         this.loadingFinished = true; 
         this.unavailabilityLoading = false;
       }
     );
   }
 
+  /**
+   * Function to hide the the add unavailability field
+   */
   cancelAddUnavailability()
   {
     this.addingUnavailability = false;
@@ -80,6 +96,9 @@ export class UnavailabilityPageComponent implements OnInit
     this.dialog.closeAll();
   }
 
+  /**
+   * function to clear form fields
+   */
   clearFields()
   {
     this.stylistid = 0;
@@ -89,9 +108,13 @@ export class UnavailabilityPageComponent implements OnInit
     this.period = TimePeriod.Once;
   }
 
+  /**
+   * function to add a new unavailability to the database and front end lists
+   */
   addUnavailability()
   {
-    let unavailability : Unavailability = 
+    //create unavailability variable to store form fields
+    let unavailability = 
     {
       stylistID: this.stylistid, 
       stylistName: this.stylistName, 
@@ -99,11 +122,13 @@ export class UnavailabilityPageComponent implements OnInit
       endDate: this.endDate, 
       period: this.period
     };
+
+    //call unavailability service to add unavailability to database
     this.unavailabilityService.addUnavailability(unavailability).subscribe(value => 
     {
-      console.log(value);
-      //this.unavailabilities.push(value);
-      this.addingUnavailability = false;
+      this.addingUnavailability = false; //hide add unavailability form
+
+      //create calendar event to add to event list
       let event : CalendarEvent = 
       {
         id: value.id, 
@@ -111,37 +136,38 @@ export class UnavailabilityPageComponent implements OnInit
         end: new Date(this.endDate), 
         title: this.stylistName
       };
-      this.clearFields();
-      this.unavailabilities.push(value);
-      console.log(this.unavailabilities);
+      this.clearFields(); //clear form fields
+      this.unavailabilities.push(value); //push unavailability to unavailability list
+
+      //call calendar event component function to reload event list with new item
       this.appCalendar.updateCalendarEvent(event);
-      this.dialog.closeAll();
+      this.dialog.closeAll(); //close dialog box
     });
   }
 
+  /**
+   * Function to delete an unavailability from the database and from the front end lists
+   * @param event : event to be deleted
+   */
   deleteUnavailability(event: any)
   {
-    
     //reload page
     this.appCalendar.deleteCalendarEvent(event)
 
     //find unavailability based on calendar event
     let appIndexToDelete = this.unavailabilities.findIndex(x => x.id === event.id);
 
-    // find the Calendar event index
-    //let calIndexToDelete = this.events.findIndex(x => x.id === event.id);
-
     //delete appointent from database
     this.unavailabilityService.deleteUnavailability(this.unavailabilities[appIndexToDelete])
 
     //remove unavailability from unavailability list
     this.unavailabilities.splice(appIndexToDelete, 1);
-
-    // remove calendar event from events list
-    //this.events.splice(calIndexToDelete, 1);
-
   }
 
+  /**
+   * Function to show update unavailability form and set all form fields
+   * @param event : object to be updated
+   */
   startUpdateUnavailability(event: any)
   {
     console.log(event);
@@ -163,6 +189,10 @@ export class UnavailabilityPageComponent implements OnInit
     this.dialog.open(this.addDialog);
   }
 
+  /**
+   * Function to update database with changed appointment information and update front end list 
+   * with new information
+   */
   updateUnavailability()
   {
     //package fields into an unavailability object
@@ -175,7 +205,8 @@ export class UnavailabilityPageComponent implements OnInit
       endDate: this.endDate, 
       period: this.period
     };
-    console.log(unavailability);
+
+    //create a calendar event from unavailability object
     let event = 
     {
       id: this.id, 
@@ -183,27 +214,26 @@ export class UnavailabilityPageComponent implements OnInit
       end: new Date(this.endDate), 
       title: this.stylistName
     };
+
     //call service to update unavailability in database
     this.unavailabilityService.updateUnavailability(unavailability);
     
+    //find index of appoinment to change and replace existing information in appoinment list
     let appIndexToUpdate = this.unavailabilities.findIndex(x => x.id === unavailability.id);
-
-    // find the Calendar event index
-    //let calIndexToUpdate = this.events.findIndex(x => x.id === unavailability.id);
-
-    //remove unavailability from unavailability list
     this.unavailabilities[appIndexToUpdate] = unavailability;
-
-    //this.events[calIndexToUpdate] = event;
 
     //clear fields and set booleans
     this.updatingUnavailability = false;
     this.clearFields();
     
+    //reload calendar view and close dialog box
     this.appCalendar.updateCalendarEvent(event);
     this.dialog.closeAll();
   }
 
+  /**
+   * function to close update form and clear all form fields
+   */
   cancelUpdateUnavailability()
   {
     this.updatingUnavailability = false;
@@ -211,6 +241,9 @@ export class UnavailabilityPageComponent implements OnInit
     this.dialog.closeAll();
   }
 
+  /**
+   * function to show create form from dialog box of events
+   */
   setCreateUnavailability()
   {
     this.addingUnavailability = true;
