@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -45,6 +45,12 @@ namespace HairSalonBackEnd.Models
         /// </summary>
         [Required]
         public DateTime Date { get; set; }
+
+        /// <summary>
+        /// Get/Set methods for the length of time for the appiontment.
+        /// </summary>
+        [Required]
+        public int Length { get; set; }
 
         /// <summary>
         /// Get/Set methods for the Date the appiontment was created.

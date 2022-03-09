@@ -25,6 +25,7 @@ export class AppointmentPageComponent implements OnInit
   email: string;
   phone: string;
   date: Date;
+  length: number;
   dateCreated: Date;
   description: string;
 
@@ -92,6 +93,7 @@ export class AppointmentPageComponent implements OnInit
     this.email = "";
     this.phone = "";
     this.date = new Date;
+    this.length = 0;
     this.dateCreated = new Date;
     this.description = "";
   }
@@ -123,16 +125,42 @@ export class AppointmentPageComponent implements OnInit
           //TODO: Compare times better by checking if date is between 
           //date and length, probably need to add length (time appointment 
           //will take in minutes) onto appointment
-          if(app.date.getTime() == this.date.getTime())
+
+          //if date matches
+          if(app.date.getDate() == this.date.getDate())
           {	
-            //if date matches 
-            validAppointment = false;
+            let timeofappinList = app.date.getHours()+app.date.getMinutes();
+            let timeofnewapp = this.date.getHours()+this.date.getMinutes();
+            //new appointment time is between another appointment time & its length of time
+            if(timeofappinList < timeofnewapp && timeofnewapp < timeofappinList + app.length)
+             {
+                validAppointment = false;
+             }
+             //for example the appointment in list (time+length) 3:30-4:45pm
+             //and new appointment (time+length) is 3:00-4:30pm or 3:00-5:00pm respectively.
+             if(timeofappinList < timeofnewapp + this.length) 
+             {
+               if(timeofnewapp + this.length < timeofappinList + app.length)
+                {
+                  validAppointment = false;
+                }
+                if(timeofnewapp + this.length >= timeofappinList + app.length)
+                {
+                  validAppointment = false;
+                }
+                   
+             }
+            
           }
         }
 
         if(!validAppointment)
         {
           //Send toast message
+          /*this.toastrService.error('Appointment Conflict Detected', 'Rejected', 
+          {
+              timeOut: 3000,
+          });*/
           return;
         }
 
@@ -144,6 +172,7 @@ export class AppointmentPageComponent implements OnInit
           email: this.email, 
           phone: this.phone, 
           date: this.date, 
+          length: this.length,
           dateCreated: this.dateCreated, 
           description: this.description
         };
@@ -209,6 +238,7 @@ export class AppointmentPageComponent implements OnInit
     this.email = appointmentToUpdate.email;
     this.phone = appointmentToUpdate.phone;
     this.date = appointmentToUpdate.date;
+    this.length = appointmentToUpdate.length;
     this.dateCreated = appointmentToUpdate.dateCreated;
     this.description = appointmentToUpdate.description; 
 
@@ -235,6 +265,7 @@ export class AppointmentPageComponent implements OnInit
       email: this.email, 
       phone: this.phone, 
       date: this.date, 
+      length: this.length,
       dateCreated: this.dateCreated, 
       description: this.description
     };

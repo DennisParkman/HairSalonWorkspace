@@ -30,6 +30,10 @@
               <label for="date" class="form-label">Date</label>
               <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
             </div>
+            <div class="mb-5"> <!--Input for length of time for appointment-->
+              <label for="length" class="form-label">Length (min)</label>
+              <input type="number" class="form-control" required id="length" [(ngModel)]="this.length" name = "length">
+            </div>
             <div class="mb-5"> <!--Input for appointment decription-->
                 <label for="description" class="form-label">Description</label>
                 <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
@@ -69,6 +73,10 @@
             <div class="mb-5"> <!--Input for appointment date-->
               <label for="date" class="form-label">Date</label>
               <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.date" name = "date">
+            </div>
+            <div class="mb-5"> <!--Input for length of time for appointment-->
+              <label for="length" class="form-label">Length (min)</label>
+              <input type="number" class="form-control" required id="length" [(ngModel)]="this.length" name = "length">
             </div>
           <div class="mb-5"> <!--Input for appointment decription-->
               <label for="description" class="form-label">Description</label>
