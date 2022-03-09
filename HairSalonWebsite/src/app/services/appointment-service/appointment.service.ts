@@ -57,11 +57,11 @@ export class AppointmentService
    }
 
    /**
-    * A method to select an appointment for a specific stylist
+    * A method to get all appointments for a specific stylist
     */
-   getAppointmentByStylist(stylist: Stylist): Observable<Appointment[]>
+   getAppointmentByStylist(stylistid: number): Observable<Appointment[]>
    {
-      let url = this.baseURL.concat("Stylist/" + stylist.id)
+      let url = this.baseURL.concat("Stylist/" + stylistid)
       return this.http.get<Appointment[]>(url); 
    }
 }
