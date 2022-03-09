@@ -33,7 +33,6 @@ export class AppointmentPageComponent implements OnInit
   appointmentLoading: boolean = true; // boolean to show appointments are being loaded from the backend
   addingAppointment: boolean = false;
   updatingAppointment: boolean = false;
-  canAddAppointment: boolean = true; //boolean for appointment conflict
 
   events: CalendarEvent[] = []; //array to populate all appointments on the calendar
   appointments: Appointment[]; //array of appointments serviced from the backend 
@@ -109,29 +108,34 @@ export class AppointmentPageComponent implements OnInit
     //To do: to check if there is conflict with other appointments for same stylist 
     //get all appointments for specific stylist by stylistid 
      
-      this.appointmentService.getAppointmentByStylist(this.stylistid).subscribe(applist => 
+    this.appointmentService.getAppointmentByStylist(this.stylistid).subscribe(applist => 
       {
         //load all appointments into the applist array
         applist.forEach(appointment => appointment.date = new Date(appointment.date));
         let appointmentsForStylist: Appointment[] = applist; 
         
+        let validAppointment = true;
         
         //loop through all the appointments
         for(let app of appointmentsForStylist)
-	      {	
-		      //compare the dates	
-			    if(app.date.getTime() == this.date.getTime())
-			    {	
-				    //if date matches 
-    				this.canAddAppointment = false;
-            console.log("Apoointment is rejected!");
-			    }
-	      }
-      });
-    
+        {	
+          //compare the dates	
+          //TODO: Compare times better by checking if date is between 
+          //date and length, probably need to add length (time appointment 
+          //will take in minutes) onto appointment
+          if(app.date.getTime() == this.date.getTime())
+          {	
+            //if date matches 
+            validAppointment = false;
+          }
+        }
 
-    if(this.canAddAppointment == true)
-    {
+        if(!validAppointment)
+        {
+          //Send toast message
+          return;
+        }
+
         //create appointment variable to store form fields
         let appointment = 
         {
@@ -144,26 +148,28 @@ export class AppointmentPageComponent implements OnInit
           description: this.description
         };
 
-    //call appointment service to add appointment to database
-      this.appointmentService.addAppointment(appointment).subscribe(value => 
-      {
-        this.addingAppointment = false; //hide add appointment form
+        //call appointment service to add appointment to database
+        this.appointmentService.addAppointment(appointment).subscribe(value => 
+          {
+            this.addingAppointment = false; //hide add appointment form
 
-        //create calendar event to add to event list
-        let event : CalendarEvent = 
-        {
-          id: value.id, 
-          start: this.date, 
-          title: this.name + " - " + this.description
-        };
-      this.clearFields(); //clear form fields
-      this.appointments.push(value); //push appointment to appointment list
+            //create calendar event to add to event list
+            let event : CalendarEvent = 
+            {
+              id: value.id, 
+              start: this.date, 
+              title: this.name + " - " + this.description
+            };
+            this.clearFields(); //clear form fields
+            this.appointments.push(value); //push appointment to appointment list
 
-      //call calendar event component function to reload event list with new item
-      this.appCalendar.updateCalendarEvent(event);
-      this.dialog.closeAll(); //close dialog box
-      });
-    }
+            //call calendar event component function to reload event list with new item
+            this.appCalendar.updateCalendarEvent(event);
+            this.dialog.closeAll(); //close dialog box
+          }
+        );
+      }
+    );
   }
 
   /**
