@@ -53,7 +53,8 @@ export class SchedulePageComponent implements OnInit
         //call service methods to fetch all unavaiblites and appointments
         appointments: this.appointmentService.getAppointment(), 
         unavailabilities: this.unavailabilityService.getUnavailabilities()
-      }).subscribe(({appointments, unavailabilities}) => {
+      }).subscribe(({appointments, unavailabilities}) => 
+      {
         this.appointmentList = appointments; //set appointments to appointment list
         console.log(this.appointmentList);
 

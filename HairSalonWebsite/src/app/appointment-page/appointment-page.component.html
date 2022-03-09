@@ -34,15 +34,21 @@
                 <label for="description" class="form-label">Description</label>
                 <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
             </div>
-            <div class="mb-5"> <!--Input for stylist ID associated with the appointment-->
-              <mat-label>Stylist</mat-label>
-              <mat-select>
-                <mat-option *ngFor = "let stylist of simpleStylists">
 
-                </mat-option>
-              </mat-select>
-              <!-- <label for="stylistid" class="form-label">Stylist ID</label>
-              <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid"> -->
+            <!--Input for stylist ID associated with the appointment.
+                uses angular material form functionality to facilitate data binding to/from dropdown menu-->
+            <div class="mb-5"> 
+              <mat-form-field appearance="fill">
+                <mat-label>Stylist</mat-label>
+                <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+                <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay">
+                  <mat-select (selectionChange) = "setStylistIdFromDropdown($event)">
+                    <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist">
+                      {{stylist.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-autocomplete>
+              </mat-form-field>
             </div>
           </div>
         </div>
@@ -80,13 +86,23 @@
               <label for="description" class="form-label">Description</label>
               <input type="text" class="form-control" required id="description" [(ngModel)]="this.description" name = "description">
           </div>
-          <div class="mb-5"> <!--Input for stylist ID associated with the appointment-->
-            <label for="stylistid" class="form-label">Stylist ID</label>
-            <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
-          </div>
+          <!--Input for stylist ID associated with the appointment.
+          uses angular material form functionality to facilitate data binding to/from dropdown menu-->
+          <div class="mb-5"> 
+            <mat-form-field appearance="fill">
+              <mat-label>Stylist</mat-label>
+              <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+              <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+                <mat-select (selectionChange) = "setStylistIdFromDropdown($event)">
+                  <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist">
+                    {{stylist.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-autocomplete>
+            </mat-form-field>
           </div>
         </div>
-
+        </div>
         <!--Buttons to submit or cancel appointment-->
         <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateAppointment()">Submit</button>
         <button mat-flat-button style = "margin: 1%" (click)="cancelUpdateAppointment()">Cancel</button>

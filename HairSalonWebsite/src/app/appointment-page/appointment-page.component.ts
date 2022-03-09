@@ -4,6 +4,12 @@ import { CalendarEvent } from 'angular-calendar';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Stylist } from '../models/stylist.model';
+import { FormControl } from '@angular/forms';
+import { forkJoin, Observable, startWith } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { StylistService } from '../services/stylist-service/stylist.service';
+
 
 @Component(
 {
@@ -27,6 +33,11 @@ export class AppointmentPageComponent implements OnInit
   dateCreated: Date;
   description: string;
 
+  //form control for dropdown
+  stylistIDControl = new FormControl();
+  //filter observable for dropdown
+  filteredStylists: Observable<Stylist[]>;
+
   //booleans to display and hide forms on the appointments page
   loadingFinished: boolean = false; // boolean for displaying page
   appointmentLoading: boolean = true; // boolean to show appointments are being loaded from the backend
@@ -35,9 +46,9 @@ export class AppointmentPageComponent implements OnInit
   
   events: CalendarEvent[] = []; //array to populate all appointments on the calendar
   appointments: Appointment[]; //array of appointments serviced from the backend 
-  simpleStylists: SimpleStylist[]; //an array of stylistName-stylistID pairs for 
+  stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
 
-  constructor(private appointmentService: AppointmentService, private dialog: MatDialog) { }
+  constructor(private appointmentService: AppointmentService, private stylistService: StylistService, private dialog: MatDialog) { }
 
   /**
    * On loading page, all appointments on the database are loaded in and put into the event calendar array
@@ -45,14 +56,22 @@ export class AppointmentPageComponent implements OnInit
    */
   ngOnInit(): void 
   {
-    //call service to load all appointments from the database
-    this.appointmentService.getAppointment().subscribe(appointments => 
+    //forkjoin call to stylists and appointments database tables so they happen correctly
+    forkJoin(
       {
-        //load all appointmetns into the appointment array
-        appointments.forEach(appointment => appointment.date = new Date(appointment.date));
-        this.appointments = appointments; 
+        //call service to load all appointments from the database
+        appointments: this.appointmentService.getAppointment(),
+        //call service to load all stylists from the database
+        stylists: this.stylistService.getStylists()
+      }).subscribe(({appointments, stylists}) => 
+      {
+        this.appointments = appointments; //set appointments to appointment list
+        console.log(this.appointments);
 
-        //load appointment id, date, client name, and description for each appointment into the calendar array
+        this.stylists = stylists; //save the stylist list
+        console.log(this.stylists);
+        
+        //add appointments to calendar event list
         for(let appointment of this.appointments)
         {
           this.events.push(
@@ -62,15 +81,56 @@ export class AppointmentPageComponent implements OnInit
               title: appointment.name + " - " + appointment.description
             }
           );
-          
         }
-        
+
+        //set up the dropdown filter
+        this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
+          startWith(''),
+          map(value => (typeof value === 'string' ? value : value.stylistName)),
+          map(name => (name ? this.stylistDropdownFilter(name) : this.stylists.slice()))
+        )
+
         // display the page and show that appointments are done loading
         this.loadingFinished = true; 
         this.appointmentLoading = false;
-      }
-    );
+      });
   }
+
+  /**
+   * helper function for ngOnInit to filter the stylist list by an entered stylist name
+   */
+  private stylistDropdownFilter(name: string): Stylist[]
+  {
+    const filterValue = name.toLowerCase();
+
+    return this.stylists.filter(stylist => stylist.name.toLowerCase().includes(filterValue));
+  }
+
+  /**
+   * event method that sets the form stylistid field
+   * @param event the event that was fired
+   */
+  setStylistIdFromDropdown(event: any)
+  {
+    this.stylistid = event.value.id;
+  }
+
+  /** 
+   * @param stylist the stylist whose name should be displayed
+   * @returns the name of the stylist
+   */
+  stylistDropdownDisplay(stylist: Stylist): string
+  {
+    if(stylist != null && stylist.name != null && stylist.name != '')
+    {
+      return stylist.name;
+    }
+    else
+    {
+      return '';
+    }
+  }
+
 
   /**
    * Function to hide the the add appoinment field
@@ -88,6 +148,7 @@ export class AppointmentPageComponent implements OnInit
   clearFields()
   {
     this.stylistid = 0;
+    this.stylistIDControl.reset();
     this.name = "";
     this.email = "";
     this.phone = "";
@@ -171,6 +232,7 @@ export class AppointmentPageComponent implements OnInit
     //set fields of current object form
     this.id = event.id;
     this.stylistid =  appointmentToUpdate.stylistID;
+    this.stylistIDControl.setValue(this.stylists.find(stylist => stylist.id == this.stylistid)); //autopopulate the dropdown with the stylist
     this.name = appointmentToUpdate.name;
     this.email = appointmentToUpdate.email;
     this.phone = appointmentToUpdate.phone;
