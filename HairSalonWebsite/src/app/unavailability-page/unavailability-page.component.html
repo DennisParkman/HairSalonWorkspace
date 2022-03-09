@@ -3,90 +3,117 @@
     <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="setCreateUnavailability()">Add Unavailability</mat-button-toggle>
     <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteUnavailability($event)" 
                         (updateEvent)="startUpdateUnavailability($event)" (createEvent)="setCreateUnavailability()"></app-event-calendar>
-  </div>
+</div>
   
   <ng-template #addDialog> <!--This template allows both forms to display as pop up menus-->
 
     <!--Add unavailability form-->
-    <div *ngIf="addingUnavailability" class = "container">
-      <form>
-          <div>
-            <div style="float:left">
-              <div class="mb-5"> <!--Input for stylist Name-->
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" required id="name" [(ngModel)]="this.stylistName" name = "name">
-              </div>
-              <div class="mb-5"> <!--Input for unavailability start date-->
-                <label for="date" class="form-label">Start Date</label>
-                <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.startDate" name = "date">
-              </div>
-              <div class="mb-5"> <!--Input for unavailability end date-->
-                <label for="date" class="form-label">End Date</label>
-                <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.endDate" name = "date">
-              </div>
-            </div>
-            <div style="float:left">
-              <mat-form-field appearance="fill"> <!--Input for unavailability frequency-->
-                <mat-label>Period</mat-label>
-                <mat-select [(ngModel)]="period">
-                  <mat-option *ngFor="let p of timePeriods" [value]="p">
-                    {{p.toString()}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div class="mb-5"> <!--Input for ID of stylist with unavailability-->
-                <label for="stylistid" class="form-label">Stylist ID</label>
-                <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
-              </div>
-            </div>
-          </div>
-          
-          <!--Buttons to submit or cancel unavailability-->
-          <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addUnavailability()">Submit</button>
-          <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
-        </form>
+    <div *ngIf="addingUnavailability">
+      <div>
+        <div style="float:left; margin:10px">
+
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="this.stylistName">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="addStartDatePicker" placeholder="Choose a date" [(ngModel)]="this.startDate">
+            <mat-datepicker-toggle matSuffix [for]="$any(addStartDatePicker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #addStartDatePicker [showSeconds]="false" [enableMeridian]="true"><!--[color]="color" -->
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="addEndDatePicker" placeholder="Choose a date" [(ngModel)]="this.endDate">
+            <mat-datepicker-toggle matSuffix [for]="$any(addEndDatePicker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #addEndDatePicker [showSeconds]="false" [enableMeridian]="true"><!--[color]="color" -->
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+
+        </div>
+        <div style="float:left; margin:10px">
+          <mat-form-field appearance="fill"> <!--Input for unavailability frequency-->
+            <mat-label>Period</mat-label>
+            <mat-select [(ngModel)]="period">
+              <mat-option *ngFor="let p of timePeriods" [value]="p">
+                {{p.toString()}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <mat-label>Stylist ID</mat-label>
+            <input matInput type="number" [(ngModel)]="this.stylistid">
+          </mat-form-field>
+
+        </div>
+      </div>
+      
+      <!--Buttons to submit or cancel unavailability-->
+      <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addUnavailability()">Submit</button>
+      <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
     </div>
   
     <!--Update unavailability form-->
-    <div *ngIf="updatingUnavailability" class = "container">
-      <form>
-        <div>
-          <div style="float:left">
-            <div class="mb-5"> <!--Input for stylist Name-->
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" required id="name" [(ngModel)]="this.stylistName" name = "name">
-            </div>
-            <div class="mb-5"> <!--Input for unavailability start date-->
-              <label for="date" class="form-label">Start Date</label>
-              <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.startDate" name = "date">
-            </div>
-            <div class="mb-5"> <!--Input for unavailability end date-->
-              <label for="date" class="form-label">End Date</label>
-              <input type="datetime-local" class="form-control" required id="date" [(ngModel)]="this.endDate" name = "date">
-            </div>
-          </div>
-          <div style="float:left">
-            <div class="mb-5"> <!--Input for unavailability frequency-->
-                <mat-form-field appearance="fill">
-                  <mat-label>Period</mat-label>
-                  <mat-select [(ngModel)]="period">
-                    <mat-option *ngFor="let p of timePeriods" [value]="p">
-                      {{p.toString()}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="mb-5"> <!--Input for ID of stylist with unavailability-->
-              <label for="stylistid" class="form-label">Stylist ID</label>
-              <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
-            </div>
-          </div>
-        </div>
+    <div *ngIf="updatingUnavailability" >
+      <div>
+        <div style="float:left; margin:10px">
 
-          <!--Buttons to submit or cancel unavailability-->
-          <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateUnavailability()">Submit</button>
-          <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
-        </form>
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="this.stylistName">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="updateStartDatePicker" placeholder="Choose a date" [(ngModel)]="this.startDate">
+            <mat-datepicker-toggle matSuffix [for]="$any(updateStartDatePicker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #updateStartDatePicker  [showSeconds]="false" [enableMeridian]="true"><!--[color]="color" -->
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="updateEndDatePicker" placeholder="Choose a date" [(ngModel)]="this.endDate">
+            <mat-datepicker-toggle matSuffix [for]="$any(updateEndDatePicker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #updateEndDatePicker [showSeconds]="false" [enableMeridian]="true"><!--[color]="color" -->
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+
+        </div>
+        <div style="float:left; margin:10px">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Period</mat-label>
+            <mat-select [(ngModel)]="period">
+              <mat-option *ngFor="let p of timePeriods" [value]="p">
+                {{p.toString()}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <mat-label>Stylist ID</mat-label>
+            <input matInput type="number" [(ngModel)]="this.stylistid">
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <!--Buttons to submit or cancel unavailability-->
+      <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateUnavailability()">Submit</button>
+      <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
     </div>
   
   </ng-template>
