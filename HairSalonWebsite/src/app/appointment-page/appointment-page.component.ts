@@ -4,6 +4,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 
 @Component(
 {
@@ -103,6 +104,25 @@ export class AppointmentPageComponent implements OnInit
     //convert form dates to date objects
     this.dateCreated = new Date();
     this.date = new Date(this.date);
+
+    //To do: to check if there is conflict with other appointments for same stylist 
+    //get all appointments for specific stylist by stylistid 
+    //let appointmentsForStylist: Observable<Appointment[]> = this.appointmentService.getAppointmentByStylist(stylist);
+    //loop through all the appointments 
+    /*
+      for(var app of appointmentsForStylist)
+	    {	
+		    //compare the dates	
+			  if(app.date.getTime() == this.date.getTime())
+			  {	
+				    //if date matches 
+    				//this.canAddAppointment = false;
+			  }
+	    }
+    */
+    
+
+    //if(this.canAddAppointment == true)
 
     //create appointment variable to store form fields
     let appointment = 
