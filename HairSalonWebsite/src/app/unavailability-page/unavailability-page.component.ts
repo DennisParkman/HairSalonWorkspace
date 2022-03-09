@@ -17,7 +17,7 @@ export class UnavailabilityPageComponent implements OnInit
 {
   //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
+  @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
   unavailabilities: Unavailability[]; //list of unavailabilities
 
@@ -185,7 +185,7 @@ export class UnavailabilityPageComponent implements OnInit
 
     //show update form
     this.updatingUnavailability = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
   /**
@@ -237,7 +237,7 @@ export class UnavailabilityPageComponent implements OnInit
   {
     this.resetDialog();
     this.addingUnavailability = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
 

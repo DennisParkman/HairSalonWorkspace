@@ -15,7 +15,7 @@ export class AppointmentPageComponent implements OnInit
 {
   //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
+  @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
   //appointment attributes for forms
   id: number;
@@ -179,7 +179,7 @@ export class AppointmentPageComponent implements OnInit
 
     //show update form
     this.updatingAppointment = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
   /**
@@ -235,7 +235,7 @@ export class AppointmentPageComponent implements OnInit
   {
     this.resetDialog();
     this.addingAppointment = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
   resetDialog() {
