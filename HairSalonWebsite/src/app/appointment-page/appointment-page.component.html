@@ -28,7 +28,7 @@
 
         <mat-form-field>
           <mat-label>Phone</mat-label>
-          <input matInput type="tel" [(ngModel)]="this.phone">
+          <input matInput type="tel" [maxLength]="10" [(ngModel)]="this.phone">
         </mat-form-field>
 
       </div>
