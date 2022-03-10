@@ -148,7 +148,7 @@ export class AppointmentPageComponent implements OnInit
   clearFields()
   {
     this.stylistid = 0;
-    this.stylistIDControl.reset();
+    this.stylistIDControl.reset(); //clear the dropdown value
     this.name = "";
     this.email = "";
     this.phone = "";
