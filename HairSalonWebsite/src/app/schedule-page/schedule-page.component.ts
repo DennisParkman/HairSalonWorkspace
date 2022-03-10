@@ -30,9 +30,11 @@ export class SchedulePageComponent implements OnInit
   unavailabilitiesList: Unavailability[]
   appointmentList: Appointment[];
   stylistList: Stylist[];
-  dayOfEvents: CalendarEvent[] = [];
   
-  events: CalendarEvent[] = []; //calendar events list of unavailabilities and appointments
+  eventsToShow: CalendarEvent[] = []; //calendar events list of unavailabilities and appointments
+  allEvents: CalendarEvent[]= [];
+  oneOrMoreStylistEvents: CalendarEvent[]= [];
+
 
   scheduleLoading: boolean = true; //boolean to load page
 
@@ -41,7 +43,7 @@ export class SchedulePageComponent implements OnInit
     private appointmentService: AppointmentService,
     public dialog: MatDialog ) { }
 
-    /**
+  /**
    * On loading page, all unavailabilities and appointments on the database are loaded in and put into the event calendar array
    * and their corresponding object arrays.
    */
@@ -50,20 +52,24 @@ export class SchedulePageComponent implements OnInit
 
     forkJoin(
       {
-        //call service methods to fetch all unavaiblites and appointments
+        //call service methods to fetch all unavaiblites, appointments, and stylists
         appointments: this.appointmentService.getAppointment(), 
-        unavailabilities: this.unavailabilityService.getUnavailabilities()
-      }).subscribe(({appointments, unavailabilities}) => {
+        unavailabilities: this.unavailabilityService.getUnavailabilities(),
+        stylists: this.stylistService.getStylists()
+      }).subscribe(({appointments, unavailabilities, stylists}) => {
         this.appointmentList = appointments; //set appointments to appointment list
         console.log(this.appointmentList);
 
         this.unavailabilitiesList = unavailabilities; //set unavailabilities to unavailabilities list
         console.log(this.unavailabilitiesList);
+
+        this.stylistList = stylists; //set unavailabilities to unavailabilities list
+        console.log(this.stylistList);
         
         //add appointments to calendar event list
         for(let appointment of this.appointmentList)
         {
-          this.events.push(
+          this.allEvents.push(
             {
               start: new Date(appointment.date),
               title: appointment.name + " - " + appointment.description
@@ -74,7 +80,7 @@ export class SchedulePageComponent implements OnInit
         //add unavailabilities to calendar events list
         for(let unavailability of this.unavailabilitiesList)
         {
-          this.events.push(
+          this.allEvents.push(
             {
               start: new Date(unavailability.startDate),
               end: new Date(unavailability.endDate),
@@ -82,11 +88,53 @@ export class SchedulePageComponent implements OnInit
             }
           );
         }
-
-        console.log(this.events);
+        this.eventsToShow = this.allEvents; //load events to show on calendar
+        console.log(this.eventsToShow);
         this.scheduleLoading = false; //show calendar
-
       }
     );
+  }
+
+  /**
+   * Function to show only calendar events of stylists selected by the user. 
+   * @param stylist : the stylist to update the calendar events list by
+   */
+  showScheduleBy(stylist: Stylist)
+  {
+    this.oneOrMoreStylistEvents = []; //create local list of events for one stylist
+
+
+    //get unavaiblites and appointments for the requested stylist
+    for(let appointment of this.appointmentList) //check for appointments
+        {
+          if(appointment.stylistID == stylist.id) //load appoinment if stylistID is equal to requested stylist
+          {
+            //create appointment and push it onto the event list
+            this.oneOrMoreStylistEvents.push(
+              {
+                start: new Date(appointment.date),
+                title: appointment.name + " - " + appointment.description
+              }
+            );
+          }  
+        }
+    for(let unavailability of this.unavailabilitiesList) //check for unavailabilities
+    {
+      if(unavailability.stylistID == stylist.id) //load unavailability if stylistID is equal to requested stylist
+      {
+        //create unavailability and push it onto the event list
+        this.oneOrMoreStylistEvents.push(
+          {
+            start: new Date(unavailability.startDate),
+            end: new Date(unavailability.endDate),
+            title: unavailability.stylistName + " time off"
+          }
+        );
+      }
+    }
+    this.eventsToShow = this.oneOrMoreStylistEvents;
+    console.log(this.eventsToShow);
+    console.log("showing one stylist");
+
   }
 }
