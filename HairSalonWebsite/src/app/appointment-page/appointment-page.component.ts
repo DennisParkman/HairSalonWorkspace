@@ -129,22 +129,20 @@ export class AppointmentPageComponent implements OnInit
           //if date matches
           if(app.date.getDate() == this.date.getDate())
           {	
-            let timeofappinList = app.date.getTime();
-            let timeofnewapp = this.date.getTime();
             //new appointment time is between another appointment time & its length of time
-            if(timeofappinList < timeofnewapp && timeofnewapp < timeofappinList + app.length)
+            if(app.date.getTime() < this.date.getTime() && this.date.getTime() < app.date.getTime() + app.length)
              {
                 validAppointment = false;
              }
              //for example the appointment in list (time+length) 3:30-4:45pm
-             //and new appointment (time+length) is 3:00-4:30pm or 3:00-5:00pm respectively.
-             if(timeofappinList < timeofnewapp + this.length) 
+             //and new appointment (time+length) is 3:00-4:30pm or 3:00-5:00pm respectively (invalid appoitnments)
+             if(app.date.getTime() < this.date.getTime() + this.length) //3:30p < 4:30p or 5:00p
              {
-               if(timeofnewapp + this.length < timeofappinList + app.length)
+               if(this.date.getTime() + this.length < app.date.getTime() + app.length) // 4:30p < 4:45p
                 {
                   validAppointment = false;
                 }
-                if(timeofnewapp + this.length >= timeofappinList + app.length)
+                if(this.date.getTime() + this.length >= app.date.getTime() + app.length) // 5:00p > 4:45p
                 {
                   validAppointment = false;
                 }
