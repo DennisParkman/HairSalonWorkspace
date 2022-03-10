@@ -129,8 +129,8 @@ export class AppointmentPageComponent implements OnInit
           //if date matches
           if(app.date.getDate() == this.date.getDate())
           {	
-            let timeofappinList = app.date.getHours()+app.date.getMinutes();
-            let timeofnewapp = this.date.getHours()+this.date.getMinutes();
+            let timeofappinList = app.date.getTime();
+            let timeofnewapp = this.date.getTime();
             //new appointment time is between another appointment time & its length of time
             if(timeofappinList < timeofnewapp && timeofnewapp < timeofappinList + app.length)
              {
