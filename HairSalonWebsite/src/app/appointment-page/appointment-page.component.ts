@@ -78,7 +78,7 @@ export class AppointmentPageComponent implements OnInit
             {
               id:appointment.id,
               start: new Date(appointment.date),
-              title: appointment.name + " - " + appointment.description
+              title: appointment.name + " - " + appointment.description //appointment.name is the client
             }
           );
         }
@@ -86,7 +86,7 @@ export class AppointmentPageComponent implements OnInit
         //set up the dropdown filter
         this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
           startWith(''),
-          map(value => (typeof value === 'string' ? value : value.stylistName)),
+          map(value => (typeof value === 'string' ? value : value.name)), //but it also worked with stylistName???
           map(name => (name ? this.stylistDropdownFilter(name) : this.stylists.slice()))
         )
 
@@ -108,11 +108,12 @@ export class AppointmentPageComponent implements OnInit
 
   /**
    * event method that sets the form stylistid field
-   * @param event the event that was fired
+   * @param stylist the stylist that was selected; it is type any because this.stylistid is not nullable, but stylist.id is
    */
-  setStylistIdFromDropdown(event: any)
+  setStylistIdFromDropdown(stylist: any)
   {
-    this.stylistid = event.value.id;
+    console.log(stylist);
+    this.stylistid = stylist.id;
   }
 
   /** 

@@ -36,17 +36,16 @@
             </div>
 
             <!--Input for stylist ID associated with the appointment.
-                uses angular material form functionality to facilitate data binding to/from dropdown menu-->
+            uses angular material form functionality to facilitate data binding to/from dropdown menu-->
             <div class="mb-5"> 
               <mat-form-field appearance="fill">
                 <mat-label>Stylist</mat-label>
                 <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
-                <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay">
-                  <mat-select (selectionChange) = "setStylistIdFromDropdown($event)">
-                    <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist">
-                      {{stylist.name}}
-                    </mat-option>
-                  </mat-select>
+                <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+                  <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+                  <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+                    {{stylist.name}}
+                  </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
             </div>
@@ -93,16 +92,15 @@
               <mat-label>Stylist</mat-label>
               <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
               <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
-                <mat-select (selectionChange) = "setStylistIdFromDropdown($event)">
-                  <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist">
-                    {{stylist.name}}
-                  </mat-option>
-                </mat-select>
+                <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+                <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+                  {{stylist.name}}
+                </mat-option>
               </mat-autocomplete>
             </mat-form-field>
           </div>
         </div>
-        </div>
+      </div>
         <!--Buttons to submit or cancel appointment-->
         <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateAppointment()">Submit</button>
         <button mat-flat-button style = "margin: 1%" (click)="cancelUpdateAppointment()">Cancel</button>

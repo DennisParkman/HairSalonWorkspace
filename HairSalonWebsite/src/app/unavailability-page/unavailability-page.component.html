@@ -12,9 +12,19 @@
       <form>
           <div>
             <div style="float:left">
-              <div class="mb-5"> <!--Input for stylist Name-->
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" required id="name" [(ngModel)]="this.stylistName" name = "name">
+              <div class="mb-5"> <!--Input for stylist id which should also set name-->
+                <!--Input for stylist ID associated with the unavailability.
+                uses angular material form functionality to facilitate data binding to/from dropdown menu-->
+                <mat-form-field appearance="fill">
+                  <mat-label>Stylist</mat-label>
+                  <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+                  <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+                    <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+                    <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+                      {{stylist.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
               </div>
               <div class="mb-5"> <!--Input for unavailability start date-->
                 <label for="date" class="form-label">Start Date</label>
@@ -34,10 +44,6 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div class="mb-5"> <!--Input for ID of stylist with unavailability-->
-                <label for="stylistid" class="form-label">Stylist ID</label>
-                <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
-              </div>
             </div>
           </div>
           
@@ -52,9 +58,19 @@
       <form>
         <div>
           <div style="float:left">
-            <div class="mb-5"> <!--Input for stylist Name-->
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" required id="name" [(ngModel)]="this.stylistName" name = "name">
+            <div class="mb-5"> <!--Input for stylist id, which also selects stylist name-->
+              <!--Input for stylist ID associated with the unavailability.
+                uses angular material form functionality to facilitate data binding to/from dropdown menu-->
+                <mat-form-field appearance="fill">
+                  <mat-label>Stylist</mat-label>
+                  <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+                  <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+                    <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+                    <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+                      {{stylist.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
             </div>
             <div class="mb-5"> <!--Input for unavailability start date-->
               <label for="date" class="form-label">Start Date</label>
@@ -75,10 +91,6 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-            </div>
-            <div class="mb-5"> <!--Input for ID of stylist with unavailability-->
-              <label for="stylistid" class="form-label">Stylist ID</label>
-              <input type="number" class="form-control" required id="stylistid" [(ngModel)]="this.stylistid" name = "stylistid">
             </div>
           </div>
         </div>
