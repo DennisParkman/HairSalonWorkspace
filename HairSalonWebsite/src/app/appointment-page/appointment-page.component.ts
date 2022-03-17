@@ -107,63 +107,8 @@ export class AppointmentPageComponent implements OnInit
     this.dateCreated = new Date();
     this.date = new Date(this.date);
 
-    //To do: to check if there is conflict with other appointments for same stylist 
-    //get all appointments for specific stylist by stylistid 
-     
-    this.appointmentService.getAppointmentByStylist(this.stylistid).subscribe(applist => 
-      {
-        //load all appointments into the applist array
-        applist.forEach(appointment => appointment.date = new Date(appointment.date));
-        let appointmentsForStylist: Appointment[] = applist; 
-        
-        let validAppointment = true;
-        
-        //loop through all the appointments
-        for(let app of appointmentsForStylist)
-        {	
-          //compare the dates	
-          //TODO: Compare times better by checking if date is between 
-          //date and length, probably need to add length (time appointment 
-          //will take in minutes) onto appointment
-
-          //if date matches
-          if(app.date.getDate() == this.date.getDate())
-          {	
-            //new appointment time is between another appointment time & its length of time
-            if(app.date.getTime() < this.date.getTime() && this.date.getTime() < app.date.getTime() + app.length)
-             {
-                validAppointment = false;
-             }
-             //for example the appointment in list (time+length) 3:30-4:45pm
-             //and new appointment (time+length) is 3:00-4:30pm or 3:00-5:00pm respectively (invalid appoitnments)
-             if(app.date.getTime() < this.date.getTime() + this.length) //3:30p < 4:30p or 5:00p
-             {
-               if(this.date.getTime() + this.length < app.date.getTime() + app.length) // 4:30p < 4:45p
-                {
-                  validAppointment = false;
-                }
-                if(this.date.getTime() + this.length >= app.date.getTime() + app.length) // 5:00p > 4:45p
-                {
-                  validAppointment = false;
-                }
-                   
-             }
-            
-          }
-        }
-
-        if(!validAppointment)
-        {
-          //Send toast message
-          /*this.toastrService.error('Appointment Conflict Detected', 'Rejected', 
-          {
-              timeOut: 3000,
-          });*/
-          return;
-        }
-
         //create appointment variable to store form fields
-        let appointment = 
+        let appointment : Appointment= 
         {
           stylistID: this.stylistid, 
           name: this.name, 
@@ -175,6 +120,13 @@ export class AppointmentPageComponent implements OnInit
           description: this.description
         };
 
+        
+        //To check if there is conflict with other appointments for same stylist 
+        var doesConflict = this.checkAppointmentConflict(appointment);
+        if(doesConflict)
+        {
+          return;
+        }
         //call appointment service to add appointment to database
         this.appointmentService.addAppointment(appointment).subscribe(value => 
           {
@@ -195,8 +147,7 @@ export class AppointmentPageComponent implements OnInit
             this.dialog.closeAll(); //close dialog box
           }
         );
-      }
-    );
+    
   }
 
   /**
@@ -255,7 +206,7 @@ export class AppointmentPageComponent implements OnInit
     this.date = new Date(this.date);
 
     //package fields into an appointment object
-    let appointment = 
+    let appointment : Appointment= 
     {
       id: this.id, 
       stylistID: this.stylistid, 
@@ -268,6 +219,12 @@ export class AppointmentPageComponent implements OnInit
       description: this.description
     };
 
+    //To check if there is conflict with other appointments for same stylist 
+    var doesConflict = this.checkAppointmentConflict(appointment);
+    if(doesConflict)
+    {
+      return;
+    }
     //create a calendar event from appointment object
     let event = 
     {
@@ -292,6 +249,45 @@ export class AppointmentPageComponent implements OnInit
     this.dialog.closeAll();
   }
 
+  /**
+   * Method to check appointment conflicts from a given appointments. Returns true or false
+   * if the appointment does or does not conflict.
+   */
+  checkAppointmentConflict(newAppoinment: Appointment)
+  {
+       //loop through all the appointments
+        for(let app of this.appointments)
+        {	
+          //if stylist matches
+          if(app.stylistID == newAppoinment.stylistID)
+          {
+              //if date matches
+            if(app.date.getDate() == newAppoinment.date.getDate())
+            {	
+              let newAppStarttime = newAppoinment.date.getTime();
+              let newAppEndtime = newAppoinment.date.getTime() + newAppoinment.length;
+              let oldAppStarttime = app.date.getTime();
+              let oldAppEndtime =app.date.getTime() + app.length;
+              // Check for any overlap between the time period of a current appointment by assessing 
+              // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated.
+            
+              if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || (newAppEndtime >= oldAppStarttime && newAppEndtime <= oldAppEndtime) || (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
+              {
+                //Add toast message
+
+                console.log("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+                          + "appointment" + app.date + "with length" + app.length);
+                return true;
+              }
+            }
+          
+          }
+          
+        }
+   
+    //No conflicts 
+    return false;
+  }
   /**
    * function to close update form and clear all form fields
    */
