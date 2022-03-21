@@ -87,6 +87,41 @@ export class UnavailabilityPageComponent implements OnInit
   }
 
   /**
+   * Validate fields before updating / creating unavailability
+   */
+  validateFields() : boolean
+  {
+    let valid = true;
+
+    if(this.stylistName == null)
+    {
+      valid = false;
+    }
+    else if(this.startDate == null)
+    {
+      valid = false;
+    }
+    else if(this.endDate == null)
+    {
+      valid = false;
+    }
+    else if(this.period == null)
+    {
+      valid = false;
+    }
+    else if(this.startDate.getTime() > this.endDate.getTime())
+    {
+      valid = false;
+    }
+    else if(this.startDate.getTime() < Date.now() - (24 * 60 * 60 * 1000))
+    {
+      valid = false;
+    }
+
+    return valid;
+  }
+
+  /**
    * Function to hide the the add unavailability field
    */
   cancelAddUnavailability()
@@ -113,6 +148,11 @@ export class UnavailabilityPageComponent implements OnInit
    */
   addUnavailability()
   {
+    if(!this.validateFields())
+    {
+      return;
+    }
+
     //create unavailability variable to store form fields
     let unavailability = 
     {
@@ -195,6 +235,11 @@ export class UnavailabilityPageComponent implements OnInit
    */
   updateUnavailability()
   {
+    if(!this.validateFields())
+    {
+      return;
+    }
+
     //package fields into an unavailability object
     let unavailability : Unavailability = 
     {
