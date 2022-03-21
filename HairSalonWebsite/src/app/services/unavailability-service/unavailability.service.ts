@@ -42,6 +42,7 @@ export class UnavailabilityService
      */
     updateUnavailability(unavailability: Unavailability): void
     {
+        console.log(unavailability); //debug
         let url = this.baseURL.concat("Unavailability");
         this.http.put(url, unavailability).subscribe();
     }
