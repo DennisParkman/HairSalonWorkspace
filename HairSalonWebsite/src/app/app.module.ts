@@ -23,6 +23,7 @@ import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component
 import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule(
 {
@@ -53,6 +54,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
     ReactiveFormsModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
+    ToastrModule.forRoot(),
     
     CalendarModule.forRoot({
       provide: DateAdapter,
