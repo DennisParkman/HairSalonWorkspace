@@ -29,8 +29,8 @@
               <mat-form-field appearance="fill"> <!--Input for unavailability frequency-->
                 <mat-label>Period</mat-label>
                 <mat-select [(ngModel)]="period">
-                  <mat-option *ngFor="let p of timePeriods" [value]="p">
-                    {{p.toString()}}
+                  <mat-option *ngFor="let p of timePeriods" [value]="p" (onSelectionChange)="setPeriod(p)">
+                    {{p}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -70,8 +70,8 @@
                 <mat-form-field appearance="fill">
                   <mat-label>Period</mat-label>
                   <mat-select [(ngModel)]="period">
-                    <mat-option *ngFor="let p of timePeriods" [value]="p">
-                      {{p.toString()}}
+                    <mat-option *ngFor="let p of timePeriods" [value]="p" (onSelectionChange)="setPeriod(p)">
+                      {{timePeriodToString(p)}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>

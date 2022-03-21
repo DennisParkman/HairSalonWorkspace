@@ -7,6 +7,7 @@ import { UnavailabilityService } from '../services/unavailability-service/unavai
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+
 @Component(
 {
   selector: 'app-unavailability-page',
@@ -87,6 +88,31 @@ export class UnavailabilityPageComponent implements OnInit
   }
 
   /**
+   * onSelectionChange event handler to set the form field for TimePeriod
+   * @param p the time period to set the form value to
+   */
+  setPeriod(p: TimePeriod)
+  {
+    /*
+    console.log(p); //debug
+    console.log(typeof p); //debug
+
+    console.log(TimePeriod[p]); //debug
+    console.log(typeof TimePeriod[p]); //debug
+*/
+    this.period = p;
+    
+    console.log(this.period); //debug
+    console.log(typeof this.period); //debug
+    
+  }
+
+  timePeriodToString(p: TimePeriod): string
+  {
+    return Unavailability.timePeriodToString(p);
+  }
+
+  /**
    * Function to hide the the add unavailability field
    */
   cancelAddUnavailability()
@@ -113,6 +139,7 @@ export class UnavailabilityPageComponent implements OnInit
    */
   addUnavailability()
   {
+    console.log(this.period); //debug
     //create unavailability variable to store form fields
     let unavailability = 
     {
@@ -176,6 +203,8 @@ export class UnavailabilityPageComponent implements OnInit
     let appIndex = this.unavailabilities.findIndex(x => x.id === event.id);
     let unavailabilityToUpdate: Unavailability = this.unavailabilities[appIndex]
 
+    console.log(unavailabilityToUpdate); //debug
+
     //set fields of current object form
     this.id = event.id;
     this.stylistid =  unavailabilityToUpdate.stylistID;
@@ -217,7 +246,7 @@ export class UnavailabilityPageComponent implements OnInit
 
     //call service to update unavailability in database
     this.unavailabilityService.updateUnavailability(unavailability);
-    
+
     //find index of appoinment to change and replace existing information in appoinment list
     let appIndexToUpdate = this.unavailabilities.findIndex(x => x.id === unavailability.id);
     this.unavailabilities[appIndexToUpdate] = unavailability;
