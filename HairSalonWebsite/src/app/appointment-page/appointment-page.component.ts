@@ -5,6 +5,7 @@ import { AppointmentService } from '../services/appointment-service/appointment.
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component(
 {
@@ -38,7 +39,7 @@ export class AppointmentPageComponent implements OnInit
   events: CalendarEvent[] = []; //array to populate all appointments on the calendar
   appointments: Appointment[]; //array of appointments serviced from the backend 
 
-  constructor(private appointmentService: AppointmentService, private dialog: MatDialog) { }
+  constructor(private appointmentService: AppointmentService, private dialog: MatDialog, private toastr: ToastrService) { }
 
   /**
    * On loading page, all appointments on the database are loaded in and put into the event calendar array
@@ -255,36 +256,36 @@ export class AppointmentPageComponent implements OnInit
    */
   checkAppointmentConflict(newAppoinment: Appointment)
   {
-       //loop through all the appointments
-        for(let app of this.appointments)
+    //loop through all the appointments
+    for(let app of this.appointments)
+    {	
+      //if stylist matches
+      if(app.stylistID == newAppoinment.stylistID)
+      {
+        //if date matches
+        if(app.date.getDate() == newAppoinment.date.getDate())
         {	
-          //if stylist matches
-          if(app.stylistID == newAppoinment.stylistID)
+          let newAppStarttime = newAppoinment.date.getTime();
+          let newAppEndtime = newAppoinment.date.getTime() + newAppoinment.length;
+          let oldAppStarttime = app.date.getTime();
+          let oldAppEndtime =app.date.getTime() + app.length;
+          // Check for any overlap between the time period of a current appointment by assessing 
+          // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated. 
+          if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || 
+            (newAppEndtime >= oldAppStarttime && newAppEndtime <= oldAppEndtime) || 
+            (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
           {
-              //if date matches
-            if(app.date.getDate() == newAppoinment.date.getDate())
-            {	
-              let newAppStarttime = newAppoinment.date.getTime();
-              let newAppEndtime = newAppoinment.date.getTime() + newAppoinment.length;
-              let oldAppStarttime = app.date.getTime();
-              let oldAppEndtime =app.date.getTime() + app.length;
-              // Check for any overlap between the time period of a current appointment by assessing 
-              // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated.
+            //Add toast message
+            this.toastr.error("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+            + "appointment" + app.date + "with length" + app.length, "Appointment Conflict Detection");
             
-              if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || (newAppEndtime >= oldAppStarttime && newAppEndtime <= oldAppEndtime) || (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
-              {
-                //Add toast message
-
-                console.log("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
-                          + "appointment" + app.date + "with length" + app.length);
-                return true;
-              }
-            }
-          
+            console.log("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+                        + "appointment" + app.date + "with length" + app.length);
+            return true;
           }
-          
         }
-   
+      }
+    }
     //No conflicts 
     return false;
   }
