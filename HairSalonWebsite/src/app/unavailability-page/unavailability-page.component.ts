@@ -17,7 +17,7 @@ export class UnavailabilityPageComponent implements OnInit
 {
   //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
+  @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
   unavailabilities: Unavailability[]; //list of unavailabilities
 
@@ -87,13 +87,12 @@ export class UnavailabilityPageComponent implements OnInit
   }
 
   /**
-   * Function to hide the the add unavailability field
+   * Function to close and reset dialog box
    */
-  cancelAddUnavailability()
+  closeDialog()
   {
-    this.addingUnavailability = false;
-    this.clearFields();
-    this.dialog.closeAll();
+    this.resetDialog();
+    this.dialog.closeAll(); //closes dialog boxes
   }
 
   /**
@@ -170,7 +169,7 @@ export class UnavailabilityPageComponent implements OnInit
    */
   startUpdateUnavailability(event: any)
   {
-    console.log(event);
+    this.resetDialog();
 
     //find unavailability based on calendar event
     let appIndex = this.unavailabilities.findIndex(x => x.id === event.id);
@@ -186,7 +185,7 @@ export class UnavailabilityPageComponent implements OnInit
 
     //show update form
     this.updatingUnavailability = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
   /**
@@ -232,22 +231,19 @@ export class UnavailabilityPageComponent implements OnInit
   }
 
   /**
-   * function to close update form and clear all form fields
-   */
-  cancelUpdateUnavailability()
-  {
-    this.updatingUnavailability = false;
-    this.clearFields();
-    this.dialog.closeAll();
-  }
-
-  /**
    * function to show create form from dialog box of events
    */
   setCreateUnavailability()
   {
+    this.resetDialog();
     this.addingUnavailability = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
+
+  resetDialog() {
+    this.updatingUnavailability = false;
+    this.addingUnavailability = false;
+    this.clearFields();
+  }
 }
