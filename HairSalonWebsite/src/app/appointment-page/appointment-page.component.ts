@@ -15,7 +15,7 @@ export class AppointmentPageComponent implements OnInit
 {
   //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
+  @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
   //appointment attributes for forms
   id: number;
@@ -72,12 +72,11 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * Function to hide the the add appoinment field
+   * Function to close and reset dialog box
    */
-  cancelAddAppointment()
+  closeDialog()
   {
-    this.addingAppointment = false; //changes form boolean
-    this.clearFields(); // clears all appointment fields
+    this.resetDialog();
     this.dialog.closeAll(); //closes dialog boxes
   }
 
@@ -162,6 +161,7 @@ export class AppointmentPageComponent implements OnInit
    */
   startUpdateAppointment(event: any)
   {
+    this.resetDialog();
 
     //find appointment based on calendar event
     let appIndex = this.appointments.findIndex(x => x.id === event.id);
@@ -179,7 +179,7 @@ export class AppointmentPageComponent implements OnInit
 
     //show update form
     this.updatingAppointment = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
   /**
@@ -229,22 +229,19 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * function to close update form and clear all form fields
-   */
-  cancelUpdateAppointment()
-  {
-    this.updatingAppointment = false;
-    this.clearFields();
-    this.dialog.closeAll();
-  }
-
-  /**
    * function to show create form from dialog box of events
    */
   setCreateAppointment()
   {
+    this.resetDialog();
     this.addingAppointment = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
+  }
+
+  resetDialog() {
+    this.updatingAppointment = false;
+    this.addingAppointment = false;
+    this.clearFields();
   }
 
 }
