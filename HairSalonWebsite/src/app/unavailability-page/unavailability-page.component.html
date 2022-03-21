@@ -42,7 +42,7 @@
           <mat-label>Period</mat-label>
           <mat-select [(ngModel)]="period">
             <mat-option *ngFor="let p of timePeriods" [value]="p">
-              {{p.toString()}}
+              {{timePeriodToString(p)}}
             </mat-option>
           </mat-select>
         </mat-form-field>

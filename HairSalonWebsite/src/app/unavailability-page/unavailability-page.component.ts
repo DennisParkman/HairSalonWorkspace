@@ -87,9 +87,6 @@ export class UnavailabilityPageComponent implements OnInit
     );
   }
 
-  /**
-   */
-
   timePeriodToString(p: TimePeriod): string
   {
     return Unavailability.timePeriodToString(p);
