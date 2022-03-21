@@ -103,7 +103,11 @@ export class AppointmentPageComponent implements OnInit
     //convert form dates to date objects
     this.dateCreated = new Date();
     this.date = new Date(this.date);
-
+    if(!this.validateFields())
+    {
+      //Add toast message
+      return;
+    }
     //create appointment variable to store form fields
     let appointment = 
     {
@@ -190,7 +194,11 @@ export class AppointmentPageComponent implements OnInit
   {
     //convert this.date to date object
     this.date = new Date(this.date);
-
+    if(!this.validateFields())
+    {
+      //Add toast message
+      return;
+    }
     //package fields into an appointment object
     let appointment = 
     {
@@ -245,6 +253,39 @@ export class AppointmentPageComponent implements OnInit
   {
     this.addingAppointment = true;
     this.dialog.open(this.addDialog);
+  }
+  /**
+   * Validate Fields before adding/updating an appointment
+   */
+  validateFields() : boolean
+  {
+    let valid = true;
+    if(this.stylistid == null)
+    {
+      valid = false;
+    }
+    else if(this.name == null)
+    {
+      valid = false;
+    }
+    else if(this.email == null)
+    {
+      valid = false;
+    }
+    else if(this.phone == null)
+    {
+      valid = false;
+    }
+    else if(this.date.getTime() < this.dateCreated.getTime())
+    {
+      valid = false;
+    }
+    else if(this.date.getTime() < Date.now() - (24 * 60 * 60 * 1000))
+    {
+      valid = false;
+    }
+
+    return valid;
   }
 
 }
