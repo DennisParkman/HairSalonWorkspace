@@ -4,6 +4,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr/toastr/toastr.service';
 
 @Component(
 {
@@ -36,7 +37,7 @@ export class AppointmentPageComponent implements OnInit
   events: CalendarEvent[] = []; //array to populate all appointments on the calendar
   appointments: Appointment[]; //array of appointments serviced from the backend 
 
-  constructor(private appointmentService: AppointmentService, private dialog: MatDialog) { }
+  constructor(private appointmentService: AppointmentService, private dialog: MatDialog, private toastr: ToastrService) { }
 
   /**
    * On loading page, all appointments on the database are loaded in and put into the event calendar array
@@ -105,7 +106,6 @@ export class AppointmentPageComponent implements OnInit
     this.date = new Date(this.date);
     if(!this.validateFields())
     {
-      //Add toast message
       return;
     }
     //create appointment variable to store form fields
@@ -196,7 +196,6 @@ export class AppointmentPageComponent implements OnInit
     this.date = new Date(this.date);
     if(!this.validateFields())
     {
-      //Add toast message
       return;
     }
     //package fields into an appointment object
@@ -263,26 +262,32 @@ export class AppointmentPageComponent implements OnInit
     if(this.stylistid == null)
     {
       valid = false;
+      this.toastr.error("Stylist Id is required");
     }
     else if(this.name == null)
     {
       valid = false;
+      this.toastr.error("Name is required");
     }
     else if(this.email == null)
     {
       valid = false;
+      this.toastr.error("Email is required");
     }
     else if(this.phone == null)
     {
       valid = false;
+      this.toastr.error("Phone Number is required");
     }
     else if(this.date.getTime() < this.dateCreated.getTime())
     {
       valid = false;
+      this.toastr.error("Date is invalid");
     }
     else if(this.date.getTime() < Date.now() - (24 * 60 * 60 * 1000))
     {
       valid = false;
+      this.toastr.error("Date is invalid");
     }
 
     return valid;
