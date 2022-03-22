@@ -262,28 +262,25 @@ export class AppointmentPageComponent implements OnInit
       //if stylist matches
       if(app.stylistID == newAppoinment.stylistID)
       {
-        //if date matches
-        if(app.date.getDate() == newAppoinment.date.getDate())
-        {	
-          let newAppStarttime = newAppoinment.date.getTime();
-          let newAppEndtime = newAppoinment.date.getTime() + newAppoinment.length;
-          let oldAppStarttime = app.date.getTime();
-          let oldAppEndtime =app.date.getTime() + app.length;
-          // Check for any overlap between the time period of a current appointment by assessing 
-          // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated. 
-          if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || 
-            (newAppEndtime >= oldAppStarttime && newAppEndtime <= oldAppEndtime) || 
-            (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
-          {
-            //Add toast message
-            this.toastr.error("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
-            + "appointment" + app.date + "with length" + app.length, "Appointment Conflict Detection");
+        let newAppStarttime = new Date(newAppoinment.date).valueOf();
+        let newAppEndtime = new Date(newAppoinment.date).valueOf() + newAppoinment.length;
+        let oldAppStarttime = new Date(app.date).valueOf();
+        let oldAppEndtime =new Date(app.date).valueOf() + app.length;
+        // Check for any overlap between the time period of a current appointment by assessing 
+        // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated. 
+        if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || 
+          (newAppEndtime >= oldAppStarttime && newAppEndtime <= oldAppEndtime) || 
+          (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
+        {
+          //Add toast message
+          this.toastr.error("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+          + "appointment" + app.date + "with length" + app.length, "Appointment Conflict Detection");
             
-            console.log("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+          console.log("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
                         + "appointment" + app.date + "with length" + app.length);
-            return true;
-          }
+          return true;
         }
+        
       }
     }
     //No conflicts 
