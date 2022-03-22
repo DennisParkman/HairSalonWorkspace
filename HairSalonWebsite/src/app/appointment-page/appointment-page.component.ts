@@ -263,9 +263,9 @@ export class AppointmentPageComponent implements OnInit
       if(app.stylistID == newAppoinment.stylistID)
       {
         let newAppStarttime = new Date(newAppoinment.date).valueOf();
-        let newAppEndtime = new Date(newAppoinment.date).valueOf() + newAppoinment.length;
+        let newAppEndtime = new Date(newAppoinment.date).valueOf() + (newAppoinment.length * 60 * 1000);
         let oldAppStarttime = new Date(app.date).valueOf();
-        let oldAppEndtime =new Date(app.date).valueOf() + app.length;
+        let oldAppEndtime =new Date(app.date).valueOf() + (app.length * 60 * 1000);
         // Check for any overlap between the time period of a current appointment by assessing 
         // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated. 
         if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || 
