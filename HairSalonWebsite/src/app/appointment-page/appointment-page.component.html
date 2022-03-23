@@ -1,6 +1,6 @@
 <!--Calendar and add appointment button-->
 <div *ngIf="!appointmentLoading"> <!--if appointments are done loading, show page-->
-  <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="setCreateAppointment()">Add Appointment</mat-button-toggle>
+  <mat-button-toggle style="margin-left:100px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setCreateAppointment()">Add Appointment</mat-button-toggle>
   <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteAppointment($event)" 
                       (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment()"></app-event-calendar>
 </div>
