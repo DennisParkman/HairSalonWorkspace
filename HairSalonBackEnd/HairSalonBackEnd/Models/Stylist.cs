@@ -5,7 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HairSalonBackEnd.Models
 {
     /// <summary> A stylist class modeling the stylist data type entered
-    /// into the database. </summary>
+    /// into the database. 
+    /// </summary>
     public class Stylist
     {
         /// <summary> The get/set methods for the stylist primary key.</summary>
@@ -30,7 +31,7 @@ namespace HairSalonBackEnd.Models
         public string Bio { get; set; }
 
         /// <summary>
-        /// The get/set methods for adding an image to the database. Represented in binary.
+        /// The get/set methods for adding an image to the database. Stored as a base64-encoded string.
         /// </summary>
         [Column(TypeName = "nvarchar(4294967295)")]
         public string StylistImage { get; set; }
