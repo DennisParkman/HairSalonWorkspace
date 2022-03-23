@@ -4,7 +4,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr/toastr/toastr.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component(
 {
