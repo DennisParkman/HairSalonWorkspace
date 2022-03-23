@@ -2,7 +2,7 @@
 <div *ngIf="!appointmentLoading"> <!--if appointments are done loading, show page-->
   <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="setCreateAppointment()">Add Appointment</mat-button-toggle>
   <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteAppointment($event)" 
-                      (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment()"></app-event-calendar>
+                      (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment($event)"></app-event-calendar>
 </div>
 
 <ng-template #formDialog> <!--This template allows both forms to display as pop up menus-->

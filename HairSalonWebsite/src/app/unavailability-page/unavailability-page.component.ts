@@ -242,9 +242,11 @@ export class UnavailabilityPageComponent implements OnInit
   /**
    * function to show create form from dialog box of events
    */
-  setCreateUnavailability()
+  setCreateUnavailability(date: Date = new Date())
   {
     this.resetDialog();
+    this.startDate = date;
+    this.endDate = date;
     this.addingUnavailability = true;
     this.dialog.open(this.formDialog);
   }
