@@ -255,36 +255,30 @@ export class AppointmentPageComponent implements OnInit
    */
   validateFields() : boolean
   {
+    //regular expression used to validate email
+    const regularExpression = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    let validEmail = regularExpression.test(String(this.email).toLowerCase());
     let valid = true;
-    if(this.stylistid == null)
+    if(this.stylistid == null || this.stylistid == 0)
     {
       valid = false;
-      this.toastr.error("Stylist Id is required");
+      this.toastr.error("Stylist ID is required");
     }
-    else if(this.name == null)
+    else if(this.name == null || this.name == "")
     {
       valid = false;
       this.toastr.error("Name is required");
     }
-    else if(this.email == null)
+    else if(this.email == null || (!validEmail))
     {
       valid = false;
-      this.toastr.error("Email is required");
+      this.toastr.error("Email is invalid");
     }
-    else if(this.phone == null)
+    //to check if the phone number is a 10 digit number
+    else if((this.phone == "") || (!this.phone.match(/^\d{10}$/)))
     {
       valid = false;
-      this.toastr.error("Phone Number is required");
-    }
-    else if(this.date.getTime() < this.dateCreated.getTime())
-    {
-      valid = false;
-      this.toastr.error("Date is invalid");
-    }
-    else if(this.date.getTime() < Date.now() - (24 * 60 * 60 * 1000))
-    {
-      valid = false;
-      this.toastr.error("Date is invalid");
+      this.toastr.error("Phone Number is invalid");
     }
 
     return valid;
