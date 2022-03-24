@@ -7,6 +7,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+mat-dialog-container 
+{
+    background-color: rgb(18,24,48) !important;
+}
+
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 @import "../node_modules/angular-calendar/css/angular-calendar.css";

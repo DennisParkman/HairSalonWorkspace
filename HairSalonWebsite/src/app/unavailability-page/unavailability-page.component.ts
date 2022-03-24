@@ -250,7 +250,8 @@ export class UnavailabilityPageComponent implements OnInit
   }
 
 
-  resetDialog() {
+  resetDialog() 
+  {
     this.updatingUnavailability = false;
     this.addingUnavailability = false;
     this.clearFields();

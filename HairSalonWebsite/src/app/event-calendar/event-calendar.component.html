@@ -2,13 +2,13 @@
     <!--buttons to cycle through dates in a year with stepsize depending on view-->
     <div class="col-md-4">
         <div class="btn-group">
-            <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+            <div class="btn btn-primary button-color" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
                 Previous
             </div>
-            <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+            <div class="btn btn-outline-secondary button-color" mwlCalendarToday [(viewDate)]="viewDate">
                 Today
             </div>
-            <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+            <div class="btn btn-primary button-color" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
                 Next
             </div>
         </div>
@@ -22,13 +22,13 @@
     <!--buttons change calendar view to month, week, year-->
     <div class="col-md-4">
         <div class="btn-group">
-            <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+            <div class="btn btn-primary button-color" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
                 Month
             </div>
-            <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+            <div class="btn btn-primary button-color" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
                 Week
             </div>
-            <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+            <div class="btn btn-primary button-color" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
                 Day
             </div>
         </div>

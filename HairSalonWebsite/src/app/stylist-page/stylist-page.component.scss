@@ -42,3 +42,32 @@ input
     width: 98%
 }
 
+.stylist-card-color
+{
+    background-color: rgb(18,24,48);
+}
+
+.stylist-card-size
+{
+    margin:30px; 
+    width:500px;
+}
+
+.stylist-card-name
+{
+    background-color: rgb(43,49,74);
+    font-weight: 500;
+    font-style:oblique;
+    font-size:large;
+    margin-bottom: 1em;
+}
+
+.stylist-card-info
+{
+    background-color: rgb(43,49,74);
+    font-weight: 400;
+    font-size:medium;
+    margin-right: 7em;
+}
+
+
