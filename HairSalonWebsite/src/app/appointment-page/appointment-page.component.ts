@@ -281,6 +281,12 @@ export class AppointmentPageComponent implements OnInit
       this.toastr.error("Phone Number is invalid");
     }
 
+    else if(this.date.getTime() < Date.now() - (24 * 60 * 60 * 1000))
+    {
+      valid = false;
+      this.toastr.error("Date is invalid");
+    }
+
     return valid;
   }
 
