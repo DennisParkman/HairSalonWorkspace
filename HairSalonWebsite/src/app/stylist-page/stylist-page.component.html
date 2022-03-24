@@ -1,37 +1,36 @@
 <div *ngIf="!stylistsLoading">
     <div *ngIf="!addingStylist && !updateSylist" style="margin-left:25%; margin-right:25%">
-    <div class = "container">
 
       <!--View current stylists-->
       <div class="row" >
-        <mat-card style="margin:30px; width:500px; background-color: rgb(18,24,48)" *ngFor="let stylist of stylists">
+        <mat-card class = "stylist-card-color stylist-card-size" *ngFor="let stylist of stylists">
           
           <!--Buttons to edit and delete stylists-->
           <div *ngIf=" editSytlistFunctions" class="button-container-list">
             <div  mclass="button-container">
-              <mat-button-toggle (click) = "deleteStylist(stylist)">
+              <mat-button-toggle (click) = "deleteStylist(stylist)" class = "stylist-card-color">
                 <mat-icon>delete</mat-icon>
               </mat-button-toggle>
             </div>
     
             <div class="button-container">
-              <mat-button-toggle (click) = "displayUpdateSytlist(stylist)">
+              <mat-button-toggle (click) = "displayUpdateSytlist(stylist)"class = "stylist-card-color">
                 <mat-icon>edit</mat-icon>
               </mat-button-toggle>
             </div>
           </div>
 
           <!--Stylist Information-->
-          <mat-card class= "stylist-info-card" style="margin:5px; background-color: rgb(43,49,74)">
+          <mat-card class= "stylist-card-name">
               {{stylist.name}}
           </mat-card>
-          <mat-card style="margin:5px; display:inline-block; background-color: rgb(43,49,74)">
+          <mat-card class = "stylist-card-info">
               Level: {{stylist.level}}
               <br>
               {{stylist.bio}}
           </mat-card>
           <!--Make size to fit-->
-          <mat-card style="margin:5px; display:inline-block; background-color: rgb(18,24,48)">
+          <mat-card class = "stylist-card-color stylist-card-picture">
               <!-- <img src="src/assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg"> -->
               <!-- img src="../../assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg" alt = "stylist-{{stylist.id}}.jpg"> -->
               <img src="{{DecodeImage(stylist.stylistImage)}}">
@@ -46,28 +45,28 @@
 
           <!--Button to display update and delete stylists -->
           <div class="button-container">
-            <mat-button-toggle (click) = "toggleStylistFunctionButtons()" style="background-color: rgb(18,24,48)">
+            <mat-button-toggle (click) = "toggleStylistFunctionButtons()" class = "stylist-card-color">
               <mat-icon>update</mat-icon>
             </mat-button-toggle>
           </div>
 
           <!--Button to display form to add stylists -->
           <div class="button-container">
-            <mat-button-toggle (click) = "showAddStylist() " style="background-color: rgb(18,24,48)">
+            <mat-button-toggle (click) = "showAddStylist() " class = "stylist-card-color">
               <mat-icon>add</mat-icon>
             </mat-button-toggle>
           </div>
 
           <!--Button to display sorting options for stylists -->
-          <div class="button-container">
-            <mat-button-toggle mat-button [matMenuTriggerFor]="menu" style="background-color: rgb(18,24,48)">
+          <div class="button-container" class = "stylist-card-color">
+            <mat-button-toggle mat-button [matMenuTriggerFor]="menu" style="background-color: rgb(18,24,48)" class = "stylist-card-color">
               <mat-icon>sort</mat-icon>
             </mat-button-toggle>
             <mat-menu #menu="matMenu" style="background-color: rgb(18,24,48)">
-              <mat-option (click) = "sortByLevelDesending()">Level (Desending)</mat-option>
-              <mat-option (click) = "sortByLevelAscending()">Level (Ascending)</mat-option>
-              <mat-option (click) = "sortByNameAscending()">Name (A-Z)</mat-option>
-              <mat-option (click) = "sortByNameDesending()">Name (Z-A)</mat-option>
+              <mat-option class = "stylist-card-color" (click) = "sortByLevelDesending()">Level (Desending)</mat-option>
+              <mat-option class = "stylist-card-color" (click) = "sortByLevelAscending()">Level (Ascending)</mat-option>
+              <mat-option class = "stylist-card-color" (click) = "sortByNameAscending()">Name (A-Z)</mat-option>
+              <mat-option class = "stylist-card-color" (click) = "sortByNameDesending()">Name (Z-A)</mat-option>
             </mat-menu>
           </div>
         </div>
@@ -138,5 +137,4 @@
         </mat-card>
       </form>
     </div>
-  </div>
 </div>

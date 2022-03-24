@@ -50,7 +50,7 @@ input
 .stylist-card-size
 {
     margin:30px; 
-    width:500px;
+    width:600px;
 }
 
 .stylist-card-name
@@ -60,6 +60,7 @@ input
     font-style:oblique;
     font-size:large;
     margin-bottom: 1em;
+    text-align:center;
 }
 
 .stylist-card-info
@@ -68,6 +69,12 @@ input
     font-weight: 400;
     font-size:medium;
     margin-right: 7em;
+}
+
+.stylist-card-picture
+{
+    display:inline-block;
+    width: 50%;
 }
 
 
