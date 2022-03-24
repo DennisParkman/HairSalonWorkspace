@@ -12,12 +12,26 @@ namespace HairSalonBackEnd.Database
 {
     public static class SQLiteDbUtility
     {
+        /// <summary>
+        /// DbContext for performing query operations on the database.
+        /// It contains the database tables in a list-like format
+        /// </summary>
         private static SQLiteDbContext dbContext;
 
+        /// <summary>
+        /// flag for if the database has been initialized
+        /// </summary>
         private static bool isInitialized = false;
 
+        /// <summary>
+        /// semaphore used to lock db access; 
+        /// prevents problems when a webpage needs to make multiple db calls while loading
+        /// </summary>
         private static Semaphore dbAccess;
 
+        /// <summary>
+        /// initialize the database if it is not initialized
+        /// </summary>
         public static void InitializeDB()
         {
             if(!isInitialized)
@@ -32,7 +46,10 @@ namespace HairSalonBackEnd.Database
         }
 
         #region Stylist Methods
-        /// <summary> A method for adding a stylist data type to the database.</summary>
+        /// <summary> 
+        /// A method for adding a stylist data type to the database.
+        /// locks the database until completed
+        /// </summary>
         /// <param name="stylist"> A stylist object to add to the database.</param> 
         public static Stylist AddStylist(Stylist stylist)
         {
@@ -43,7 +60,12 @@ namespace HairSalonBackEnd.Database
             return stylist;
         }
 
-        /// <summary> Returns stylist found in the private inner class that contains the Database information as a list </summary>
+        /// <summary>
+        /// returns the first stylist whose id matches the passed id.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="id">the id to search for</param>
+        /// <returns>the first stylist that has the passed id </returns>
         public static Stylist GetStylist(int id)
         {
             dbAccess.WaitOne();
@@ -52,7 +74,11 @@ namespace HairSalonBackEnd.Database
             return stylist;
         }
 
-        /// <summary> Returns all stylists found in the private inner class that contains the Database information as a list </summary>
+        /// <summary>
+        /// Returns all stylists found in the Database
+        /// locks the database until completed
+        /// </summary>
+        /// <returns>all stylists found in the Database </returns>
         public static IEnumerable<Stylist> GetAllStylists()
         {
             dbAccess.WaitOne();
@@ -61,7 +87,11 @@ namespace HairSalonBackEnd.Database
             return stylists;
         }
 
-        /// <summary> Inserts update information for a stylist in the database </summary>
+        /// <summary>
+        /// Inserts update information for a stylist in the database 
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="stylist"> the stylist to update</param>
         public static void UpdateStylist(Stylist stylist)
         {
             dbAccess.WaitOne();
@@ -78,7 +108,11 @@ namespace HairSalonBackEnd.Database
             dbContext.SaveChanges();
             dbAccess.Release();
         }
-        /// <summary> A method for deleting a stylist data type from the database. </summary>
+
+        /// <summary> 
+        /// A method for deleting a stylist data type from the database. 
+        /// locks the database until completed
+        /// </summary>
         /// <param name="stylist"> A stylist object that needs to be deleted. </param>
         public static void DeleteStylist(int id)
         {
@@ -95,8 +129,11 @@ namespace HairSalonBackEnd.Database
         #region Appointment Methods
 
         /// <summary>
-        /// Methoding for adding an appointment record to the database.
+        /// Method for adding an appointment record to the database.
+        /// locks the database until completed
         /// </summary>
+        /// <param name="app">the appointment to add</param>
+        /// <returns>the appointment added with automatically assigned id</returns>
         public static Appointment AddAppointment(Appointment app)
         {
             dbAccess.WaitOne();
@@ -110,8 +147,9 @@ namespace HairSalonBackEnd.Database
 
         /// <summary>
         /// Method for getting all the appointments.
+        /// locks the database until completed
         /// </summary>
-        /// <returns></returns>
+        /// <returns> an enumerable array of all the appointments in the database</returns>
         public static IEnumerable<Appointment> GetAllAppointments()
         {
             dbAccess.WaitOne();
@@ -125,8 +163,9 @@ namespace HairSalonBackEnd.Database
 
         /// <summary>
         /// The Update method for updating an appointment record.
+        /// locks the database until completed
         /// </summary>
-        /// <param name="app"></param>
+        /// <param name="app"> the appointment to update</param>
         public static void UpdateAppointment(Appointment app)
         {
             dbAccess.WaitOne();
@@ -150,7 +189,9 @@ namespace HairSalonBackEnd.Database
 
         /// <summary>
         /// The delete method for removing an appointment record.
+        /// locks the database until completed
         /// </summary>
+        /// <param name="id">the id of the appintment to delete</param>
         public static void DeleteAppointment(int id)
         {
             dbAccess.WaitOne();
@@ -160,6 +201,12 @@ namespace HairSalonBackEnd.Database
             dbAccess.Release();
         }
 
+        /// <summary>
+        /// gets all appointments for a specified stylist.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="stylistID"> the id of the stylist to get the appointments for</param>
+        /// <returns> an enumerable array of the appointments for the specified stylist</returns>
         public static IEnumerable<Appointment> GetAppointmentsByStylist(int stylistID)
         {
             dbAccess.WaitOne();
@@ -171,6 +218,12 @@ namespace HairSalonBackEnd.Database
 
         #region Unavailability Methods
 
+        /// <summary>
+        /// Adds a unavailability to the database
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="unavailability">the unavailability to add</param>
+        /// <returns>the added unavailability with the automatically assigned database id</returns>
         public static Unavailability AddUnavailability(Unavailability unavailability)
         {
             dbAccess.WaitOne();
@@ -180,6 +233,11 @@ namespace HairSalonBackEnd.Database
             return unavailability;
         }
 
+        /// <summary>
+        /// gets all unavailabilities in the database
+        /// locks the database until completed
+        /// </summary>
+        /// <returns>an enumerable array of all the unavailabilities in the database</returns>
         public static IEnumerable<Unavailability> GetAllUnavailabilities()
         {
             dbAccess.WaitOne();
@@ -188,6 +246,11 @@ namespace HairSalonBackEnd.Database
             return unavailabilities;
         }
 
+        /// <summary>
+        /// updates the specified unavailability
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="unavailability">the unavailability to update</param>
         public static void UpdateUnavailability(Unavailability unavailability)
         {
             dbAccess.WaitOne();
@@ -202,6 +265,11 @@ namespace HairSalonBackEnd.Database
             dbAccess.Release();
         }
 
+        /// <summary>
+        /// deletes the unavailability with the specified id
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="id">the id of the unavailability to delete</param>
         public static void DeleteUnavailability(int id)
         {
             dbAccess.WaitOne();
@@ -212,6 +280,12 @@ namespace HairSalonBackEnd.Database
             dbAccess.Release();
         }
 
+        /// <summary>
+        /// gets all unavailabilities associated to a specified stylist
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="stylistID">the id of the stylist to get unavailabilities for</param>
+        /// <returns>an enumerable array of all unavailabilities associated to the specified stylist</returns>
         public static IEnumerable<Unavailability> GetAllUnavailabilitiesByStylist(int stylistID)
         {
             dbAccess.WaitOne();
@@ -224,11 +298,28 @@ namespace HairSalonBackEnd.Database
 
         private class SQLiteDbContext : DbContext
         {
+            /// <summary>
+            /// abstraction of the stylists table
+            /// </summary>
             public DbSet<Stylist> Stylists { get; set; }
+
+            /// <summary>
+            /// abstraction of the appintments table
+            /// </summary>
             public DbSet<Appointment> Appointments { get; set; }
+
+            /// <summary>
+            /// abstraction of the unavailabilities table
+            /// </summary>
             public DbSet<Unavailability> Unavailabilities { get; set; }
+
+            /// <summary>
+            /// method for configuring the database
+            /// </summary>
+            /// <param name="optionsBuilder">object containing the options to configure the database with</param>
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
+                //first argument specifies the database file to read from
                 optionsBuilder.UseSqlite("FileName=Database/sqlite.db", option =>
                 {
                     option.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
@@ -236,15 +327,21 @@ namespace HairSalonBackEnd.Database
                 base.OnConfiguring(optionsBuilder);
             }
 
+            /// <summary>
+            /// creates the database
+            /// </summary>
+            /// <param name="modelBuilder">ModelBuilder used to create the database</param>
             protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
+                //set up the stylists table
                 modelBuilder.Entity<Stylist>().ToTable("Stylists", "localSchema");
-
+                //set up the Appointments table
                 modelBuilder.Entity<Appointment>().ToTable("Appointments", "localSchema");
-
+                //set up the Unavailabilities table
                 modelBuilder.Entity<Unavailability>().ToTable("Unavailabilities", "localSchema");
-                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>();
+                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>(); 
 
+                //create the database
                 base.OnModelCreating(modelBuilder);
             }
         }
