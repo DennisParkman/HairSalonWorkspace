@@ -13,7 +13,7 @@ import { FooterComponent } from './footer/footer.component';
 import { StylistPageComponent } from './stylist-page/stylist-page.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
 import { AppointmentService } from './services/appointment-service/appointment.service';
@@ -22,6 +22,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component';
 import { EventCalendarComponent } from './event-calendar/event-calendar.component';
 import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule(
@@ -49,6 +50,10 @@ import { ToastrModule } from 'ngx-toastr';
     MaterialModule,
     CommonModule,
     RouterModule,
+    NgxMatTimepickerModule,
+    ReactiveFormsModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
     ToastrModule.forRoot(),
     
     CalendarModule.forRoot({
