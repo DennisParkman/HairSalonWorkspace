@@ -83,23 +83,25 @@
           </mat-card-header>
 
           <mat-card-content>
-            <div class="mb-3">
+            <div class="mb-3"><!--Input for stylist name-->
               <label for="name" class="form-label">Stylist Name</label>
               <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
             </div>
-            <div class="mb-3">
+            <div class="mb-3"><!--Input for stylist level-->
               <label for="level" class="form-label">Stylist Level</label>
               <input type="number" class="form-control" required id="level" min = "1" max = "5" [(ngModel)]="this.level" name = "level">
             </div>
-            <div class="mb-3">
+            <div class="mb-3"><!--Input for stylist bio-->
                 <label for="bio" class="form-label">Stylist bio</label>
                 <input type="text" class="form-control" required id="bio" [(ngModel)]="this.bio" name = "bio">
             </div>
-            <div class="mb-3">
+            <div class="mb-3"><!--Input for stylist picture-->
               <label for="Picture" class="form-label">Picture</label>
               <input type="file" accept = ".png,.jpg" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
             </div>
+            <!--button to add the stylist to the list-->
             <button mat-flat-button color="primary" style = "margin-left: 1%" type="submit" (click)="addStylist()">Submit</button>
+            <!--button to cancel adding stylist-->
             <button mat-flat-button color="accent" style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
           </mat-card-content>
         </mat-card>
@@ -115,23 +117,25 @@
           </mat-card-header>
 
           <mat-card-content>
-            <div class="mb-3">
+            <div class="mb-3"><!--Input for stylist name-->
               <label for="name" class="form-label">Stylist Name</label>
               <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
             </div>
-            <div class="mb-3">
+            <div class="mb-3"><!--Input for stylist level-->
               <label for="level" class="form-label">Stylist Level</label>
               <input type="number" class="form-control" required id="level" min = "1" max = "5" [(ngModel)]="this.level" name = "level">
             </div>
-            <div class="mb-3">
+            <div class="mb-3"><!--Input for stylist bio-->
                 <label for="bio" class="form-label">Stylist bio</label>
                 <input type="text" class="form-control" required id="bio" [(ngModel)]="this.bio" name = "bio">
             </div>
-            <div class="mb-3">
+            <div class="mb-3"><!--Input for stylist picture-->
               <label for="Picture" class="form-label">Picture</label>
               <input type="file" accept = ".png,.jpg" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
             </div>
+            <!--button to update the stylist-->
             <button mat-flat-button color="primary" style = "margin-left: 1%" type="submit" (click)="updatingStylist()">Submit</button>
+            <!--button to cancel updating stylist-->
             <button mat-flat-button color="accent" style = "margin: 1%" (click)="cancelUpdatingStylist()">Cancel</button>
           </mat-card-content>
         </mat-card>

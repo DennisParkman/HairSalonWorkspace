@@ -12,21 +12,21 @@
     <div>
       <div style="float:left">
         
-        <mat-form-field>
+        <mat-form-field><!--Input for Name-->
           <mat-label>Name</mat-label>
           <input matInput [(ngModel)]="this.name">
         </mat-form-field>
 
         <br>
 
-        <mat-form-field>
+        <mat-form-field><!--Input for Email-->
           <mat-label>Email</mat-label>
           <input matInput type="email" [(ngModel)]="this.email">
         </mat-form-field>
 
         <br>
 
-        <mat-form-field>
+        <mat-form-field><!--Input for Phone Number-->
           <mat-label>Phone</mat-label>
           <input matInput type="tel" [maxLength]="10" [(ngModel)]="this.phone">
         </mat-form-field>
@@ -34,7 +34,7 @@
       </div>
       <div style="float:right">
 
-        <mat-form-field>
+        <mat-form-field><!--Input for Date-->
           <input matInput [ngxMatDatetimePicker]="updateEndDatePicker" placeholder="Date" [(ngModel)]="this.date">
           <mat-datepicker-toggle matSuffix [for]="$any(updateEndDatePicker)"></mat-datepicker-toggle>
           <ngx-mat-datetime-picker #updateEndDatePicker [showSeconds]="false" [enableMeridian]="true"><!--[color]="color" -->
@@ -43,14 +43,14 @@
 
         <br>
 
-        <mat-form-field>
+        <mat-form-field><!--Input for Description-->
           <mat-label>Description</mat-label>
           <input matInput [(ngModel)]="this.description">
         </mat-form-field>
 
         <br>
 
-        <mat-form-field>
+        <mat-form-field><!--Input for Stylist ID-->
           <mat-label>Stylist ID</mat-label>
           <input matInput type="number" [(ngModel)]="this.stylistid">
         </mat-form-field>

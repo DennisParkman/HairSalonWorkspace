@@ -14,14 +14,28 @@ namespace HairSalonBackEnd.Controllers
     [Route("[controller]")]
     public class UnavailabilityController : ControllerBase
     {
+        /// <summary>
+        /// something to do with error logging
+        /// </summary>
         private readonly ILogger<UnavailabilityController> _logger;
 
+        /// <summary>
+        /// constructor that sets the logger
+        /// </summary>
+        /// <param name="logger">the ILogger to set the logger to</param>
         public UnavailabilityController(ILogger<UnavailabilityController> logger)
         {
             _logger = logger;
         }
 
-        /// <summary> Adds Unavailability to the SQLite Database </summary> 
+        /// <summary>
+        /// Adds unavailability to the SQLite Database 
+        /// </summary>
+        /// <param name="unavailability">the unavailability to add as an UnavailabilityWebModel</param>
+        /// <returns>
+        /// an action result containing the added unavailability (with the database-assigned id) 
+        /// as an UnavailabilityWebModel or a BadRequest if there is a failure
+        /// </returns>
         [HttpPost]
         public ActionResult<Task<UnavailabilityWebModel>> Post([FromBody] UnavailabilityWebModel unavailability)
         {
@@ -36,7 +50,10 @@ namespace HairSalonBackEnd.Controllers
             }
         }
 
-        /// <summary> Returns all Unavailabilitys found in the SQLite Database as an Enurable Array </summary>
+        /// <summary> 
+        /// Returns all unavailabilities found in the SQLite Database as an Enurable 
+        /// Array of UnavailabilityWebModels
+        /// </summary>
         [HttpGet]
         public IEnumerable<UnavailabilityWebModel> Get()
         {
@@ -45,7 +62,14 @@ namespace HairSalonBackEnd.Controllers
             return returnUnavailabilities;
         }
 
-        /// <summary> Returns all Unavailabilitys found in the SQLite Database as an Enurable Array </summary>
+        /// <summary>
+        /// returns all unavailailities associated with the passed stylistID.
+        /// </summary>
+        /// <param name="stylistID"> the stylist id to find all unavailabilities for</param>
+        /// <returns>
+        /// all unavailabilities with the passed stylistID as an enumerable array of 
+        /// UnavailabilityWebModels
+        /// </returns>
         [HttpGet]
         [Route("{stylistID}")]
         public IEnumerable<UnavailabilityWebModel> Get(int stylistID)
@@ -55,7 +79,10 @@ namespace HairSalonBackEnd.Controllers
             return returnUnavailabilities;
         }
 
-        // <summary> Deletes a Unavailability using id in the SQLite Database </summary>
+        /// <summary>
+        /// Deletes a Unavailability using id in the SQLite Database
+        /// </summary>
+        /// <param name="id">the id of the unavailability to delete</param>
         [HttpDelete]
         [Route("{id}")]
         public void Delete(int id)
@@ -63,7 +90,10 @@ namespace HairSalonBackEnd.Controllers
             SQLiteDbUtility.DeleteUnavailability(id);
         }
 
-        /// <summary> Updates a Unavailability in the SQLite Database </summary>
+        /// <summary>
+        /// Updates a Unavailability in the SQLite Database
+        /// </summary>
+        /// <param name="unavailability">the unavailability to update as an UnavailabilityWebModel</param>
         [HttpPut]
         public void Put([FromBody] UnavailabilityWebModel unavailability)
         {
