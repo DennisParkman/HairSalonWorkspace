@@ -4,6 +4,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component(
 {
@@ -36,7 +37,7 @@ export class AppointmentPageComponent implements OnInit
   events: CalendarEvent[] = []; //array to populate all appointments on the calendar
   appointments: Appointment[]; //array of appointments serviced from the backend 
 
-  constructor(private appointmentService: AppointmentService, private dialog: MatDialog) { }
+  constructor(private appointmentService: AppointmentService, private dialog: MatDialog, private toastr: ToastrService) { }
 
   /**
    * On loading page, all appointments on the database are loaded in and put into the event calendar array
@@ -102,7 +103,10 @@ export class AppointmentPageComponent implements OnInit
     //convert form dates to date objects
     this.dateCreated = new Date();
     this.date = new Date(this.date);
-
+    if(!this.validateFields())
+    {
+      return;
+    }
     //create appointment variable to store form fields
     let appointment = 
     {
@@ -190,7 +194,10 @@ export class AppointmentPageComponent implements OnInit
   {
     //convert this.date to date object
     this.date = new Date(this.date);
-
+    if(!this.validateFields())
+    {
+      return;
+    }
     //package fields into an appointment object
     let appointment = 
     {
@@ -239,10 +246,53 @@ export class AppointmentPageComponent implements OnInit
     this.dialog.open(this.formDialog);
   }
 
-  resetDialog() {
+  /**
+   * function to reset the dialog box
+   */
+  resetDialog() 
+  {
     this.updatingAppointment = false;
     this.addingAppointment = false;
     this.clearFields();
+  }
+  /**
+   * Validate Fields before adding/updating an appointment
+   */
+  validateFields() : boolean
+  {
+    //regular expression used to validate email
+    const regularExpression = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    let validEmail = regularExpression.test(String(this.email).toLowerCase());
+    let valid = true;
+    if(this.stylistid == null || this.stylistid == 0)
+    {
+      valid = false;
+      this.toastr.error("Stylist ID is required");
+    }
+    else if(this.name == null || this.name == "")
+    {
+      valid = false;
+      this.toastr.error("Name is required");
+    }
+    else if(this.email == null || (!validEmail))
+    {
+      valid = false;
+      this.toastr.error("Email is invalid");
+    }
+    //to check if the phone number is a 10 digit number
+    else if((this.phone == "") || (!this.phone.match(/^\d{10}$/)))
+    {
+      valid = false;
+      this.toastr.error("Phone Number is invalid");
+    }
+
+    else if(this.date.getTime() < Date.now() - (24 * 60 * 60 * 1000))
+    {
+      valid = false;
+      this.toastr.error("Date is invalid");
+    }
+
+    return valid;
   }
 
 }

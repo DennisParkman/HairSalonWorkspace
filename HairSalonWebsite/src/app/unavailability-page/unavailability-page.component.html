@@ -12,14 +12,14 @@
     <div>
       <div style="float:left; margin:10px">
 
-        <mat-form-field>
+        <mat-form-field><!--Input for Stylist Name-->
           <mat-label>Name</mat-label>
           <input matInput [(ngModel)]="this.stylistName">
         </mat-form-field>
 
         <br>
 
-        <mat-form-field>
+        <mat-form-field><!--Input for unavailability Start Date-->
           <input matInput [ngxMatDatetimePicker]="updateStartDatePicker" placeholder="Start Date" [(ngModel)]="this.startDate">
           <mat-datepicker-toggle matSuffix [for]="$any(updateStartDatePicker)"></mat-datepicker-toggle>
           <ngx-mat-datetime-picker #updateStartDatePicker  [showSeconds]="false" [enableMeridian]="true"><!--[color]="color" -->
@@ -28,7 +28,7 @@
 
         <br>
 
-        <mat-form-field>
+        <mat-form-field><!--Input for unavailability End Date-->
           <input matInput [ngxMatDatetimePicker]="updateEndDatePicker" placeholder="End Date" [(ngModel)]="this.endDate">
           <mat-datepicker-toggle matSuffix [for]="$any(updateEndDatePicker)"></mat-datepicker-toggle>
           <ngx-mat-datetime-picker #updateEndDatePicker [showSeconds]="false" [enableMeridian]="true"><!--[color]="color" -->
@@ -37,7 +37,7 @@
 
       </div>
       <div style="float:left; margin:10px">
-
+        <!--shows period to choose from Once, Daily, Weekly, Monthly or Yearly-->
         <mat-form-field appearance="fill">
           <mat-label>Period</mat-label>
           <mat-select [(ngModel)]="period">
@@ -49,7 +49,7 @@
 
         <br>
 
-        <mat-form-field>
+        <mat-form-field><!--Input for Stylist ID-->
           <mat-label>Stylist ID</mat-label>
           <input matInput type="number" [(ngModel)]="this.stylistid">
         </mat-form-field>
