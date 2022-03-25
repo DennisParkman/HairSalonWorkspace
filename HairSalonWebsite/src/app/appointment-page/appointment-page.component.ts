@@ -245,7 +245,11 @@ export class AppointmentPageComponent implements OnInit
     this.dialog.open(this.formDialog);
   }
 
-  resetDialog() {
+  /**
+   * function to reset the dialog box
+   */
+  resetDialog() 
+  {
     this.updatingAppointment = false;
     this.addingAppointment = false;
     this.clearFields();

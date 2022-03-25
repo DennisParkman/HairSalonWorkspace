@@ -86,7 +86,11 @@ export class UnavailabilityPageComponent implements OnInit
       }
     );
   }
-
+  /**
+   * Function that accepts enum TimePeriod and returns it in the form of string
+   * @param p enum timeperiod
+   * @returns timeperiod in string
+   */
   timePeriodToString(p: TimePeriod): string
   {
     return Unavailability.timePeriodToString(p);
@@ -249,8 +253,11 @@ export class UnavailabilityPageComponent implements OnInit
     this.dialog.open(this.formDialog);
   }
 
-
-  resetDialog() {
+  /**
+   * function to reset the dialog box
+   */
+  resetDialog() 
+  {
     this.updatingUnavailability = false;
     this.addingUnavailability = false;
     this.clearFields();
