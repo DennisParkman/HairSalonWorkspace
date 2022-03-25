@@ -2,7 +2,7 @@
 <div *ngIf="!unavailabilityLoading"> <!--if appointments are done loading, show page-->
     <mat-button-toggle style="margin-left:100px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setCreateUnavailability()">Add Unavailability</mat-button-toggle>
     <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteUnavailability($event)" 
-                        (updateEvent)="startUpdateUnavailability($event)" (createEvent)="setCreateUnavailability()"></app-event-calendar>
+                        (updateEvent)="startUpdateUnavailability($event)" (createEvent)="setCreateUnavailability($event)"></app-event-calendar>
 </div>
   
 <ng-template #formDialog> <!--This template allows both forms to display as pop up menus-->
@@ -11,6 +11,16 @@
   <div *ngIf="updatingUnavailability || addingUnavailability" >
     <div>
       <div style="float:left; margin:10px">
+                <mat-form-field appearance="fill">
+                  <mat-label>Stylist</mat-label>
+                  <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+                  <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+                    <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+                    <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+                      {{stylist.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
 
         <mat-form-field><!--Input for Stylist Name-->
           <mat-label>Name</mat-label>
