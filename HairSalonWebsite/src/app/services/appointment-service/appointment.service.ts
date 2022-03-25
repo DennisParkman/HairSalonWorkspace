@@ -69,9 +69,9 @@ export class AppointmentService
     * @param stylist is the object whose appointments are returned
     * @returns all appointments for the specified stylist as an enumerable array
     */
-   getAppointmentByStylist(stylist: Stylist): Observable<Appointment[]>
+   getAppointmentByStylist(stylistid: number): Observable<Appointment[]>
    {
-      let url = this.baseURL.concat("Stylist/" + stylist.id)
+      let url = this.baseURL.concat("Stylist/" + stylistid)
       return this.http.get<Appointment[]>(url); 
    }
 }

@@ -31,6 +31,7 @@ export class AppointmentPageComponent implements OnInit
   email: string;
   phone: string;
   date: Date;
+  length: number;
   dateCreated: Date;
   description: string;
 
@@ -44,7 +45,7 @@ export class AppointmentPageComponent implements OnInit
   appointmentLoading: boolean = true; // boolean to show appointments are being loaded from the backend
   addingAppointment: boolean = false;
   updatingAppointment: boolean = false;
-  
+
   events: CalendarEvent[] = []; //array to populate all appointments on the calendar
   appointments: Appointment[]; //array of appointments serviced from the backend 
   stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
@@ -158,6 +159,7 @@ export class AppointmentPageComponent implements OnInit
     this.email = "";
     this.phone = "";
     this.date = new Date;
+    this.length = 0;
     this.dateCreated = new Date;
     this.description = "";
   }
@@ -182,29 +184,39 @@ export class AppointmentPageComponent implements OnInit
       email: this.email, 
       phone: this.phone, 
       date: this.date, 
+          length: this.length,
       dateCreated: this.dateCreated, 
       description: this.description
     };
 
-    //call appointment service to add appointment to database
-    this.appointmentService.addAppointment(appointment).subscribe(value => 
-    {
-      this.addingAppointment = false; //hide add appointment form
+        
+        //To check if there is conflict with other appointments for same stylist 
+        var doesConflict = this.checkAppointmentConflict(appointment);
+        if(doesConflict)
+        {
+          return;
+        }
+        //call appointment service to add appointment to database
+        this.appointmentService.addAppointment(appointment).subscribe(value => 
+          {
+            this.addingAppointment = false; //hide add appointment form
 
-      //create calendar event to add to event list
-      let event : CalendarEvent = 
-      {
-        id: value.id, 
-        start: this.date, 
-        title: this.name + " - " + this.description
-      };
-      this.clearFields(); //clear form fields
-      this.appointments.push(value); //push appointment to appointment list
+            //create calendar event to add to event list
+            let event : CalendarEvent = 
+            {
+              id: value.id, 
+              start: this.date, 
+              title: this.name + " - " + this.description
+            };
+            this.clearFields(); //clear form fields
+            this.appointments.push(value); //push appointment to appointment list
 
-      //call calendar event component function to reload event list with new item
-      this.appCalendar.updateCalendarEvent(event);
-      this.dialog.closeAll(); //close dialog box
-    });
+            //call calendar event component function to reload event list with new item
+            this.appCalendar.updateCalendarEvent(event);
+            this.dialog.closeAll(); //close dialog box
+          }
+        );
+    
   }
 
   /**
@@ -246,6 +258,7 @@ export class AppointmentPageComponent implements OnInit
     this.email = appointmentToUpdate.email;
     this.phone = appointmentToUpdate.phone;
     this.date = appointmentToUpdate.date;
+    this.length = appointmentToUpdate.length;
     this.dateCreated = appointmentToUpdate.dateCreated;
     this.description = appointmentToUpdate.description; 
 
@@ -267,7 +280,7 @@ export class AppointmentPageComponent implements OnInit
       return;
     }
     //package fields into an appointment object
-    let appointment = 
+    let appointment : Appointment= 
     {
       id: this.id, 
       stylistID: this.stylistid, 
@@ -275,10 +288,17 @@ export class AppointmentPageComponent implements OnInit
       email: this.email, 
       phone: this.phone, 
       date: this.date, 
+      length: this.length,
       dateCreated: this.dateCreated, 
       description: this.description
     };
 
+    //To check if there is conflict with other appointments for same stylist 
+    var doesConflict = this.checkAppointmentConflict(appointment);
+    if(doesConflict)
+    {
+      return;
+    }
     //create a calendar event from appointment object
     let event = 
     {
@@ -300,6 +320,52 @@ export class AppointmentPageComponent implements OnInit
     
     //reload calendar view and close dialog box
     this.appCalendar.updateCalendarEvent(event);
+    this.dialog.closeAll();
+  }
+
+  /**
+   * Method to check appointment conflicts from a given appointments. Returns true or false
+   * if the appointment does or does not conflict.
+   */
+  checkAppointmentConflict(newAppoinment: Appointment)
+  {
+    //loop through all the appointments
+    for(let app of this.appointments)
+    {	
+      //if stylist matches
+      if(app.stylistID == newAppoinment.stylistID)
+      {
+        let newAppStarttime = new Date(newAppoinment.date).valueOf();
+        let newAppEndtime = new Date(newAppoinment.date).valueOf() + (newAppoinment.length * 60 * 1000);
+        let oldAppStarttime = new Date(app.date).valueOf();
+        let oldAppEndtime =new Date(app.date).valueOf() + (app.length * 60 * 1000);
+        // Check for any overlap between the time period of a current appointment by assessing 
+        // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated. 
+        if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || 
+          (newAppEndtime >= oldAppStarttime && newAppEndtime <= oldAppEndtime) || 
+          (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
+        {
+          //Add toast message
+          this.toastr.error("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+          + "appointment" + app.date + "with length" + app.length, "Appointment Conflict Detection");
+            
+          console.log("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+                        + "appointment" + app.date + "with length" + app.length);
+          return true;
+        }
+        
+      }
+    }
+    //No conflicts 
+    return false;
+  }
+  /**
+   * function to close update form and clear all form fields
+   */
+  cancelUpdateAppointment()
+  {
+    this.updatingAppointment = false;
+    this.clearFields();
     this.dialog.closeAll();
   }
 
