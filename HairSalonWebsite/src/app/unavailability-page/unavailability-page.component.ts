@@ -189,7 +189,7 @@ export class UnavailabilityPageComponent implements OnInit
   {
     console.log(this.period); //debug
     //create unavailability variable to store form fields
-    let unavailability = 
+    let unavailability : Unavailability = 
     {
       stylistID: this.stylistid, 
       stylistName: this.stylistName, 
@@ -197,6 +197,13 @@ export class UnavailabilityPageComponent implements OnInit
       endDate: this.endDate, 
       period: this.period
     };
+    
+    // Check for unavailability conflicts.
+    var doesConflict = this.checkUnavailabilityConflict(unavailability);
+    if(doesConflict)
+    {
+      return;
+    }
 
     //call unavailability service to add unavailability to database
     this.unavailabilityService.addUnavailability(unavailability).subscribe(value => 
@@ -284,6 +291,13 @@ export class UnavailabilityPageComponent implements OnInit
       period: this.period
     };
 
+    // Check for unavailability conflicts.
+    var doesConflict = this.checkUnavailabilityConflict(unavailability);
+    if(doesConflict)
+    {
+      return;
+    }
+
     //create a calendar event from unavailability object
     let event = 
     {
@@ -307,6 +321,47 @@ export class UnavailabilityPageComponent implements OnInit
     //reload calendar view and close dialog box
     this.appCalendar.updateCalendarEvent(event);
     this.dialog.closeAll();
+  }
+
+  /*
+    Method to check unavailability conflicts from a given unavailability. Returns either true or false, if the 
+    unavailability given does or does not conflict.
+  */
+  checkUnavailabilityConflict(unavailability: Unavailability)
+  {
+    // Check Unavailability Conflicts by looping through the list of current unavailabilities to
+    // compare to form data.
+    for( var i = 0; i < this.unavailabilities.length; i++)
+    {
+      // Collect the time value in milliseconds for both unavailabilities relative to a single point in time, i.e Jan 1 1970
+      let newStartDate = new Date(unavailability.startDate).valueOf();
+      let newEndDate = new Date(unavailability.endDate).valueOf();
+      let nextStartDate = new Date(this.unavailabilities[i].startDate).valueOf();
+      let nextEndDate = new Date(this.unavailabilities[i].endDate).valueOf();
+      // Obtian the stylistID of next stylist in the database.
+      let nextID = this.unavailabilities[i].stylistID;
+
+      // Check for any overlap between the time period of a current unavailability by assessing 
+      // whether the new start date or new end date falls between the range of the next date being evaluated.
+      // If stylist IDs are different, we dont care about overlap because two stylists may be unavailable at the same time.
+      if(unavailability.stylistID == nextID)
+      {
+        // Compare range of new unavailability to old unavailabilities.
+        if((newStartDate >= nextStartDate && newStartDate <= nextEndDate) || (newEndDate >= nextStartDate && newEndDate <= nextEndDate) || (newStartDate < nextStartDate && newEndDate > nextEndDate))
+        {
+          // ----------- TODO -----------
+          // Add call to display error message for conflict
+          
+          
+          // Print unavailability range conflict, return to cancel adding the unavailability entry.
+          console.log("Unavailability " + unavailability.startDate + " to " + unavailability.endDate + " conflicts with\n"
+                    + "unavailability " + this.unavailabilities[i].startDate + " to " + this.unavailabilities[i].startDate);
+          return true;
+        }
+      }
+    }
+    // No conflicts detected.
+    return false;
   }
 
   /**
