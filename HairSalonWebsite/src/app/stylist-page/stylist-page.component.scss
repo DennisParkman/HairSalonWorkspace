@@ -20,7 +20,7 @@ img
 .button-container 
 {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     width: 60px;
 }
 
@@ -40,4 +40,41 @@ input
 {
     margin-left: 1%;
     width: 98%
+}
+
+.stylist-card-color
+{
+    background-color: rgb(18,24,48);
+    border-radius: 20px;
+}
+
+.stylist-card-size
+{
+    margin:30px; 
+    width:600px;
+}
+
+.stylist-card-name
+{
+    background-color: rgb(43,49,74);
+    font-weight: 500;
+    font-style:oblique;
+    font-size:large;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    text-align:center;
+}
+
+.stylist-card-info
+{
+    background-color: rgb(43,49,74);
+    font-weight: 400;
+    font-size:medium;
+    margin-right: 7em;
+}
+
+.stylist-card-picture
+{
+    display:inline-block;
+    width: 50%;
 }

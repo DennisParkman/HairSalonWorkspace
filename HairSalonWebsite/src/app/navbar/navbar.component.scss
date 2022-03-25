@@ -1,6 +1,6 @@
 .headerTop 
 {
-    background-color: black;
+    background-color: rgb(18,24,48);
     padding-top: 3.75%;
     padding-bottom: 1%;
     padding-left: 1.5%;
@@ -16,6 +16,7 @@ h1
 {
     font-size: 5.0vw;
     font-family:'Edwardian Script ITC';
+    color: rgb(176,151,35);
 }
 
 .navB 
@@ -26,4 +27,8 @@ h1
 span 
 {
     padding-right: 1rem;
+}
+
+.menu-spacer {
+    flex: 1 1 auto;
 }
