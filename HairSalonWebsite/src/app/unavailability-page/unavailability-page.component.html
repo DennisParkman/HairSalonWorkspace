@@ -24,7 +24,7 @@
 
         <mat-form-field><!--Input for Stylist Name-->
           <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="this.stylistName">
+          <input matInput disabled [(ngModel)]="this.stylistName">
         </mat-form-field>
 
         <br>
@@ -55,13 +55,6 @@
               {{timePeriodToString(p)}}
             </mat-option>
           </mat-select>
-        </mat-form-field>
-
-        <br>
-
-        <mat-form-field><!--Input for Stylist ID-->
-          <mat-label>Stylist ID</mat-label>
-          <input matInput type="number" [(ngModel)]="this.stylistid">
         </mat-form-field>
 
       </div>

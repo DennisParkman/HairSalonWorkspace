@@ -1,10 +1,10 @@
 <div *ngIf="!scheduleLoading"> <!--If the the schedule page is done loading then show the calendar component-->
   <div class="button-container">
-    <mat-button-toggle>
+    <mat-button-toggle class = "schedule-card-color">
       <mat-form-field>
           <mat-label>Stylists</mat-label>
           <mat-select multiple>
-            <mat-option *ngFor="let stylist of stylistList" [value]="stylist"  (click)="changeStylistSelected(stylist)">{{stylist.name}}</mat-option>
+            <mat-option *ngFor="let stylist of stylistList" [value]="stylist"  (click)="changeStylistSelected(stylist)" class = "schedule-card-color">{{stylist.name}}</mat-option>
           </mat-select>
         </mat-form-field>
     </mat-button-toggle>
