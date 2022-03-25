@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component(
 {
@@ -48,7 +49,7 @@ export class UnavailabilityPageComponent implements OnInit
   events: CalendarEvent[] = []; //array to populate all unavailabilities on the calendar
   timePeriods: TimePeriod[]; //array of unavailabilities serviced from the backend
 
-  constructor(private unavailabilityService: UnavailabilityService, private stylistService: StylistService, private dialog: MatDialog) { }
+  constructor(private unavailabilityService: UnavailabilityService, private stylistService: StylistService, private dialog: MatDialog, private toastr: ToastrService) { }
 
   /**
    * On loading page, all unavailabilities on the database are loaded in and put into the event calendar array
@@ -166,30 +167,38 @@ export class UnavailabilityPageComponent implements OnInit
   validateFields() : boolean
   {
     let valid = true;
+    let startDateValue = new Date(this.startDate).valueOf();
+    let endDateValue = new Date(this.endDate).valueOf();
 
-    if(this.stylistName == null)
+    if(this.stylistName == null || this.stylistName == "")
     {
       valid = false;
+      this.toastr.error("Stylist Name is required");
     }
     else if(this.startDate == null)
     {
       valid = false;
+      this.toastr.error("Start Date is required");
     }
     else if(this.endDate == null)
     {
       valid = false;
+      this.toastr.error("End Date is required");
     }
     else if(this.period == null)
     {
       valid = false;
+      this.toastr.error("Period is required");
     }
-    else if(this.startDate.getTime() > this.endDate.getTime())
+    else if(startDateValue > endDateValue)
     {
       valid = false;
+      this.toastr.error("Start Date is not valid");
     }
-    else if(this.startDate.getTime() < Date.now() - (24 * 60 * 60 * 1000))
+    else if(new Date(this.startDate).getTime() < Date.now() - (24 * 60 * 60 * 1000))
     {
       valid = false;
+      this.toastr.error("Start Date is not valid");
     }
 
     return valid;
@@ -377,6 +386,12 @@ export class UnavailabilityPageComponent implements OnInit
     // compare to form data.
     for( var i = 0; i < this.unavailabilities.length; i++)
     {
+      //if unavailability is the same as one being updated, then skip it
+      if(unavailability.id == this.unavailabilities[i].id)
+      {
+        continue;
+      }
+
       // Collect the time value in milliseconds for both unavailabilities relative to a single point in time, i.e Jan 1 1970
       let newStartDate = new Date(unavailability.startDate).valueOf();
       let newEndDate = new Date(unavailability.endDate).valueOf();
@@ -388,18 +403,19 @@ export class UnavailabilityPageComponent implements OnInit
       // Check for any overlap between the time period of a current unavailability by assessing 
       // whether the new start date or new end date falls between the range of the next date being evaluated.
       // If stylist IDs are different, we dont care about overlap because two stylists may be unavailable at the same time.
+      
       if(unavailability.stylistID == nextID)
       {
         // Compare range of new unavailability to old unavailabilities.
         if((newStartDate >= nextStartDate && newStartDate <= nextEndDate) || (newEndDate >= nextStartDate && newEndDate <= nextEndDate) || (newStartDate < nextStartDate && newEndDate > nextEndDate))
         {
-          // ----------- TODO -----------
           // Add call to display error message for conflict
-          
+          this.toastr.error("Unavailability " + unavailability.startDate + " to " + unavailability.endDate + " conflicts with\n"
+          + "unavailability " + this.unavailabilities[i].startDate + " to " + this.unavailabilities[i].endDate);
           
           // Print unavailability range conflict, return to cancel adding the unavailability entry.
           console.log("Unavailability " + unavailability.startDate + " to " + unavailability.endDate + " conflicts with\n"
-                    + "unavailability " + this.unavailabilities[i].startDate + " to " + this.unavailabilities[i].startDate);
+                    + "unavailability " + this.unavailabilities[i].startDate + " to " + this.unavailabilities[i].endDate);
           return true;
         }
       }
