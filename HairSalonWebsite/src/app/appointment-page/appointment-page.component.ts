@@ -327,29 +327,36 @@ export class AppointmentPageComponent implements OnInit
    * Method to check appointment conflicts from a given appointments. Returns true or false
    * if the appointment does or does not conflict.
    */
-  checkAppointmentConflict(newAppoinment: Appointment)
+  checkAppointmentConflict(newAppointment: Appointment)
   {
     //loop through all the appointments
     for(let app of this.appointments)
     {	
-      //if stylist matches
-      if(app.stylistID == newAppoinment.stylistID)
+      //if appointment is the same as one being updated, then skip it
+      if(app.id == newAppointment.id)
       {
-        let newAppStarttime = new Date(newAppoinment.date).valueOf();
-        let newAppEndtime = new Date(newAppoinment.date).valueOf() + (newAppoinment.length * 60 * 1000);
+        continue;
+      }
+      
+      //if stylist matches
+      if(app.stylistID == newAppointment.stylistID)
+      {
+        let newAppStarttime = new Date(newAppointment.date).valueOf();
+        let newAppEndtime = new Date(newAppointment.date).valueOf() + (newAppointment.length * 60 * 1000);
         let oldAppStarttime = new Date(app.date).valueOf();
         let oldAppEndtime =new Date(app.date).valueOf() + (app.length * 60 * 1000);
         // Check for any overlap between the time period of a current appointment by assessing 
-        // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated. 
+        // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated.
+         
         if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || 
           (newAppEndtime >= oldAppStarttime && newAppEndtime <= oldAppEndtime) || 
           (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
         {
           //Add toast message
-          this.toastr.error("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+          this.toastr.error("Appointment" + newAppointment.date + "with length of time" + newAppointment.length + "has conflicts with\n"
           + "appointment" + app.date + "with length" + app.length, "Appointment Conflict Detection");
             
-          console.log("Appointment" + newAppoinment.date + "with length of time" + newAppoinment.length + "has conflicts with\n"
+          console.log("Appointment" + newAppointment.date + "with length of time" + newAppointment.length + "has conflicts with\n"
                         + "appointment" + app.date + "with length" + app.length);
           return true;
         }
