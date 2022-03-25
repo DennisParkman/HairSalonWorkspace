@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
+import { Toast, ToastrService } from 'ngx-toastr';
 
 @Component(
 {
@@ -48,7 +49,7 @@ export class UnavailabilityPageComponent implements OnInit
   events: CalendarEvent[] = []; //array to populate all unavailabilities on the calendar
   timePeriods: TimePeriod[]; //array of unavailabilities serviced from the backend
 
-  constructor(private unavailabilityService: UnavailabilityService, private stylistService: StylistService, private dialog: MatDialog) { }
+  constructor(private unavailabilityService: UnavailabilityService, private toastr: ToastrService, private stylistService: StylistService, private dialog: MatDialog) { }
 
   /**
    * On loading page, all unavailabilities on the database are loaded in and put into the event calendar array
@@ -170,26 +171,32 @@ export class UnavailabilityPageComponent implements OnInit
     if(this.stylistName == null)
     {
       valid = false;
+      this.toastr.warning("Stylist name null")
     }
     else if(this.startDate == null)
     {
       valid = false;
+      this.toastr.warning("Start date null")
     }
     else if(this.endDate == null)
     {
       valid = false;
+      this.toastr.warning("End date null")
     }
     else if(this.period == null)
     {
       valid = false;
+      this.toastr.warning("Period null")
     }
     else if(this.startDate.getTime() > this.endDate.getTime())
     {
       valid = false;
+      this.toastr.warning("Start date after end date")
     }
     else if(this.startDate.getTime() < Date.now() - (24 * 60 * 60 * 1000))
     {
       valid = false;
+      this.toastr.warning("Start date too early")
     }
 
     return valid;
