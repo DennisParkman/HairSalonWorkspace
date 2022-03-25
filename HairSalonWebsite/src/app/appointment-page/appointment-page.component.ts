@@ -238,9 +238,10 @@ export class AppointmentPageComponent implements OnInit
   /**
    * function to show create form from dialog box of events
    */
-  setCreateAppointment()
+  setCreateAppointment(date: Date = new Date())
   {
     this.resetDialog();
+    this.date = date;
     this.addingAppointment = true;
     this.dialog.open(this.formDialog);
   }
