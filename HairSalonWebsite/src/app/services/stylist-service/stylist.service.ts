@@ -12,11 +12,13 @@ export class StylistService
 
     constructor(private http: HttpClient) 
     { }
-
+    //backend baseURL
     readonly baseURL = 'http://localhost:63235/';
     /**
-     * To add a stylist object to the C# backend database located at @baseURL variable in the form of an enumrable array
+     * To add a stylist object to the C# backend database located at 
+     * @baseURL variable in the form of an enumrable array
      * @param stylist is the object that is added
+     * @returns stylist that is added
      */
     addStylist(stylist: Stylist): Observable<Stylist>
     {
@@ -24,8 +26,9 @@ export class StylistService
         return this.http.post<Stylist>(url, stylist);
     }
     
-    /**
-     * @returns a response from the C# backend database located at @baseURL variable in the form of an enumrable array
+    /**To get an enumerable array of stylists from the C# backend database located at 
+     * @baseURL variable in the form of an enumrable array
+     * @returns returns all the stylists as an enumerbale array 
      */
     getStylists(): Observable<Stylist[]>
     {
@@ -34,7 +37,8 @@ export class StylistService
     }
 
      /**
-     * To update a stylist object to the C# backend database located at @baseURL variable in the form of an enumrable array
+     * To update a stylist object to the C# backend database located at 
+     * @baseURL variable in the form of an enumrable array
      * @param stylist is the object that contains updated information for a stylist entry in the database
      */
     updateStylist(stylist: Stylist): void
@@ -44,7 +48,9 @@ export class StylistService
     }
 
     /**
-     * To delete a stylist object from the C# backend database located @baseURL variable in the form of an enumrable array
+     * To delete a stylist object from the C# backend database located 
+     * @baseURL variable in the form of an enumrable array
+     * @param stylist is the object that needs to be deleted
      */
     deleteStylist(stylist: Stylist): void
     {

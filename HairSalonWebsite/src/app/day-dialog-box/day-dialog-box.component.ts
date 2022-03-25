@@ -23,23 +23,27 @@ export class DayDialogBoxComponent {
   constructor(public dialogRef: MatDialogRef<DayDialogBoxComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogDataObject) {}
 
   // When close button is hit, close dialog
-  onClose(): void {
+  onClose(): void 
+  {
     this.dialogRef.close();
   }
   
   // Emit delete event to parent component when delete button is hit
-  deleteEventHandler(event: CalendarEvent) {
+  deleteEventHandler(event: CalendarEvent) 
+  {
     this.deleteEvent.emit(event);
   }
 
   // Emit create event to parent component when create button is hit
-  createEventHandler() {
+  createEventHandler() 
+  {
     this.createEvent.emit();
     this.dialogRef.close();
   }
 
   // Emit update event to parent component when update button is hit
-  updateEventHandler(event: CalendarEvent) {
+  updateEventHandler(event: CalendarEvent) 
+  {
     this.updateEvent.emit(event);
     this.dialogRef.close();
   }
