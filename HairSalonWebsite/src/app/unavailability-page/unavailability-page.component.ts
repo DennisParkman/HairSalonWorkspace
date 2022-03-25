@@ -193,12 +193,12 @@ export class UnavailabilityPageComponent implements OnInit
     else if(startDateValue > endDateValue)
     {
       valid = false;
-      this.toastr.error("Start Date is not valid");
+      this.toastr.warning("Start date after end date")
     }
     else if(new Date(this.startDate).getTime() < Date.now() - (24 * 60 * 60 * 1000))
     {
       valid = false;
-      this.toastr.error("Start Date is not valid");
+      this.toastr.warning("Start date too early")
     }
 
     return valid;
