@@ -1,144 +1,120 @@
 <div *ngIf="!stylistsLoading">
-    <div *ngIf="!addingStylist && !updateSylist" style="margin-left:25%; margin-right:25%">
+  <div *ngIf="!addingStylist && !updateSylist" style="margin-left:25%; margin-right:25%">
 
-      <!--View current stylists-->
-      <div class="row" >
-        <mat-card class = "stylist-card-color stylist-card-size" *ngFor="let stylist of stylists">
-          
-          <!--Buttons to edit and delete stylists-->
-          <div *ngIf=" editSytlistFunctions" class="button-container-list">
-            <div  mclass="button-container">
-              <mat-button-toggle (click) = "deleteStylist(stylist)" class = "stylist-card-color">
-                <mat-icon>delete</mat-icon>
-              </mat-button-toggle>
-            </div>
-    
-            <div class="button-container">
-              <mat-button-toggle (click) = "displayUpdateSytlist(stylist)"class = "stylist-card-color">
-                <mat-icon>edit</mat-icon>
-              </mat-button-toggle>
-            </div>
+    <!--View current stylists-->
+    <div class="row" >
+      <mat-card class = "stylist-card-color stylist-card-size" *ngFor="let stylist of stylists">
+        
+        <!--Buttons to edit and delete stylists-->
+        <div *ngIf=" editSytlistFunctions" class="button-container-list">
+          <div  mclass="button-container">
+            <mat-button-toggle (click) = "deleteStylist(stylist)" class = "stylist-card-color">
+              <mat-icon>delete</mat-icon>
+            </mat-button-toggle>
           </div>
+  
+          <div class="button-container">
+            <mat-button-toggle (click) = "displayUpdateSytlist(stylist)"class = "stylist-card-color">
+              <mat-icon>edit</mat-icon>
+            </mat-button-toggle>
+          </div>
+        </div>
 
-          <!--Stylist Information-->
-          <mat-card class= "stylist-card-name">
-              {{stylist.name}}
-          </mat-card>
-          <mat-card class = "stylist-card-info">
-              Level: {{stylist.level}}
-              <br>
-              {{stylist.bio}}
-          </mat-card>
-          <!--Make size to fit-->
-          <mat-card class = "stylist-card-color stylist-card-picture">
-              <!-- <img src="src/assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg"> -->
-              <!-- img src="../../assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg" alt = "stylist-{{stylist.id}}.jpg"> -->
-              <img src="{{DecodeImage(stylist.stylistImage)}}">
-          </mat-card>
-
+        <!--Stylist Information-->
+        <mat-card class= "stylist-card-name">
+            {{stylist.name}}
         </mat-card>
+        <mat-card class = "stylist-card-info">
+            Level: {{stylist.level}}
+            <br>
+            {{stylist.bio}}
+        </mat-card>
+        <!--Make size to fit-->
+        <mat-card class = "stylist-card-color stylist-card-picture">
+            <!-- <img src="src/assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg"> -->
+            <!-- img src="../../assets/images/stylists-pictures/stylist-{{stylist.id}}.jpg" alt = "stylist-{{stylist.id}}.jpg"> -->
+            <img src="{{DecodeImage(stylist.stylistImage)}}">
+        </mat-card>
+
+      </mat-card>
+    </div>
+
+    <!--Display CRUD Options-->
+    <div class="row">
+      <div class="flex-container">
+
+        <!--Button to display update and delete stylists -->
+        <div class="button-container">
+          <mat-button-toggle (click) = "toggleStylistFunctionButtons()" class = "stylist-card-color">
+            <mat-icon>update</mat-icon>
+          </mat-button-toggle>
+        </div>
+
+        <!--Button to display form to add stylists -->
+        <div class="button-container">
+          <mat-button-toggle (click) = "setCreateAppointment() " class = "stylist-card-color">
+            <mat-icon>add</mat-icon>
+          </mat-button-toggle>
+        </div>
+
+        <!--Button to display sorting options for stylists -->
+        <div class="button-container" class = "stylist-card-color">
+          <mat-button-toggle mat-button [matMenuTriggerFor]="menu" style="background-color: rgb(18,24,48)" class = "stylist-card-color">
+            <mat-icon>sort</mat-icon>
+          </mat-button-toggle>
+          <mat-menu #menu="matMenu" style="background-color: rgb(18,24,48)">
+            <mat-option class = "stylist-card-color" (click) = "sortByLevelDesending()">Level (Desending)</mat-option>
+            <mat-option class = "stylist-card-color" (click) = "sortByLevelAscending()">Level (Ascending)</mat-option>
+            <mat-option class = "stylist-card-color" (click) = "sortByNameAscending()">Name (A-Z)</mat-option>
+            <mat-option class = "stylist-card-color" (click) = "sortByNameDesending()">Name (Z-A)</mat-option>
+          </mat-menu>
+        </div>
       </div>
+    </div>
 
-      <!--Display CRUD Options-->
-      <div class="row">
-        <div class="flex-container">
+  </div>
 
-          <!--Button to display update and delete stylists -->
-          <div class="button-container">
-            <mat-button-toggle (click) = "toggleStylistFunctionButtons()" class = "stylist-card-color">
-              <mat-icon>update</mat-icon>
-            </mat-button-toggle>
-          </div>
+  <ng-template #formDialog>
+    <div *ngIf="addingStylist || updateSylist" class = "container">
+      <div>
+        <div style="float:left;">
 
-          <!--Button to display form to add stylists -->
-          <div class="button-container">
-            <mat-button-toggle (click) = "showAddStylist() " class = "stylist-card-color">
-              <mat-icon>add</mat-icon>
-            </mat-button-toggle>
-          </div>
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput required id="name" [(ngModel)]="this.name" name = "name">
+          </mat-form-field>
 
-          <!--Button to display sorting options for stylists -->
-          <div class="button-container" class = "stylist-card-color">
-            <mat-button-toggle mat-button [matMenuTriggerFor]="menu" style="background-color: rgb(18,24,48)" class = "stylist-card-color">
-              <mat-icon>sort</mat-icon>
-            </mat-button-toggle>
-            <mat-menu #menu="matMenu" style="background-color: rgb(18,24,48)">
-              <mat-option class = "stylist-card-color" (click) = "sortByLevelDesending()">Level (Desending)</mat-option>
-              <mat-option class = "stylist-card-color" (click) = "sortByLevelAscending()">Level (Ascending)</mat-option>
-              <mat-option class = "stylist-card-color" (click) = "sortByNameAscending()">Name (A-Z)</mat-option>
-              <mat-option class = "stylist-card-color" (click) = "sortByNameDesending()">Name (Z-A)</mat-option>
-            </mat-menu>
-          </div>
+          <br>
+
+          <mat-form-field>
+            <mat-label>Level</mat-label>
+            <input matInput type = "number"  required id="level" [(ngModel)]="this.level" name = "level">
+          </mat-form-field>
+
+        </div>
+        <div style="float:right;">
+
+          <mat-form-field>
+            <mat-label>Bio</mat-label>
+            <input matInput required id="bio"  [(ngModel)]="this.bio" name = "bio">
+          </mat-form-field>
+  
+          <br>
+
+          <mat-form-field>
+            <mat-label>Picture</mat-label>
+            <input matInput required id="Picture" type = "Picture" accept = ".png,.jpg" [(ngModel)]="this.stylistImage" (change)="EncodeImage($event)" name = "Picture">
+          </mat-form-field>
+
         </div>
       </div>
 
+      <!--Buttons to submit or cancel unavailability-->
+      <button *ngIf="addingStylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addStylist()">Submit</button>
+      <button *ngIf="updateSylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updatingStylist()">Submit</button>
+
+      <button *ngIf="addingStylist" mat-flat-button style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
+      <button *ngIf="updateSylist" mat-flat-button style = "margin: 1%" (click)="cancelUpdatingStylist()">Cancel</button>
     </div>
-
-    <!--Make new stylist-->
-    <div *ngIf="addingStylist" class = "container">
-      <form>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Create New Stylist</mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content>
-            <div class="mb-3"><!--Input for stylist name-->
-              <label for="name" class="form-label">Stylist Name</label>
-              <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
-            </div>
-            <div class="mb-3"><!--Input for stylist level-->
-              <label for="level" class="form-label">Stylist Level</label>
-              <input type="number" class="form-control" required id="level" min = "1" max = "5" [(ngModel)]="this.level" name = "level">
-            </div>
-            <div class="mb-3"><!--Input for stylist bio-->
-                <label for="bio" class="form-label">Stylist bio</label>
-                <input type="text" class="form-control" required id="bio" [(ngModel)]="this.bio" name = "bio">
-            </div>
-            <div class="mb-3"><!--Input for stylist picture-->
-              <label for="Picture" class="form-label">Picture</label>
-              <input type="file" accept = ".png,.jpg" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
-            </div>
-            <!--button to add the stylist to the list-->
-            <button mat-flat-button color="primary" style = "margin-left: 1%" type="submit" (click)="addStylist()">Submit</button>
-            <!--button to cancel adding stylist-->
-            <button mat-flat-button color="accent" style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
-          </mat-card-content>
-        </mat-card>
-      </form>
-    </div>
-
-    <!--Update stylist-->
-    <div *ngIf="updateSylist" class = "container">
-      <form>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Update Stylist Information</mat-card-title>
-          </mat-card-header>
-
-          <mat-card-content>
-            <div class="mb-3"><!--Input for stylist name-->
-              <label for="name" class="form-label">Stylist Name</label>
-              <input type="text" class="form-control" required id="name" [(ngModel)]="this.name" name = "name">
-            </div>
-            <div class="mb-3"><!--Input for stylist level-->
-              <label for="level" class="form-label">Stylist Level</label>
-              <input type="number" class="form-control" required id="level" min = "1" max = "5" [(ngModel)]="this.level" name = "level">
-            </div>
-            <div class="mb-3"><!--Input for stylist bio-->
-                <label for="bio" class="form-label">Stylist bio</label>
-                <input type="text" class="form-control" required id="bio" [(ngModel)]="this.bio" name = "bio">
-            </div>
-            <div class="mb-3"><!--Input for stylist picture-->
-              <label for="Picture" class="form-label">Picture</label>
-              <input type="file" accept = ".png,.jpg" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
-            </div>
-            <!--button to update the stylist-->
-            <button mat-flat-button color="primary" style = "margin-left: 1%" type="submit" (click)="updatingStylist()">Submit</button>
-            <!--button to cancel updating stylist-->
-            <button mat-flat-button color="accent" style = "margin: 1%" (click)="cancelUpdatingStylist()">Cancel</button>
-          </mat-card-content>
-        </mat-card>
-      </form>
-    </div>
+  </ng-template> <!--This template allows both forms to display as pop up menus-->
 </div>
