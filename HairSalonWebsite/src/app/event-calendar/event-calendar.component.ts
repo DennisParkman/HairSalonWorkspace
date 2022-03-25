@@ -18,6 +18,7 @@ export class EventCalendarComponent implements OnInit
   @Input() supportCRUD: boolean = false;
   
   viewDate: Date = new Date();
+  clickedDate: Date;
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   dayOfEvents: CalendarEvent[] = [];
@@ -61,6 +62,7 @@ export class EventCalendarComponent implements OnInit
   // Open dialog when day of calendar is clicked
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void 
   {
+    this.clickedDate = date;
     this.dayOfEvents = events;
 
     let dialogRef = this.dialog.open(DayDialogBoxComponent, 
@@ -86,7 +88,7 @@ export class EventCalendarComponent implements OnInit
 
     // Emit create event when create event is sent from dialog
     dialogRef.componentInstance.createEvent.subscribe(() => {
-      this.createEvent.emit();
+      this.createEvent.emit(this.clickedDate);
     });
   }
 

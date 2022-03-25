@@ -2,7 +2,7 @@
 <div *ngIf="!unavailabilityLoading"> <!--if appointments are done loading, show page-->
     <mat-button-toggle style="margin-left:100px; margin-top:20px" (click)="setCreateUnavailability()">Add Unavailability</mat-button-toggle>
     <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteUnavailability($event)" 
-                        (updateEvent)="startUpdateUnavailability($event)" (createEvent)="setCreateUnavailability()"></app-event-calendar>
+                        (updateEvent)="startUpdateUnavailability($event)" (createEvent)="setCreateUnavailability($event)"></app-event-calendar>
 </div>
   
 <ng-template #formDialog> <!--This template allows both forms to display as pop up menus-->
