@@ -68,7 +68,12 @@
               </mat-autocomplete>
             </mat-form-field>
           </div>
+          
     </div>
+    <!--Buttons to submit or cancel appointment-->
+    <button *ngIf="addingAppointment" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addAppointment()">Submit</button>
+    <button *ngIf="updatingAppointment" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateAppointment()">Submit</button>
+    <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
   </div>
 
 </ng-template>
