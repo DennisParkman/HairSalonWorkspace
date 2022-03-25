@@ -50,17 +50,18 @@
 
         <br>
 
-        <mat-form-field><!--Input for Stylist ID-->
-          <mat-label>Stylist ID</mat-label>
-          <input matInput type="number" [(ngModel)]="this.stylistid">
-        </mat-form-field>
-      </div>
+            <mat-form-field appearance="fill">
+              <mat-label>Stylist</mat-label>
+              <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+              <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+                <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+                <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+                  {{stylist.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
     </div>
-
-    <!--Buttons to submit or cancel appointment-->
-    <button *ngIf="addingAppointment" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addAppointment()">Submit</button>
-    <button *ngIf="updatingAppointment" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateAppointment()">Submit</button>
-    <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
   </div>
 
 </ng-template>

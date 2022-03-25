@@ -5,8 +5,11 @@ import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { startOfDay } from 'date-fns';
 import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
-import { forkJoin, Observable, Subscription } from 'rxjs';
+import { forkJoin, map, Observable, startWith, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { FormControl } from '@angular/forms';
+import { Stylist } from '../models/stylist.model';
+import { StylistService } from '../services/stylist-service/stylist.service';
 
 @Component(
 {
@@ -21,6 +24,7 @@ export class UnavailabilityPageComponent implements OnInit
   @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
   unavailabilities: Unavailability[]; //list of unavailabilities
+  stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
 
   //unavailability attributes for forms
   id: number;
@@ -29,6 +33,11 @@ export class UnavailabilityPageComponent implements OnInit
   startDate: Date;
   endDate: Date;
   period: TimePeriod;
+
+  //form control for dropdown
+  stylistIDControl = new FormControl();
+  //filter observable for dropdown
+  filteredStylists: Observable<Stylist[]>;
 
   //booleans to display and hide forms on the unavailabilities page
   loadingFinished: boolean = false; // boolean for displaying page
@@ -39,7 +48,7 @@ export class UnavailabilityPageComponent implements OnInit
   events: CalendarEvent[] = []; //array to populate all unavailabilities on the calendar
   timePeriods: TimePeriod[]; //array of unavailabilities serviced from the backend
 
-  constructor(private unavailabilityService: UnavailabilityService, private dialog: MatDialog) { }
+  constructor(private unavailabilityService: UnavailabilityService, private stylistService: StylistService, private dialog: MatDialog) { }
 
   /**
    * On loading page, all unavailabilities on the database are loaded in and put into the event calendar array
@@ -55,8 +64,15 @@ export class UnavailabilityPageComponent implements OnInit
       TimePeriod.Monthly,
       TimePeriod.Yearly
     ]
-    //call unavailabilities service to load all unavailabilities from the database
-    this.unavailabilityService.getUnavailabilities().subscribe(unavailabilities => 
+
+    //forkjoin call to stylists and unavailabilities database tables so they happen correctly
+    forkJoin(
+      {
+        //call unavailabilities service to load all unavailabilities from the database
+        unavailabilities: this.unavailabilityService.getUnavailabilities(),
+        //call service to load all stylists from the database
+        stylists: this.stylistService.getStylists()
+      }).subscribe(({unavailabilities, stylists}) => 
       {
         //load all unavailabilities into the unavailabilities array
         unavailabilities.forEach(unavailability => 
@@ -64,7 +80,9 @@ export class UnavailabilityPageComponent implements OnInit
             unavailability.startDate = new Date(unavailability.startDate);
             unavailability.endDate = new Date(unavailability.endDate);
           });
-        this.unavailabilities = unavailabilities; 
+        this.unavailabilities = unavailabilities; //save the list of unavailabilities
+
+        this.stylists = stylists; //save the stylist list
         
         //load unavailability id, dates, and stylist name for each appointment into the calendar array
         for(let unavailability of this.unavailabilities)
@@ -77,14 +95,19 @@ export class UnavailabilityPageComponent implements OnInit
               title: unavailability.stylistName + ""
             }
           );
-          
         }
+
+        //set up the dropdown filter
+        this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
+          startWith(''),
+          map(value => (typeof value === 'string' ? value : value.name)),
+          map(name => (name ? this.stylistDropdownFilter(name) : this.stylists.slice()))
+        )
         
         // display the page and show that unavailabilities are done loading
         this.loadingFinished = true; 
         this.unavailabilityLoading = false;
-      }
-    );
+      });
   }
   /**
    * Function that accepts enum TimePeriod and returns it in the form of string
@@ -95,6 +118,47 @@ export class UnavailabilityPageComponent implements OnInit
   {
     return Unavailability.timePeriodToString(p);
   }
+
+  /**
+   * helper function for ngOnInit to filter the stylist list by an entered stylist name
+   */
+   private stylistDropdownFilter(name: string): Stylist[]
+   {
+     const filterValue = name.toLowerCase();
+ 
+     return this.stylists.filter(stylist => stylist.name.toLowerCase().includes(filterValue));
+   }
+ 
+   /**
+    * event method that sets the form stylistid field
+    * @param event the event that was fired
+    */
+   setStylistIdFromDropdown(stylist: any)
+   {
+     console.log(stylist); //debug
+     this.stylistid = stylist.id;
+     this.stylistName = stylist.name;
+   }
+ 
+   /** 
+    * @param stylist the stylist whose name should be displayed
+    * @returns the name of the stylist
+    */
+   stylistDropdownDisplay(stylist: Stylist): string
+   {
+     //debug; so selectionChange fires too frequently, 
+     //because I had it in a mat-select tag, which it
+     //shouldn't have; put the change event on the mat-option
+     console.log(stylist); 
+     if(stylist != null && stylist.name != null && stylist.name != '')
+     {
+       return stylist.name;
+     }
+     else
+     {
+       return '';
+     }
+   }
 
   /**
    * Function to hide the the add unavailability field
@@ -112,6 +176,7 @@ export class UnavailabilityPageComponent implements OnInit
   {
     this.stylistid = 0;
     this.stylistName = "";
+    this.stylistIDControl.reset(); //clear the dropdown value
     this.startDate = new Date;
     this.endDate = new Date;
     this.period = TimePeriod.Once;
@@ -191,6 +256,7 @@ export class UnavailabilityPageComponent implements OnInit
     //set fields of current object form
     this.id = event.id;
     this.stylistid =  unavailabilityToUpdate.stylistID;
+    this.stylistIDControl.setValue(this.stylists.find(stylist => stylist.id == this.stylistid)); //autopopulate the dropdown with the stylist
     this.stylistName = unavailabilityToUpdate.stylistName + "";
     this.startDate = unavailabilityToUpdate.startDate;
     this.endDate = unavailabilityToUpdate.endDate;
@@ -229,8 +295,8 @@ export class UnavailabilityPageComponent implements OnInit
 
     //call service to update unavailability in database
     this.unavailabilityService.updateUnavailability(unavailability);
-
-    //find index of appoinment to change and replace existing information in appoinment list
+    
+    //find index of unavailability to change and replace existing information in unavailability list
     let appIndexToUpdate = this.unavailabilities.findIndex(x => x.id === unavailability.id);
     this.unavailabilities[appIndexToUpdate] = unavailability;
 

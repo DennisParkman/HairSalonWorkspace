@@ -11,6 +11,16 @@
   <div *ngIf="updatingUnavailability || addingUnavailability" >
     <div>
       <div style="float:left; margin:10px">
+                <mat-form-field appearance="fill">
+                  <mat-label>Stylist</mat-label>
+                  <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+                  <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+                    <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+                    <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+                      {{stylist.name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
 
         <mat-form-field><!--Input for Stylist Name-->
           <mat-label>Name</mat-label>
