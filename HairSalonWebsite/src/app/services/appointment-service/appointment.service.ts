@@ -13,12 +13,14 @@ export class AppointmentService
 
   constructor(private http: HttpClient) 
   { }
-
+  //backend baseURL
   readonly baseURL = 'http://localhost:63235/';
 
   /**
-     * To add an appointment object to the C# backend database located at @baseURL variable in the form of an enumrable array
+     * To add an appointment object to the C# backend database located at 
+     * @baseURL variable in the form of an enumrable array
      * @param appointment is the object that is added
+     * @returns appointment that is added
      */
    addAppointment(appointment: Appointment): Observable<Appointment>
    {
@@ -29,7 +31,9 @@ export class AppointmentService
    }
    
    /**
-    * @returns a response from the C# backend database located at @baseURL variable in the form of an enumrable array
+    * To get an enumerable array of appointments from the C# backend database located at
+    * @baseURL variable in the form of an enumrable array
+    * @returns all appointments as an enumerable array
     */
    getAppointment(): Observable<Appointment[]>
    {
@@ -38,7 +42,8 @@ export class AppointmentService
    }
 
     /**
-    * To update an appointment object to the C# backend database located at @baseURL variable in the form of an enumrable array
+    * To update an appointment object to the C# backend database located at 
+    * @baseURL variable in the form of an enumrable array
     * @param appointment is the object that contains updated information for a appointment entry in the database
     */
    updateAppointment(appointment: Appointment): void
@@ -48,7 +53,9 @@ export class AppointmentService
    }
 
    /**
-    * To delete an appointment object from the C# backend database located @baseURL variable in the form of an enumrable array
+    * To delete an appointment object from the C# backend database located 
+    * @baseURL variable in the form of an enumerable array
+    * @param appointment is the object that needs to be deleted
     */
    deleteAppointment(appointment: Appointment): void
    {
@@ -57,7 +64,10 @@ export class AppointmentService
    }
 
    /**
-    * A method to get all appointments for a specific stylist
+    * A method to get an array of appointments for a specific stylist from the C# backend database located at 
+    * @baseURL variable in the form of an enumrable array
+    * @param stylist is the object whose appointments are returned
+    * @returns all appointments for the specified stylist as an enumerable array
     */
    getAppointmentByStylist(stylistid: number): Observable<Appointment[]>
    {
