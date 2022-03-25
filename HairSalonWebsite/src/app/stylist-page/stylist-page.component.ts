@@ -68,7 +68,7 @@ export class StylistPageComponent implements OnInit
    /**
    * function to show create form from dialog box of events
    */
-  setCreateAppointment()
+  setCreateStylist()
   {
     this.resetDialog();
     this.addingStylist = true;
@@ -114,6 +114,7 @@ export class StylistPageComponent implements OnInit
   {
     this.clearFields(); 
     this.addingStylist = false;
+    this.dialog.closeAll();
   }
 
   /*
@@ -204,6 +205,7 @@ export class StylistPageComponent implements OnInit
     this.updateSylist = false;
     this.stylistUpdateId = null;
     this.clearFields();
+    this.dialog.closeAll();
   }
 
   /*

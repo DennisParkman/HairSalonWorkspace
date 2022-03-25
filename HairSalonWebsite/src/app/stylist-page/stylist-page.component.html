@@ -1,5 +1,5 @@
 <div *ngIf="!stylistsLoading">
-  <div *ngIf="!addingStylist && !updateSylist" style="margin-left:25%; margin-right:25%">
+  <div style="margin-left:25%; margin-right:25%">
 
     <!--View current stylists-->
     <div class="row" >
@@ -52,7 +52,7 @@
 
         <!--Button to display form to add stylists -->
         <div class="button-container">
-          <mat-button-toggle (click) = "setCreateAppointment() " class = "stylist-card-color">
+          <mat-button-toggle (click) = "setCreateStylist() " class = "stylist-card-color">
             <mat-icon>add</mat-icon>
           </mat-button-toggle>
         </div>
@@ -74,47 +74,46 @@
 
   </div>
 
-  <ng-template #formDialog>
-    <div *ngIf="addingStylist || updateSylist" class = "container">
-      <div>
-        <div style="float:left;">
-
-          <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput required id="name" [(ngModel)]="this.name" name = "name">
-          </mat-form-field>
-
-          <br>
-
-          <mat-form-field>
-            <mat-label>Level</mat-label>
-            <input matInput type = "number"  required id="level" [(ngModel)]="this.level" name = "level">
-          </mat-form-field>
-
-        </div>
-        <div style="float:right;">
-
-          <mat-form-field>
-            <mat-label>Bio</mat-label>
-            <input matInput required id="bio"  [(ngModel)]="this.bio" name = "bio">
-          </mat-form-field>
   
-          <br>
-
-          <mat-form-field>
-            <mat-label>Picture</mat-label>
-            <input matInput required id="Picture" type = "Picture" accept = ".png,.jpg" [(ngModel)]="this.stylistImage" (change)="EncodeImage($event)" name = "Picture">
-          </mat-form-field>
-
-        </div>
-      </div>
-
-      <!--Buttons to submit or cancel unavailability-->
-      <button *ngIf="addingStylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addStylist()">Submit</button>
-      <button *ngIf="updateSylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updatingStylist()">Submit</button>
-
-      <button *ngIf="addingStylist" mat-flat-button style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
-      <button *ngIf="updateSylist" mat-flat-button style = "margin: 1%" (click)="cancelUpdatingStylist()">Cancel</button>
-    </div>
-  </ng-template> <!--This template allows both forms to display as pop up menus-->
 </div>
+
+<ng-template #formDialog>
+  <div *ngIf="addingStylist || updateSylist" class = "container">
+    <div>
+      <div style="float:left;">
+
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput required id="name" [(ngModel)]="this.name" name = "name">
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field>
+          <mat-label>Level</mat-label>
+          <input matInput type = "number"  required id="level" [(ngModel)]="this.level" name = "level">
+        </mat-form-field>
+
+      </div>
+      <div style="float:right;">
+
+        <mat-form-field>
+          <mat-label>Bio</mat-label>
+          <input matInput required id="bio"  [(ngModel)]="this.bio" name = "bio">
+        </mat-form-field>
+
+        <br>
+
+        <input type="file" accept = ".png,.jpg" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
+
+      </div>
+    </div>
+
+    <!--Buttons to submit or cancel unavailability-->
+    <button *ngIf="addingStylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addStylist()">Submit</button>
+    <button *ngIf="updateSylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updatingStylist()">Submit</button>
+
+    <button *ngIf="addingStylist" mat-flat-button style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
+    <button *ngIf="updateSylist" mat-flat-button style = "margin: 1%" (click)="cancelUpdatingStylist()">Cancel</button>
+  </div>
+</ng-template> <!--This template allows both forms to display as pop up menus-->
