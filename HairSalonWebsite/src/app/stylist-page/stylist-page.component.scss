@@ -20,7 +20,7 @@ img
 .button-container 
 {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     width: 60px;
 }
 
@@ -45,6 +45,7 @@ input
 .stylist-card-color
 {
     background-color: rgb(18,24,48);
+    border-radius: 20px;
 }
 
 .stylist-card-size
@@ -60,6 +61,7 @@ input
     font-style:oblique;
     font-size:large;
     margin-bottom: 1em;
+    margin-top: 1em;
     text-align:center;
 }
 
@@ -76,5 +78,3 @@ input
     display:inline-block;
     width: 50%;
 }
-
-

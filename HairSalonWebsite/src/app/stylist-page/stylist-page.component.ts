@@ -74,15 +74,6 @@ export class StylistPageComponent implements OnInit
     this.addingStylist = true;
     this.dialog.open(this.formDialog);
   }
-  
-
-  /*
-    toggles add stylist form
-  */
-  showAddStylist()
-  {
-    this.addingStylist = true;
-  }
 
   /*
     send new stylist entered in form to stylist service method

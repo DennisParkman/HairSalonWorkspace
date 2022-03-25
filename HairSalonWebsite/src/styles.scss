@@ -12,6 +12,11 @@ mat-dialog-container
     background-color: rgb(18,24,48) !important;
 }
 
+.customize+* .mat-menu-panel 
+{
+    background: rgb(18,24,48);
+}
+
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
