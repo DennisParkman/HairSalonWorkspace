@@ -21,7 +21,7 @@ export class UnavailabilityPageComponent implements OnInit
 {
   //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
+  @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
   unavailabilities: Unavailability[]; //list of unavailabilities
   stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
@@ -109,6 +109,15 @@ export class UnavailabilityPageComponent implements OnInit
         this.unavailabilityLoading = false;
       });
   }
+  /**
+   * Function that accepts enum TimePeriod and returns it in the form of string
+   * @param p enum timeperiod
+   * @returns timeperiod in string
+   */
+  timePeriodToString(p: TimePeriod): string
+  {
+    return Unavailability.timePeriodToString(p);
+  }
 
   /**
    * helper function for ngOnInit to filter the stylist list by an entered stylist name
@@ -154,11 +163,10 @@ export class UnavailabilityPageComponent implements OnInit
   /**
    * Function to hide the the add unavailability field
    */
-  cancelAddUnavailability()
+  closeDialog()
   {
-    this.addingUnavailability = false;
-    this.clearFields();
-    this.dialog.closeAll();
+    this.resetDialog();
+    this.dialog.closeAll(); //closes dialog boxes
   }
 
   /**
@@ -179,6 +187,7 @@ export class UnavailabilityPageComponent implements OnInit
    */
   addUnavailability()
   {
+    console.log(this.period); //debug
     //create unavailability variable to store form fields
     let unavailability = 
     {
@@ -236,11 +245,13 @@ export class UnavailabilityPageComponent implements OnInit
    */
   startUpdateUnavailability(event: any)
   {
-    console.log(event);
+    this.resetDialog();
 
     //find unavailability based on calendar event
     let appIndex = this.unavailabilities.findIndex(x => x.id === event.id);
     let unavailabilityToUpdate: Unavailability = this.unavailabilities[appIndex]
+
+    console.log(unavailabilityToUpdate); //debug
 
     //set fields of current object form
     this.id = event.id;
@@ -253,7 +264,7 @@ export class UnavailabilityPageComponent implements OnInit
 
     //show update form
     this.updatingUnavailability = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
   /**
@@ -299,22 +310,22 @@ export class UnavailabilityPageComponent implements OnInit
   }
 
   /**
-   * function to close update form and clear all form fields
-   */
-  cancelUpdateUnavailability()
-  {
-    this.updatingUnavailability = false;
-    this.clearFields();
-    this.dialog.closeAll();
-  }
-
-  /**
    * function to show create form from dialog box of events
    */
   setCreateUnavailability()
   {
+    this.resetDialog();
     this.addingUnavailability = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
+  /**
+   * function to reset the dialog box
+   */
+  resetDialog() 
+  {
+    this.updatingUnavailability = false;
+    this.addingUnavailability = false;
+    this.clearFields();
+  }
 }

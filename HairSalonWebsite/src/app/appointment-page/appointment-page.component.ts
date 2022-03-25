@@ -4,6 +4,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Stylist } from '../models/stylist.model';
 import { FormControl } from '@angular/forms';
 import { forkJoin, Observable, startWith } from 'rxjs';
@@ -21,7 +22,7 @@ export class AppointmentPageComponent implements OnInit
 {
   //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
-  @ViewChild('addDialog', {static: true}) addDialog: TemplateRef<any>; //tag used for the add and update forms
+  @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
   //appointment attributes for forms
   id: number;
@@ -49,6 +50,7 @@ export class AppointmentPageComponent implements OnInit
   stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
 
   constructor(private appointmentService: AppointmentService, private stylistService: StylistService, private dialog: MatDialog) { }
+  constructor(private appointmentService: AppointmentService, private dialog: MatDialog, private toastr: ToastrService) { }
 
   /**
    * On loading page, all appointments on the database are loaded in and put into the event calendar array
@@ -134,12 +136,11 @@ export class AppointmentPageComponent implements OnInit
 
 
   /**
-   * Function to hide the the add appoinment field
+   * Function to close and reset dialog box
    */
-  cancelAddAppointment()
+  closeDialog()
   {
-    this.addingAppointment = false; //changes form boolean
-    this.clearFields(); // clears all appointment fields
+    this.resetDialog();
     this.dialog.closeAll(); //closes dialog boxes
   }
 
@@ -166,7 +167,10 @@ export class AppointmentPageComponent implements OnInit
     //convert form dates to date objects
     this.dateCreated = new Date();
     this.date = new Date(this.date);
-
+    if(!this.validateFields())
+    {
+      return;
+    }
     //create appointment variable to store form fields
     let appointment = 
     {
@@ -225,6 +229,7 @@ export class AppointmentPageComponent implements OnInit
    */
   startUpdateAppointment(event: any)
   {
+    this.resetDialog();
 
     //find appointment based on calendar event
     let appIndex = this.appointments.findIndex(x => x.id === event.id);
@@ -243,7 +248,7 @@ export class AppointmentPageComponent implements OnInit
 
     //show update form
     this.updatingAppointment = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
   }
 
   /**
@@ -254,7 +259,10 @@ export class AppointmentPageComponent implements OnInit
   {
     //convert this.date to date object
     this.date = new Date(this.date);
-
+    if(!this.validateFields())
+    {
+      return;
+    }
     //package fields into an appointment object
     let appointment = 
     {
@@ -293,22 +301,62 @@ export class AppointmentPageComponent implements OnInit
   }
 
   /**
-   * function to close update form and clear all form fields
-   */
-  cancelUpdateAppointment()
-  {
-    this.updatingAppointment = false;
-    this.clearFields();
-    this.dialog.closeAll();
-  }
-
-  /**
    * function to show create form from dialog box of events
    */
   setCreateAppointment()
   {
+    this.resetDialog();
     this.addingAppointment = true;
-    this.dialog.open(this.addDialog);
+    this.dialog.open(this.formDialog);
+  }
+
+  /**
+   * function to reset the dialog box
+   */
+  resetDialog() 
+  {
+    this.updatingAppointment = false;
+    this.addingAppointment = false;
+    this.clearFields();
+  }
+  /**
+   * Validate Fields before adding/updating an appointment
+   */
+  validateFields() : boolean
+  {
+    //regular expression used to validate email
+    const regularExpression = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    let validEmail = regularExpression.test(String(this.email).toLowerCase());
+    let valid = true;
+    if(this.stylistid == null || this.stylistid == 0)
+    {
+      valid = false;
+      this.toastr.error("Stylist ID is required");
+    }
+    else if(this.name == null || this.name == "")
+    {
+      valid = false;
+      this.toastr.error("Name is required");
+    }
+    else if(this.email == null || (!validEmail))
+    {
+      valid = false;
+      this.toastr.error("Email is invalid");
+    }
+    //to check if the phone number is a 10 digit number
+    else if((this.phone == "") || (!this.phone.match(/^\d{10}$/)))
+    {
+      valid = false;
+      this.toastr.error("Phone Number is invalid");
+    }
+
+    else if(this.date.getTime() < Date.now() - (24 * 60 * 60 * 1000))
+    {
+      valid = false;
+      this.toastr.error("Date is invalid");
+    }
+
+    return valid;
   }
 
 }

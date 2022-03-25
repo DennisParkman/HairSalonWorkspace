@@ -34,7 +34,7 @@ export class EventCalendarComponent implements OnInit
   {
     this.setView(this.view);
   }
-
+  // function to set the view to current view
   setView(view: CalendarView) 
   {
     this.view = view;
