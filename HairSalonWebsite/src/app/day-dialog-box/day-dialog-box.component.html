@@ -16,10 +16,10 @@
             <button mat-button mat-dialog-close (click)="deleteEventHandler(x)">Delete</button>
             <button mat-button mat-dialog-close (click)="updateEventHandler(x)">Update</button>
         </div>
-        -----------------------------
+        _____________________________________
     </div>
     <div *ngIf="data.crudFeatures"> <!--if set to true, user can create new event-->
-        <button mat-button mat-dialog-close (click)="createEventHandler()">Create</button>
+        <button mat-button mat-dialog-close (click)="createEventHandler()" >Create</button>
     </div>
 </div>
 <div mat-dialog-actions> <!--button to close dialog box-->

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 //import { Console } from 'console';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
+import { MatDialog } from '@angular/material/dialog';
+
 
 
 @Component(
@@ -12,6 +14,8 @@ import { StylistService } from '../services/stylist-service/stylist.service';
 })
 export class StylistPageComponent implements OnInit 
 {
+  @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
+
   //list of stylists
   stylists: Stylist[];
 
@@ -29,7 +33,7 @@ export class StylistPageComponent implements OnInit
   stylistsLoading: boolean = true;
   
 
-  constructor(private stylistService: StylistService) { }
+  constructor(private stylistService: StylistService, private dialog: MatDialog) { }
 
   /**
    * On loading page, all stylists on the database are loaded into a stylist array
@@ -45,12 +49,30 @@ export class StylistPageComponent implements OnInit
     );
   }
 
-  /*
-    toggles add stylist form
-  */
-  showAddStylist()
+  /**
+   * Function to close and reset dialog box
+   */
+   closeDialog()
+   {
+     this.resetDialog();
+     this.dialog.closeAll(); //closes dialog boxes
+   }
+
+   resetDialog() 
+   {
+    this.addingStylist = false;
+    this.updateSylist = false;
+    this.clearFields();
+  }
+
+   /**
+   * function to show create form from dialog box of events
+   */
+  setCreateStylist()
   {
+    this.resetDialog();
     this.addingStylist = true;
+    this.dialog.open(this.formDialog);
   }
 
   /*
@@ -72,6 +94,8 @@ export class StylistPageComponent implements OnInit
       this.clearFields();
       this.stylistsLoading = false;
     });
+
+    this.dialog.closeAll(); //close dialog box
   }
 
   /*
@@ -81,6 +105,7 @@ export class StylistPageComponent implements OnInit
   {
     this.clearFields(); 
     this.addingStylist = false;
+    this.dialog.closeAll();
   }
 
   /*
@@ -88,11 +113,14 @@ export class StylistPageComponent implements OnInit
   */
   displayUpdateSytlist(stylist: Stylist)
   {
-    this.updateSylist = true;
+    
     this.stylistUpdateId = stylist.id;
     this.name = stylist.name;
     this.level = stylist.level;
     this.bio = stylist.bio;
+
+    this.updateSylist = true;
+    this.dialog.open(this.formDialog);
   }
 
   /*
@@ -157,6 +185,7 @@ export class StylistPageComponent implements OnInit
     this.updateSylist = false;    // Form not to be displayed.
     this.stylistUpdateId = null;
     this.clearFields();
+    this.dialog.closeAll();
   }
 
   /*
@@ -167,6 +196,7 @@ export class StylistPageComponent implements OnInit
     this.updateSylist = false;
     this.stylistUpdateId = null;
     this.clearFields();
+    this.dialog.closeAll();
   }
 
   /*
