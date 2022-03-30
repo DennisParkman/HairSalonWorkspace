@@ -35,7 +35,7 @@ export class UserService
     * @baseURL variable in the form of an enumrable array
     * @returns all users as an enumerable array
     */
-   getUser(): Observable<User[]>
+   getUsers(): Observable<User[]>
    {
        let url = this.baseURL.concat("User");
        return this.http.get<User[]>(url); // <User> is required on this line when a constructor is included in the model file
