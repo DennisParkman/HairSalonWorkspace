@@ -35,10 +35,10 @@ export class UserService
     * @baseURL variable in the form of an enumrable array
     * @returns all users as an enumerable array
     */
-   getAppointment(): Observable<User[]>
+   getUser(): Observable<User[]>
    {
        let url = this.baseURL.concat("User");
-       return this.http.get<User[]>(url); // <Appointment> is required on this line when a constructor is included in the model file
+       return this.http.get<User[]>(url); // <User> is required on this line when a constructor is included in the model file
    }
 
     /**
@@ -46,7 +46,7 @@ export class UserService
     * @baseURL variable in the form of an enumrable array
     * @param user is the object that contains updated information for an user entry in the database
     */
-   updateAppointment(user: User): void
+   updateUser(user: User): void
    {
        let url = this.baseURL.concat("User");
        this.http.put(url, user).subscribe();
@@ -57,7 +57,7 @@ export class UserService
     * @baseURL variable in the form of an enumerable array
     * @param user is the object that needs to be deleted
     */
-   deleteAppointment(user: User): void
+   deleteUser(user: User): void
    {
        let url = this.baseURL.concat("User/" + user.username);
        this.http.delete(url).subscribe();
