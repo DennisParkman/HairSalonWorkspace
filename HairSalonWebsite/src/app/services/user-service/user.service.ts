@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { User } from 'src/app/models/user.model';
 
 @Injectable(
 {
@@ -58,7 +59,7 @@ export class UserService
     */
    deleteAppointment(user: User): void
    {
-       let url = this.baseURL.concat("User/" + user.id);
+       let url = this.baseURL.concat("User/" + user.username);
        this.http.delete(url).subscribe();
    }
 

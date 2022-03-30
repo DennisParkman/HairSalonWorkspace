@@ -1,4 +1,4 @@
-﻿using HairSalonBackEnd.Database;
+using HairSalonBackEnd.Database;
 using HairSalonBackEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -64,10 +64,10 @@ namespace HairSalonBackEnd.Controllers
         /// </summary>
         /// <param name="id">the id of the user to delete</param>
         [HttpDelete]
-        [Route("{id}")]
-        public void Delete(int id)
+        [Route("{username}")]
+        public void Delete(string username)
         {
-            SQLiteDbUtility.DeleteUser(id);
+            SQLiteDbUtility.DeleteUser(username);
         }
 
         /// <summary>
