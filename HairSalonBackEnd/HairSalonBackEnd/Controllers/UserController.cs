@@ -32,7 +32,7 @@ namespace HairSalonBackEnd.Controllers
         /// </summary>
         /// <param name="user">the user to add</param>
         /// <returns>
-        /// an action result containing the added user (with the database-assigned id) 
+        /// an action result containing the added user
         /// or a BadRequest if there is a failure
         /// </returns>
         [HttpPost]

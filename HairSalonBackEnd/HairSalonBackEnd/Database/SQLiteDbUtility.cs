@@ -341,7 +341,7 @@ namespace HairSalonBackEnd.Database
             dbAccess.WaitOne();
 
             // Get the record with same username.
-            var UserEntry = dbContext.Users.Where(x => x.username == user.Username).FirstOrDefault();
+            var UserEntry = dbContext.Users.Where(x => x.Username == user.Username).FirstOrDefault();
 
             // Update Fields and Save
             UserEntry.Username = user.Username;
