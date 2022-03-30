@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HairSalonBackEnd.Models
@@ -22,15 +23,9 @@ namespace HairSalonBackEnd.Models
         }
 
         /// <summary>
-        /// Get/Set for the primary key for the user record.
-        /// </summary>
-        [Key]
-        public int ID { get; set; }
-
-        /// <summary>
         /// Get/Set for the username of a given user on the website.
         /// </summary>
-        [Required]
+        [Key]
         [Column(TypeName = "navarchar(50)")]
         public string Username { get; set; }
 
