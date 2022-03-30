@@ -60,13 +60,14 @@
   </div>
   
   <ng-template #formDialog>
-    <div *ngIf="addingUser || updateSylist" class = "container">
+    <div *ngIf="addingUser || updateUser" class = "container">
       <div>
         <div style="float:left;">
-  
+          
+          <!-- only update username if creating a user -->
           <mat-form-field>
             <mat-label>User Name</mat-label>
-            <input matInput required id="userName" [(ngModel)]="this.userName" name = "userName">
+            <input matInput required id="userName" disabled = "updateUser" [(ngModel)]="this.userName" name = "userName">
           </mat-form-field>
   
           <br>
@@ -74,7 +75,7 @@
           <mat-form-field>
             <!-- password field with hiding/unhiding password -->
             <!-- from: https://material.angular.io/components/form-field/overview -->
-            <mat-label>New Password</mat-label>
+            <mat-label>Password</mat-label>
             <input matInput [type]="hide ? 'password' : 'text'" required id="password" [(ngModel)]="this.password" name = "password">
             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
               <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -84,6 +85,8 @@
             <input matInput type = "password"  required id="password" [(ngModel)]="this.password" name = "password"> -->
           </mat-form-field>
 
+          <br>
+
           <mat-form-field>
             <!-- confirm password field with hiding/unhiding password -->
             <!-- from: https://material.angular.io/components/form-field/overview -->
@@ -92,6 +95,16 @@
             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
               <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
+          </mat-form-field>
+
+          <!-- role -->
+          <mat-form-field appearance="fill">
+            <mat-label>Role</mat-label>
+            <mat-select [(ngModel)]="role">
+              <mat-option *ngFor="let r of roles" [value]="r">
+                {{roleToString(r)}}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
   
       <!--Buttons to submit or cancel unavailability-->

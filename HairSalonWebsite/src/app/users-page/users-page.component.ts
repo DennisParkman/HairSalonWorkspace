@@ -1,7 +1,8 @@
 import { Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import { User } from '../models/user.model';
+import { User, UserRole } from '../models/user.model';
 import { UserService } from '../services/user-service/user.service';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users-page',
@@ -15,12 +16,16 @@ export class UsersPageComponent implements OnInit {
   //list of users
   users: User[];
 
+  //list of roles
+  roles: UserRole[];
+
   //user field attributes
-  userName: string;
-  password: string
-  confPassword: string
+  username: string;
+  password: string;
+  confPassword: string;
+  role: UserRole;
   hashedPassword: string;
-  userUpdateId: any = null;
+  userUpdateName: any = null;
 
   //booleans to change visibility
   editUserFunctions: boolean = false;
@@ -31,13 +36,30 @@ export class UsersPageComponent implements OnInit {
   //boolean for show/hide password
   hide: boolean = true;
 
-  constructor(private userService: UserService, private dialog: MatDialog) { }
+  //bcrypt singleton for hashing passwords
+  //docs found at: https://www.npmjs.com/package/bcrypt
+  bcrypt = require('bcrypt');
+
+  //temp global hashing salt; we might want to store salt in user table
+  salt: number = 10;
+
+  constructor(private userService: UserService, 
+              private dialog: MatDialog, 
+              private toastr: ToastrService) 
+  { }
 
   /**
    * On loading page, all users on the database are loaded into a user array
    */
   ngOnInit(): void 
   { 
+    //initialize the list of roles
+    this.roles = 
+    [
+      UserRole.Manager,
+      UserRole.Stylist,
+      UserRole.Receptionist
+    ];
 
     this.userService.getUsers().subscribe(u => 
       {
@@ -47,6 +69,11 @@ export class UsersPageComponent implements OnInit {
       }
     );
     
+  }
+
+  roleToString(role: UserRole): string
+  {
+    return User.roleToString(role);
   }
 
   /**
@@ -81,16 +108,22 @@ export class UsersPageComponent implements OnInit {
   addUser() 
   {
     //check that the form fields are valid
-    if(!this.validateFields())
+    if(!this.validateFields(false))
     {
       return;
     }
     //tells the page that users are being loaded
     this.usersLoading = true;
 
+    //hash the password
+    //TODO: test with async hashing instead?
+    this.hashedPassword = this.bcrypt.hashSync(this.password, this.salt);
+
+    //debug; DELETE AFTER USE
+    console.log("hashedPassword type" + (typeof this.hashedPassword) + "pwd hash: " + this.hashedPassword)
+
     //create user object to add to the database
-    //TODO: populate user object with proper fields
-    let user: User = {};
+    let user: User = {username: this.username, password: this.hashedPassword, role: this.role};
 
     //send the new user to the backend via userService
     this.userService.addUser(user).subscribe(value => 
@@ -115,15 +148,14 @@ export class UsersPageComponent implements OnInit {
   }
 
   /*
-    Display update sytlist form for specific user
+    Display update user form for specific user
   */
   displayUpdateUser(user: User)
   {
-    
-    this.userUpdateId = user.id;
-    this.userName = user.userName;
-    this.password = user.password;
-    this.confPassword = user.confPassword;
+    this.userUpdateName = user.username;
+    this.username = user.username;
+    this.role = user.role;
+    this.hashedPassword = user.password;
 
     this.updateUser = true;
     this.dialog.open(this.formDialog);
@@ -134,11 +166,23 @@ export class UsersPageComponent implements OnInit {
   */
   updatingUser()
   {
+    //quit if invalid fields
+    if(!this.validateFields(true))
+    {
+      return;
+    }
+
+    //hash the password if there is a new password
+    if(this.password != "" || this.password != null)
+    {
+      //TODO: test with async hashing instead?
+      this.hashedPassword = this.bcrypt.hashSync(this.password, this.salt);
+    }
     // Temorary user object that will replace the object being updated.
-    let user: User = {id: this.userUpdateId, confPassword: this.confPassword, userName: this.userName, password: this.password};
+    let user: User = {username: this.userUpdateName, password: this.hashedPassword, role: this.role};
 
     // Query the database for the user being updated.
-    var index = this.users.findIndex(x => x.id === this.userUpdateId);
+    var index = this.users.findIndex(x => x.username === this.userUpdateName);
 
     // Call the update service to pass to back end, and update the user. 
     this.userService.updateUser(user);
@@ -146,7 +190,7 @@ export class UsersPageComponent implements OnInit {
 
     // Clearing the fields/flags
     this.updateUser = false;    // Form not to be displayed.
-    this.userUpdateId = null;
+    this.userUpdateName = null;
     this.clearFields();
     this.dialog.closeAll();
   }
@@ -157,7 +201,7 @@ export class UsersPageComponent implements OnInit {
   cancelUpdatingUser()
   {
     this.updateUser = false;
-    this.userUpdateId = null;
+    this.userUpdateName = null;
     this.clearFields();
     this.dialog.closeAll();
   }
@@ -189,21 +233,69 @@ export class UsersPageComponent implements OnInit {
   {
     this.confPassword = "";
     this.password = "";
-    this.userName = "";
+    this.username = "";
+    this.role = 0; //the default role (Manager)
   }
 
 
   /**
-   * Validate Fields before adding/updating a user
+   * validates the update/create user form, checking for unique user name
+   * and matching confirmed password.
+   * only requires a nonempty password if creating.
+   * Blank password fields for update leaves password the same
+   * @param isUpdate flag for if this is validation for updating an existing user
+   * @returns true if the form is valid, false otherwise
    */
-   validateFields() : boolean
+   validateFields(isUpdate: boolean) : boolean
    {
-      //assume the form is valid
-      let isValid: boolean = true;
+      //require a username
+      if(this.username == "" || this.username == null)
+      {
+        this.toastr.error("Username is reqired!");
+        console.log("Username is reqired!");
+        return false;
+      }
 
+      //require a password if not updating
+      if(!isUpdate)
+      {
+        if(this.password == "" || this.password == null)
+        {
+          this.toastr.error("Password is reqired!");
+          console.log("Password is reqired!");
+          return false;
+        }
+      }
+      
+      //require a role
+      if(this.role == null || this.roleToString(this.role) == "Error")
+      {
+        this.toastr.error("User role is reqired!");
+        console.log("User role is reqired!");
+        return false;
+      }
 
-      //return the status of the form
-      return isValid;
+      //check username is unique, returning false if not
+      for(let user of this.users)
+      {
+        if(user.username === this.username)
+        {
+          this.toastr.error("username " + this.username + " is already in use");
+          console.log("username " + this.username + " is already in use")
+          return false;
+        }
+      }
+
+      //check password and confPassword match, returning false if not
+      if(this.password !== this.confPassword)
+      {
+        this.toastr.error("Passwords don't match!");
+        console.log("Passwords don't match!");
+        return false;
+      }
+
+      //if it got this far, the form is valid
+      return true;
    }
 
 }
