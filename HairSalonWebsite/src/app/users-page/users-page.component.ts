@@ -16,18 +16,20 @@ export class UsersPageComponent implements OnInit {
   users: User[];
 
   //user field attributes
-  bio: string;
-  name: string;
-  level: number;
+  userName: string;
+  password: string
+  confPassword: string
+  hashedPassword: string;
   userUpdateId: any = null;
-  userImage: string;
 
   //booleans to change visibility
-  editSytlistFunctions: boolean = false;
+  editUserFunctions: boolean = false;
   addingUser: boolean = false;
   updateUser: boolean = false;
   usersLoading: boolean = true;
-  
+
+  //boolean for show/hide password
+  hide: boolean = true;
 
   constructor(private userService: UserService, private dialog: MatDialog) { }
 
@@ -36,6 +38,7 @@ export class UsersPageComponent implements OnInit {
    */
   ngOnInit(): void 
   { 
+
     this.userService.getUsers().subscribe(u => 
       {
         this.users = u; 
@@ -43,6 +46,7 @@ export class UsersPageComponent implements OnInit {
         console.log(this.users); //debug
       }
     );
+    
   }
 
   /**
@@ -76,6 +80,11 @@ export class UsersPageComponent implements OnInit {
   */
   addUser() 
   {
+    //check that the form fields are valid
+    if(!this.validateFields())
+    {
+      return;
+    }
     //tells the page that users are being loaded
     this.usersLoading = true;
 
@@ -112,9 +121,9 @@ export class UsersPageComponent implements OnInit {
   {
     
     this.userUpdateId = user.id;
-    this.name = user.name;
-    this.level = user.level;
-    this.bio = user.bio;
+    this.userName = user.userName;
+    this.password = user.password;
+    this.confPassword = user.confPassword;
 
     this.updateUser = true;
     this.dialog.open(this.formDialog);
@@ -126,17 +135,12 @@ export class UsersPageComponent implements OnInit {
   updatingUser()
   {
     // Temorary user object that will replace the object being updated.
-    let user: User = {id: this.userUpdateId, bio: this.bio, name: this.name, level: this.level, userImage: this.userImage};
+    let user: User = {id: this.userUpdateId, confPassword: this.confPassword, userName: this.userName, password: this.password};
 
     // Query the database for the user being updated.
     var index = this.users.findIndex(x => x.id === this.userUpdateId);
 
     // Call the update service to pass to back end, and update the user. 
-    // If the userImage is 
-    if(user.userImage == null || user.userImage == "")
-    {
-      user.userImage = this.users[index].userImage;
-    }
     this.userService.updateUser(user);
     this.users[index] = user;
 
@@ -175,7 +179,7 @@ export class UsersPageComponent implements OnInit {
   */
   toggleUserFunctionButtons()
   {
-    this.editSytlistFunctions = !this.editSytlistFunctions;
+    this.editUserFunctions = !this.editUserFunctions;
   }
 
   /*
@@ -183,42 +187,23 @@ export class UsersPageComponent implements OnInit {
   */
   clearFields()
   {
-    this.bio = "";
-    this.level = 0;
-    this.name = "";
-    this.userImage = "";
+    this.confPassword = "";
+    this.password = "";
+    this.userName = "";
   }
 
-  /*
-    sort users by level from highest level to lowest level
-  */
-  sortByLevelDesending(): void
-  {
-    this.users.sort((a, b) => (a.level > b.level) ? -1 : 1);
-  }
 
-  /*
-    sort users by level from lowest level to highest level
-  */
-  sortByLevelAscending(): void
-  {
-    this.users.sort((a, b) => (a.level < b.level) ? -1 : 1);
-  }
+  /**
+   * Validate Fields before adding/updating a user
+   */
+   validateFields() : boolean
+   {
+      //assume the form is valid
+      let isValid: boolean = true;
 
-  /*
-    sort users by name in alphabetical order from A to Z
-  */
-  sortByNameAscending(): void
-  {
-    this.users.sort((a, b) => (a.name < b.name) ? -1 : 1);
-  }
 
-  /*
-    sort users by name in reverse alphabetical order from Z to A
-  */
-  sortByNameDesending(): void
-  {
-    this.users.sort((a, b) => (a.name > b.name) ? -1 : 1);
-  }
+      //return the status of the form
+      return isValid;
+   }
 
 }

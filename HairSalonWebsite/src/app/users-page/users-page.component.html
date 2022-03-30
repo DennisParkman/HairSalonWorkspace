@@ -4,33 +4,31 @@
 <div *ngIf="!usersLoading"> 
     <div style="margin-left:25%; margin-right:25%">
   
-      <!--View current stylists-->
+      <!--View current users-->
       <div class="row" >
-        <mat-card class = "stylist-card-color stylist-card-size" *ngFor="let user of users">
+        <mat-card class = "user-card-color user-card-size" *ngFor="let user of users">
           
-          <!--Buttons to edit and delete stylists-->
+          <!--Buttons to edit and delete users-->
           <div *ngIf=" editUserFunctions" class="button-container-list">
             <div  mclass="button-container">
-              <mat-button-toggle (click) = "deleteUser(user)" class = "stylist-card-color">
+              <mat-button-toggle (click) = "deleteUser(user)" class = "user-card-color">
                 <mat-icon>delete</mat-icon>
               </mat-button-toggle>
             </div>
     
             <div class="button-container">
-              <mat-button-toggle (click) = "displayUpdateUser(stylist)"class = "stylist-card-color">
+              <mat-button-toggle (click) = "displayUpdateUser(user)"class = "user-card-color">
                 <mat-icon>edit</mat-icon>
               </mat-button-toggle>
             </div>
           </div>
   
-          <!--Stylist Information-->
-          <mat-card class= "stylist-card-name">
-              {{stylist.name}}
+          <!--User Information-->
+          <mat-card class= "user-card-name">
+              User Name: {{user.userName}}
           </mat-card>
-          <mat-card class = "stylist-card-info">
-              Level: {{stylist.level}}
-              <br>
-              {{stylist.bio}}
+          <mat-card class = "user-card-info">
+              Role: {{user.role}}
           </mat-card>
   
         </mat-card>
@@ -40,32 +38,21 @@
       <div class="row">
         <div class="flex-container">
   
-          <!--Button to display update and delete stylists -->
+          <!--Button to display update and delete users -->
           <div class="button-container">
-            <mat-button-toggle (click) = "toggleStylistFunctionButtons()" class = "stylist-card-color">
+            <mat-button-toggle (click) = "toggleUserFunctionButtons()" class = "user-card-color">
               <mat-icon>edit</mat-icon>
             </mat-button-toggle>
           </div>
   
-          <!--Button to display form to add stylists -->
+          <!--Button to display form to add users -->
           <div class="button-container">
-            <mat-button-toggle (click) = "setCreateStylist() " class = "stylist-card-color">
+            <mat-button-toggle (click) = "setCreateUser() " class = "user-card-color">
               <mat-icon>add</mat-icon>
             </mat-button-toggle>
           </div>
   
-          <!--Button to display sorting options for stylists -->
-          <div class="button-container" class = "stylist-card-color">
-            <mat-button-toggle [matMenuTriggerFor]="infoMenu"  class = "stylist-card-color">
-              <mat-icon>sort</mat-icon>
-            </mat-button-toggle>
-            <mat-menu #infoMenu="matMenu" backdropClass="customize" style="background-color: rgb(18,24,48)">
-              <mat-option class = "stylist-card-color" (click) = "sortByLevelDesending()">Level (Desending)</mat-option>
-              <mat-option class = "stylist-card-color" (click) = "sortByLevelAscending()">Level (Ascending)</mat-option>
-              <mat-option class = "stylist-card-color" (click) = "sortByNameAscending()">Name (A-Z)</mat-option>
-              <mat-option class = "stylist-card-color" (click) = "sortByNameDesending()">Name (Z-A)</mat-option>
-            </mat-menu>
-          </div>
+          
         </div>
       </div>
   
@@ -73,42 +60,45 @@
   </div>
   
   <ng-template #formDialog>
-    <div *ngIf="addingStylist || updateSylist" class = "container">
+    <div *ngIf="addingUser || updateSylist" class = "container">
       <div>
         <div style="float:left;">
   
           <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput required id="name" [(ngModel)]="this.name" name = "name">
+            <mat-label>User Name</mat-label>
+            <input matInput required id="userName" [(ngModel)]="this.userName" name = "userName">
           </mat-form-field>
   
           <br>
   
           <mat-form-field>
-            <mat-label>Level</mat-label>
-            <input matInput type = "number"  min = "1" max = "5" required id="level" [(ngModel)]="this.level" name = "level">
+            <!-- password field with hiding/unhiding password -->
+            <!-- from: https://material.angular.io/components/form-field/overview -->
+            <mat-label>New Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" required id="password" [(ngModel)]="this.password" name = "password">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+
+            <!-- <mat-label>New Password</mat-label>
+            <input matInput type = "password"  required id="password" [(ngModel)]="this.password" name = "password"> -->
           </mat-form-field>
-  
-        </div>
-        <div style="float:right;">
-  
+
           <mat-form-field>
-            <mat-label>Bio</mat-label>
-            <input matInput required id="bio"  [(ngModel)]="this.bio" name = "bio">
+            <!-- confirm password field with hiding/unhiding password -->
+            <!-- from: https://material.angular.io/components/form-field/overview -->
+            <mat-label>Confirm Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" required id="password" [(ngModel)]="this.confPassword" name = "password">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
           </mat-form-field>
-  
-          <br>
-  
-          <input type="file" accept = ".png,.jpg" class="form-control" required id="Picture" name = "Picture" (change)="EncodeImage($event)">
-  
-        </div>
-      </div>
   
       <!--Buttons to submit or cancel unavailability-->
-      <button *ngIf="addingStylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addStylist()">Submit</button>
-      <button *ngIf="updateSylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updatingStylist()">Submit</button>
+      <button *ngIf="addingUser" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addUser()">Submit</button>
+      <button *ngIf="updateSylist" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updatingUser()">Submit</button>
   
-      <button *ngIf="addingStylist" mat-flat-button style = "margin: 1%" (click)="cancelAddStylist()">Cancel</button>
-      <button *ngIf="updateSylist" mat-flat-button style = "margin: 1%" (click)="cancelUpdatingStylist()">Cancel</button>
+      <button *ngIf="addingUser" mat-flat-button style = "margin: 1%" (click)="cancelAddUser()">Cancel</button>
+      <button *ngIf="updateSylist" mat-flat-button style = "margin: 1%" (click)="cancelUpdatingUser()">Cancel</button>
     </div>
   </ng-template> <!--This template allows both forms to display as pop up menus-->
