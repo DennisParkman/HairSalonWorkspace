@@ -361,7 +361,7 @@ namespace HairSalonBackEnd.Database
         public static void DeleteUser(int id)
         {
             dbAccess.WaitOne();
-            var UserEntry = dbContext.Users.Where(x => x.ID == ID).FirstOrDefault();
+            var UserEntry = dbContext.Users.Where(x => x.ID == id).FirstOrDefault();
             dbContext.Users.Remove(UserEntry);
             dbContext.SaveChanges();
             dbAccess.Release();
