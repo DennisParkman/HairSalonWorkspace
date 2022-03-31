@@ -64,10 +64,10 @@ namespace HairSalonBackEnd.Controllers
         /// </summary>
         /// <param name="id">the id of the user to delete</param>
         [HttpDelete]
-        [Route("{username}")]
-        public void Delete(string username)
+        [Route("{id}")]
+        public void Delete(int id)
         {
-            SQLiteDbUtility.DeleteUser(username);
+            SQLiteDbUtility.DeleteUser(id);
         }
 
         /// <summary>
