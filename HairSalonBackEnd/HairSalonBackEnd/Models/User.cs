@@ -11,6 +11,7 @@ namespace HairSalonBackEnd.Models
     /// </summary>
     public class User
     {
+
         /// <summary>
         /// an enum data type for defining the role field of the user.
         /// An user will be given access control based on this role
@@ -23,9 +24,15 @@ namespace HairSalonBackEnd.Models
         }
 
         /// <summary>
-        /// Get/Set for the username of a given user on the website.
+        /// primary key/ID of user entry
         /// </summary>
         [Key]
+        public int ID { get; set; }
+
+        /// <summary>
+        /// Get/Set for the username of a given user on the website.
+        /// </summary>
+        [Required]
         [Column(TypeName = "navarchar(50)")]
         public string Username { get; set; }
 
