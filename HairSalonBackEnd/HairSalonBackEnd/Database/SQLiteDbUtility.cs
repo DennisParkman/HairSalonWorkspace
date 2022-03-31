@@ -296,6 +296,78 @@ namespace HairSalonBackEnd.Database
 
         #endregion
 
+        #region User Methods
+
+        /// <summary>
+        /// Method for adding an user record to the database.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="user">the user to add</param>
+        /// <returns>the user added </returns>
+        public static User AddUser(User user)
+        {
+            dbAccess.WaitOne();
+
+            dbContext.Users.Add(user);
+            dbContext.SaveChanges();
+
+            dbAccess.Release();
+            return user;
+        }
+
+        /// <summary>
+        /// Method for getting all the users.
+        /// locks the database until completed
+        /// </summary>
+        /// <returns> an enumerable array of all the users in the database</returns>
+        public static IEnumerable<User> GetAllUsers()
+        {
+            dbAccess.WaitOne();
+
+            IEnumerable<User> users = dbContext.Users.ToList();
+
+            dbAccess.Release();
+
+            return users;
+        }
+
+        /// <summary>
+        /// The Update method for updating an user record.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="user"> the user to update</param>
+        public static void UpdateUser(User user)
+        {
+            dbAccess.WaitOne();
+
+            // Get the record with same username.
+            var UserEntry = dbContext.Users.Where(x => x.Username == user.Username).FirstOrDefault();
+
+            // Update Fields and Save
+            UserEntry.Username = user.Username;
+            UserEntry.Password = user.Password;
+            UserEntry.Role = user.Role;
+
+            dbContext.SaveChanges();
+
+            dbAccess.Release();
+        }
+
+        /// <summary>
+        /// The delete method for removing an user record.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="username">the username of the user to delete</param>
+        public static void DeleteUser(string username)
+        {
+            dbAccess.WaitOne();
+            var UserEntry = dbContext.Users.Where(x => x.Username == username).FirstOrDefault();
+            dbContext.Users.Remove(UserEntry);
+            dbContext.SaveChanges();
+            dbAccess.Release();
+        }
+        #endregion
+
         private class SQLiteDbContext : DbContext
         {
             /// <summary>
@@ -312,6 +384,11 @@ namespace HairSalonBackEnd.Database
             /// abstraction of the unavailabilities table
             /// </summary>
             public DbSet<Unavailability> Unavailabilities { get; set; }
+
+             /// <summary>
+            /// abstraction of the users table
+            /// </summary>
+            public DbSet<User> Users { get; set; }
 
             /// <summary>
             /// method for configuring the database
@@ -339,7 +416,9 @@ namespace HairSalonBackEnd.Database
                 modelBuilder.Entity<Appointment>().ToTable("Appointments", "localSchema");
                 //set up the Unavailabilities table
                 modelBuilder.Entity<Unavailability>().ToTable("Unavailabilities", "localSchema");
-                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>(); 
+                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>();
+                //set up the Users table
+                modelBuilder.Entity<User>().ToTable("Users", "localSchema");
 
                 //create the database
                 base.OnModelCreating(modelBuilder);
