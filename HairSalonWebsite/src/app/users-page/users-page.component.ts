@@ -25,7 +25,7 @@ export class UsersPageComponent implements OnInit {
   confPassword: string;
   role: UserRole;
   hashedPassword: string;
-  userUpdateName: any = null;
+  userUpdateId: any = null;
 
   //booleans to change visibility
   editUserFunctions: boolean = false;
@@ -152,7 +152,7 @@ export class UsersPageComponent implements OnInit {
   */
   displayUpdateUser(user: User)
   {
-    this.userUpdateName = user.username;
+    this.userUpdateId = user.id;
     this.username = user.username;
     this.role = user.role;
     this.hashedPassword = user.password;
@@ -179,10 +179,10 @@ export class UsersPageComponent implements OnInit {
       this.hashedPassword = this.bcrypt.hashSync(this.password, this.salt);
     }
     // Temorary user object that will replace the object being updated.
-    let user: User = {username: this.userUpdateName, password: this.hashedPassword, role: this.role};
+    let user: User = {username: this.username, password: this.hashedPassword, role: this.role};
 
     // Query the database for the user being updated.
-    var index = this.users.findIndex(x => x.username === this.userUpdateName);
+    var index = this.users.findIndex(x => x.id === this.userUpdateId);
 
     // Call the update service to pass to back end, and update the user. 
     this.userService.updateUser(user);
@@ -190,7 +190,7 @@ export class UsersPageComponent implements OnInit {
 
     // Clearing the fields/flags
     this.updateUser = false;    // Form not to be displayed.
-    this.userUpdateName = null;
+    this.userUpdateId = null;
     this.clearFields();
     this.dialog.closeAll();
   }
@@ -201,7 +201,7 @@ export class UsersPageComponent implements OnInit {
   cancelUpdatingUser()
   {
     this.updateUser = false;
-    this.userUpdateName = null;
+    this.userUpdateId = null;
     this.clearFields();
     this.dialog.closeAll();
   }
