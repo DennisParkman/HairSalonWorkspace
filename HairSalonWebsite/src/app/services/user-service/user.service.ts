@@ -59,7 +59,7 @@ export class UserService
     */
    deleteUser(user: User): void
    {
-       let url = this.baseURL.concat("User/" + user.username);
+       let url = this.baseURL.concat("User/" + user.id);
        this.http.delete(url).subscribe();
    }
 
