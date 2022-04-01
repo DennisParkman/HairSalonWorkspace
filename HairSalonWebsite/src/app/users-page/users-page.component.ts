@@ -38,7 +38,8 @@ export class UsersPageComponent implements OnInit {
 
   //bcrypt singleton for hashing passwords
   //docs found at: https://www.npmjs.com/package/bcrypt
-  bcrypt = require('bcrypt');
+  //need to install bcryptjs
+  bcrypt = require('bcryptjs');
 
   //temp global hashing salt; we might want to store salt in user table
   salt: number = 10;
@@ -173,13 +174,16 @@ export class UsersPageComponent implements OnInit {
     }
 
     //hash the password if there is a new password
-    if(this.password != "" || this.password != null)
+    if(this.password != "" && this.password != null)
     {
+      console.log(this.password);
       //TODO: test with async hashing instead?
       this.hashedPassword = this.bcrypt.hashSync(this.password, this.salt);
     }
     // Temorary user object that will replace the object being updated.
-    let user: User = {username: this.username, password: this.hashedPassword, role: this.role};
+    let user: User = {id: this.userUpdateId, username: this.username, password: this.hashedPassword, role: this.role};
+
+    console.log(user);
 
     // Query the database for the user being updated.
     var index = this.users.findIndex(x => x.id === this.userUpdateId);
@@ -251,7 +255,7 @@ export class UsersPageComponent implements OnInit {
       //require a username
       if(this.username == "" || this.username == null)
       {
-        this.toastr.error("Username is reqired!");
+        this.toastr.error("Username is required!");
         console.log("Username is reqired!");
         return false;
       }
@@ -261,7 +265,7 @@ export class UsersPageComponent implements OnInit {
       {
         if(this.password == "" || this.password == null)
         {
-          this.toastr.error("Password is reqired!");
+          this.toastr.error("Password is required!");
           console.log("Password is reqired!");
           return false;
         }
@@ -270,7 +274,7 @@ export class UsersPageComponent implements OnInit {
       //require a role
       if(this.role == null || this.roleToString(this.role) == "Error")
       {
-        this.toastr.error("User role is reqired!");
+        this.toastr.error("User role is required!");
         console.log("User role is reqired!");
         return false;
       }
@@ -278,7 +282,7 @@ export class UsersPageComponent implements OnInit {
       //check username is unique, returning false if not
       for(let user of this.users)
       {
-        if(user.username === this.username)
+        if(user.username === this.username && user.id != this.userUpdateId)
         {
           this.toastr.error("username " + this.username + " is already in use");
           console.log("username " + this.username + " is already in use")
