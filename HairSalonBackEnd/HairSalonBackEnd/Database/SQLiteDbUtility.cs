@@ -341,7 +341,7 @@ namespace HairSalonBackEnd.Database
             dbAccess.WaitOne();
 
             // Get the record with same username.
-            var UserEntry = dbContext.Users.Where(x => x.Username == user.Username).FirstOrDefault();
+            var UserEntry = dbContext.Users.Where(x => x.ID == user.ID).FirstOrDefault();
 
             // Update Fields and Save
             UserEntry.Username = user.Username;
@@ -357,11 +357,11 @@ namespace HairSalonBackEnd.Database
         /// The delete method for removing an user record.
         /// locks the database until completed
         /// </summary>
-        /// <param name="username">the username of the user to delete</param>
-        public static void DeleteUser(string username)
+        /// <param name="id">the id of the user to delete</param>
+        public static void DeleteUser(int id)
         {
             dbAccess.WaitOne();
-            var UserEntry = dbContext.Users.Where(x => x.Username == username).FirstOrDefault();
+            var UserEntry = dbContext.Users.Where(x => x.ID == id).FirstOrDefault();
             dbContext.Users.Remove(UserEntry);
             dbContext.SaveChanges();
             dbAccess.Release();
