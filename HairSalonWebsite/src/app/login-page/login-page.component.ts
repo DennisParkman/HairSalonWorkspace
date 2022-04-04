@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { runInThisContext } from 'vm';
-import { User } from '../models/user.model';
+import { User, UserRole } from '../models/user.model';
 import { UserService } from '../services/user-service/user.service';
 
 @Component(
@@ -13,9 +12,17 @@ import { UserService } from '../services/user-service/user.service';
 })
 export class LoginPageComponent implements OnInit 
 {
+  //list of users
   users: User[];
+  
+  //list of roles
+  roles: UserRole[];
+
+  //user field attributes
   username: string;
   password: string;
+  role: UserRole;
+ 
   loginValid: boolean = true;
   bcrypt = require('bcryptjs');
 
@@ -49,11 +56,13 @@ export class LoginPageComponent implements OnInit
         else
         {
           this.toastr.error("Password Invalid!");
+          this.loginValid = false;
         }
       }
       else
       {
         this.toastr.error("Username is Invalid!");
+        this.loginValid = false;
       }
     }
   }
