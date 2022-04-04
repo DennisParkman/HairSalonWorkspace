@@ -24,6 +24,8 @@ import { EventCalendarComponent } from './event-calendar/event-calendar.componen
 import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { ToastrModule } from 'ngx-toastr';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule(
 {
@@ -38,7 +40,8 @@ import { ToastrModule } from 'ngx-toastr';
     DayDialogBoxComponent,
     AppointmentPageComponent,
     EventCalendarComponent,
-    UnavailabilityPageComponent
+    UnavailabilityPageComponent,
+    LoginPageComponent
   ],
   imports: 
   [
@@ -55,6 +58,7 @@ import { ToastrModule } from 'ngx-toastr';
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     ToastrModule.forRoot(),
+    FlexLayoutModule,
     
     CalendarModule.forRoot({
       provide: DateAdapter,
