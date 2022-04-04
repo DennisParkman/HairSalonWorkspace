@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { runInThisContext } from 'vm';
 import { User } from '../models/user.model';
@@ -16,7 +17,9 @@ export class LoginPageComponent implements OnInit
   username: string;
   password: string;
   loginValid: boolean = true;
-  constructor(private userService: UserService, private toastr: ToastrService) 
+  bcrypt = require('bcryptjs');
+
+  constructor(private userService: UserService, private toastr: ToastrService, private router: Router) 
   { }
 
   ngOnInit(): void 
@@ -36,11 +39,12 @@ export class LoginPageComponent implements OnInit
     {
       if(this.username == user.username)
       {
-        let validPassword = bcrypt.compareSync(this.password, user.password)
+        let validPassword = this.bcrypt.compareSync(this.password, user.password)
         if(validPassword)
         {
           this.toastr.success("Login Successfull!");
           console.log("Login Successfull");
+          this.router.navigateByUrl('/home');
         }
         else
         {
