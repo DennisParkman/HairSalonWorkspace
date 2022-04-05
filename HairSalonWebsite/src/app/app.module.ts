@@ -26,6 +26,7 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
 import { ToastrModule } from 'ngx-toastr';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { NgxWebstorageModule } from 'ngx-webstorage';
 
 @NgModule(
 {
@@ -59,6 +60,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     NgxMatNativeDateModule,
     ToastrModule.forRoot(),
     FlexLayoutModule,
+    NgxWebstorageModule.forRoot(),
     
     CalendarModule.forRoot({
       provide: DateAdapter,

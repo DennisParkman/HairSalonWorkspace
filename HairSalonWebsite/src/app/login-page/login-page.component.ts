@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SessionStorageService } from 'ngx-webstorage';
 import { User, UserRole } from '../models/user.model';
 import { UserService } from '../services/user-service/user.service';
 
@@ -26,7 +27,10 @@ export class LoginPageComponent implements OnInit
   loginValid: boolean = true;
   bcrypt = require('bcryptjs');
 
-  constructor(private userService: UserService, private toastr: ToastrService, private router: Router) 
+  constructor(private userService: UserService, 
+              private toastr: ToastrService, 
+              private router: Router,
+              private sessionStorage: SessionStorageService) 
   { }
 
   ngOnInit(): void 
@@ -49,6 +53,7 @@ export class LoginPageComponent implements OnInit
         let validPassword = this.bcrypt.compareSync(this.password, user.password)
         if(validPassword)
         {
+          this.sessionStorage.store(this.username, this.password); //this gets lost once the browser tab is closed
           this.toastr.success("Login Successfull!");
           console.log("Login Successfull");
           this.router.navigateByUrl('/home');
