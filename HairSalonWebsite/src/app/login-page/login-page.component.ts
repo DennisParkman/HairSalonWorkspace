@@ -23,8 +23,7 @@ export class LoginPageComponent implements OnInit
   username: string;
   password: string;
   role: UserRole;
- 
-  loginValid: boolean = true;
+
   bcrypt = require('bcryptjs');
 
   constructor(private userService: UserService, 
@@ -45,30 +44,30 @@ export class LoginPageComponent implements OnInit
 
   onSubmit(): void 
   {
-    this.loginValid = true;
+    let validUsername = false;
+    let validPassword = false;
     for(let user of this.users)
     {
       if(this.username == user.username)
       {
-        let validPassword = this.bcrypt.compareSync(this.password, user.password)
+        validUsername = true;
+        validPassword = this.bcrypt.compareSync(this.password, user.password)
         if(validPassword)
         {
           this.sessionStorage.store(this.username, this.password); //this gets lost once the browser tab is closed
           this.toastr.success("Login Successfull!");
           console.log("Login Successfull");
           this.router.navigateByUrl('/home');
-        }
-        else
-        {
-          this.toastr.error("Password Invalid!");
-          this.loginValid = false;
-        }
+        } 
       }
-      else
-      {
-        this.toastr.error("Username is Invalid!");
-        this.loginValid = false;
-      }
+    }
+    if(!validUsername)
+    {
+      this.toastr.error("Username is invalid");
+    }
+    if(!validPassword)
+    {
+      this.toastr.error("Password is invalid");
     }
   }
 }
