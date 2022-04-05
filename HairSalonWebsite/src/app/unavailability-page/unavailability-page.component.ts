@@ -11,7 +11,6 @@ import { FormControl } from '@angular/forms';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { ToastrService } from 'ngx-toastr';
-import { CanComponentActivate } from '../component-interfaces/can-component-activate';
 import { UserRole } from '../models/user.model';
 
 @Component(
@@ -20,7 +19,7 @@ import { UserRole } from '../models/user.model';
   templateUrl: './unavailability-page.component.html',
   styleUrls: ['./unavailability-page.component.scss']
 })
-export class UnavailabilityPageComponent implements OnInit, CanComponentActivate
+export class UnavailabilityPageComponent implements OnInit
 {
   //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent

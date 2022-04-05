@@ -10,7 +10,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { StylistPageComponent } from './stylist-page/stylist-page.component';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
-import { AuthGuardGuard } from './guards/auth-guard.guard';
+import { ManagerGuard } from './guards/manager.guard';
 
 //list of url endings and associated components
 const routes: Routes = 
@@ -20,7 +20,7 @@ const routes: Routes =
   {path: 'stylists', component: StylistPageComponent},
   {path: 'schedule', component: SchedulePageComponent},
   {path: 'appointments', component: AppointmentPageComponent},
-  {path: 'unavailabilities', component: UnavailabilityPageComponent, canActivate: [AuthGuardGuard], }
+  {path: 'unavailabilities', component: UnavailabilityPageComponent, canActivate: [ManagerGuard], }
 ];
 
 @NgModule(
