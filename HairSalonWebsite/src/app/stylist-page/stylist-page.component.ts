@@ -3,6 +3,7 @@ import { Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { MatDialog } from '@angular/material/dialog';
+import { User,UserRole } from '../models/user.model';
 
 
 
@@ -31,6 +32,8 @@ export class StylistPageComponent implements OnInit
   addingStylist: boolean = false;
   updateSylist: boolean = false;
   stylistsLoading: boolean = true;
+
+  role: UserRole[]; //array of roles used for access control
   
 
   constructor(private stylistService: StylistService, private dialog: MatDialog) { }
@@ -39,7 +42,13 @@ export class StylistPageComponent implements OnInit
    * On loading page, all stylists on the database are loaded into a stylist array
    */
   ngOnInit(): void 
-  { 
+  {
+    // set enumerable values for role
+    this.role = [
+      UserRole.Manager,
+      UserRole.Receptionist,
+      UserRole.Stylist
+    ]
     this.stylistService.getStylists().subscribe(s => 
       {
         this.stylists = s; 
@@ -48,6 +57,25 @@ export class StylistPageComponent implements OnInit
       }
     );
   }
+
+  /**
+   * Function to allow access to certain features on the stylist page
+   */
+  canAccess(accessLevel: string)
+  {
+    let dummy: User = {id: 1, username: "Dummy", password: "pass123", role: UserRole.Manager};
+    return this.roleToString(dummy.role) == accessLevel
+  }
+
+  /**
+   * Function that accepts enum role and returns it in the form of string
+   * @param r enum role
+   * @returns timeperiod in string
+   */
+   roleToString(r: UserRole): string
+   {
+     return User.roleToString(r);
+   }
 
   /**
    * Function to close and reset dialog box

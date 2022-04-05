@@ -44,14 +44,14 @@
       <div class="flex-container">
 
         <!--Button to display update and delete stylists -->
-        <div class="button-container">
+        <div class="button-container" *ngIf = "canAccess(roleToString(role[0]))">
           <mat-button-toggle (click) = "toggleStylistFunctionButtons()" class = "stylist-card-color">
             <mat-icon>edit</mat-icon>
           </mat-button-toggle>
         </div>
 
         <!--Button to display form to add stylists -->
-        <div class="button-container">
+        <div class="button-container" *ngIf = "canAccess(roleToString(role[0]))">
           <mat-button-toggle (click) = "setCreateStylist() " class = "stylist-card-color">
             <mat-icon>add</mat-icon>
           </mat-button-toggle>
