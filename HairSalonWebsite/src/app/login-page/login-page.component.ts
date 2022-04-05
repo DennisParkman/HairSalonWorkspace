@@ -54,7 +54,9 @@ export class LoginPageComponent implements OnInit
         validPassword = this.bcrypt.compareSync(this.password, user.password)
         if(validPassword)
         {
-          this.sessionStorage.store(this.username, this.password); //this gets lost once the browser tab is closed
+          let userData = user;
+          userData.password = ""; //password is empty for security
+          this.sessionStorage.store(JSON.stringify(user), userData); //this gets lost once the browser tab is closed
           this.toastr.success("Login Successfull!");
           console.log("Login Successfull");
           this.router.navigateByUrl('/home');
