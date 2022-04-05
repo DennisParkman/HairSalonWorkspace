@@ -11,6 +11,8 @@ import { FormControl } from '@angular/forms';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { ToastrService } from 'ngx-toastr';
+import { CanComponentActivate } from '../component-interfaces/can-component-activate';
+import { UserRole } from '../models/user.model';
 
 @Component(
 {
@@ -18,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './unavailability-page.component.html',
   styleUrls: ['./unavailability-page.component.scss']
 })
-export class UnavailabilityPageComponent implements OnInit
+export class UnavailabilityPageComponent implements OnInit, CanComponentActivate
 {
   //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
@@ -110,6 +112,12 @@ export class UnavailabilityPageComponent implements OnInit
         this.unavailabilityLoading = false;
       });
   }
+
+  canActivate(): boolean
+  {
+    return true;
+  }
+  
   /**
    * Function that accepts enum TimePeriod and returns it in the form of string
    * @param p enum timeperiod
