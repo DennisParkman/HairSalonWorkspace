@@ -24,6 +24,7 @@ import { EventCalendarComponent } from './event-calendar/event-calendar.componen
 import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { ToastrModule } from 'ngx-toastr';
+import { UsersPageComponent } from './users-page/users-page.component';
 
 @NgModule(
 {
@@ -38,7 +39,8 @@ import { ToastrModule } from 'ngx-toastr';
     DayDialogBoxComponent,
     AppointmentPageComponent,
     EventCalendarComponent,
-    UnavailabilityPageComponent
+    UnavailabilityPageComponent,
+    UsersPageComponent
   ],
   imports: 
   [
