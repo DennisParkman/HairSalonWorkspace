@@ -45,12 +45,13 @@ export class LoginPageComponent implements OnInit
   onSubmit(): void 
   {
     let validUsername = false;
+    let validPassword = false;
     for(let user of this.users)
     {
       if(this.username == user.username)
       {
         validUsername = true;
-        let validPassword = this.bcrypt.compareSync(this.password, user.password)
+        validPassword = this.bcrypt.compareSync(this.password, user.password)
         if(validPassword)
         {
           let userData = user;
@@ -65,6 +66,10 @@ export class LoginPageComponent implements OnInit
     if(!validUsername)
     {
       this.toastr.error("Username is invalid");
+    }
+    else if(!validPassword)
+    {
+      this.toastr.error("Password is invalid");
     }
   }
 }
