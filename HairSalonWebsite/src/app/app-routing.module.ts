@@ -11,6 +11,7 @@ import { StylistPageComponent } from './stylist-page/stylist-page.component';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { UsersPageComponent } from './users-page/users-page.component';
 
 //list of url endings and associated components
 const routes: Routes = 
@@ -22,6 +23,7 @@ const routes: Routes =
   {path: 'appointments', component: AppointmentPageComponent},
   {path: 'unavailabilities', component: UnavailabilityPageComponent},
   {path: 'loginpage', component: LoginPageComponent}
+  {path: 'users', component: UsersPageComponent}
 ];
 
 @NgModule(

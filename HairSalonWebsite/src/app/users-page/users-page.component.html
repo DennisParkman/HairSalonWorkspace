@@ -1,0 +1,118 @@
+<!-- 
+    TODO: conditionally load only if role is admin
+-->
+<div *ngIf="!usersLoading"> 
+    <div style="margin-left:25%; margin-right:25%">
+  
+      <!--View current users-->
+      <div class="row" >
+        <mat-card class = "user-card-color user-card-size" *ngFor="let user of users">
+          
+          <!--Buttons to edit and delete users-->
+          <div *ngIf=" editUserFunctions" class="button-container-list">
+            <div  mclass="button-container">
+              <mat-button-toggle (click) = "deleteUser(user)" class = "user-card-color">
+                <mat-icon>delete</mat-icon>
+              </mat-button-toggle>
+            </div>
+    
+            <div class="button-container">
+              <mat-button-toggle (click) = "displayUpdateUser(user)"class = "user-card-color">
+                <mat-icon>edit</mat-icon>
+              </mat-button-toggle>
+            </div>
+          </div>
+  
+          <!--User Information-->
+          <mat-card class= "user-card-name">
+              User Name: {{user.username}}
+          </mat-card>
+          <mat-card class = "user-card-info">
+              Role: {{roleToString(user.role)}}
+          </mat-card>
+  
+        </mat-card>
+      </div>
+  
+      <!--Display CRUD Options-->
+      <div class="row">
+        <div class="flex-container">
+  
+          <!--Button to display update and delete users -->
+          <div class="button-container">
+            <mat-button-toggle (click) = "toggleUserFunctionButtons()" class = "user-card-color">
+              <mat-icon>edit</mat-icon>
+            </mat-button-toggle>
+          </div>
+  
+          <!--Button to display form to add users -->
+          <div class="button-container">
+            <mat-button-toggle (click) = "setCreateUser() " class = "user-card-color">
+              <mat-icon>add</mat-icon>
+            </mat-button-toggle>
+          </div>
+  
+          
+        </div>
+      </div>
+  
+    </div>
+</div>
+
+<ng-template #formDialog>
+    <div *ngIf="addingUser || updateUser" class = "container">
+      <div>
+        <div style="float:left;">
+          
+          <!-- only update username if creating a user -->
+          <mat-form-field>
+            <mat-label>User Name</mat-label>
+            <input matInput required id="username" [(ngModel)]="this.username" name = "username">
+          </mat-form-field>
+  
+          <br>
+  
+          <mat-form-field>
+            <!-- password field with hiding/unhiding password -->
+            <!-- from: https://material.angular.io/components/form-field/overview -->
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" required id="password" [(ngModel)]="this.password" name = "password">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+
+            <!-- <mat-label>New Password</mat-label>
+            <input matInput type = "password"  required id="password" [(ngModel)]="this.password" name = "password"> -->
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <!-- confirm password field with hiding/unhiding password -->
+            <!-- from: https://material.angular.io/components/form-field/overview -->
+            <mat-label>Confirm Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" required id="password" [(ngModel)]="this.confPassword" name = "password">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <!-- role -->
+          <mat-form-field appearance="fill">
+            <mat-label>Role</mat-label>
+            <mat-select [(ngModel)]="role">
+              <mat-option *ngFor="let r of roles" [value]="r">
+                {{roleToString(r)}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      <!--Buttons to submit or cancel unavailability-->
+      <button *ngIf="addingUser" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addUser()">Submit</button>
+      <button *ngIf="updateUser" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updatingUser()">Submit</button>
+  
+      <button *ngIf="addingUser" mat-flat-button style = "margin: 1%" (click)="cancelAddUser()">Cancel</button>
+      <button *ngIf="updateUser" mat-flat-button style = "margin: 1%" (click)="cancelUpdatingUser()">Cancel</button>
+      </div>
+    </div>
+  </ng-template> <!--This template allows both forms to display as pop up menus-->
