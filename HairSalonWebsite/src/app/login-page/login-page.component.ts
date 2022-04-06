@@ -34,7 +34,7 @@ export class LoginPageComponent implements OnInit
 
   ngOnInit(): void 
   {
-    this.userService.getUser().subscribe(s => 
+    this.userService.getUsers().subscribe(s => 
     {
       this.users = s; 
       console.log(this.users); //debug
@@ -45,13 +45,12 @@ export class LoginPageComponent implements OnInit
   onSubmit(): void 
   {
     let validUsername = false;
-    let validPassword = false;
     for(let user of this.users)
     {
       if(this.username == user.username)
       {
         validUsername = true;
-        validPassword = this.bcrypt.compareSync(this.password, user.password)
+        let validPassword = this.bcrypt.compareSync(this.password, user.password)
         if(validPassword)
         {
           let userData = user;
