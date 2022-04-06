@@ -33,7 +33,9 @@ export class StylistPageComponent implements OnInit
   updateSylist: boolean = false;
   stylistsLoading: boolean = true;
 
-  role: UserRole[]; //array of roles used for access control
+
+  managerRole: UserRole = UserRole.Manager; // user role to restict access to crud buttons
+  dummy: User = {id: 1, username: "Dummy", password: "pass123", role: UserRole.Manager};
   
 
   constructor(private stylistService: StylistService, private dialog: MatDialog) { }
@@ -43,12 +45,6 @@ export class StylistPageComponent implements OnInit
    */
   ngOnInit(): void 
   {
-    // set enumerable values for role
-    this.role = [
-      UserRole.Manager,
-      UserRole.Receptionist,
-      UserRole.Stylist
-    ]
     this.stylistService.getStylists().subscribe(s => 
       {
         this.stylists = s; 
@@ -61,20 +57,10 @@ export class StylistPageComponent implements OnInit
   /**
    * Function to allow access to certain features on the stylist page
    */
-  canAccess(accessLevel: string)
-  {
-    let dummy: User = {id: 1, username: "Dummy", password: "pass123", role: UserRole.Manager};
-    return this.roleToString(dummy.role) == accessLevel
-  }
-
-  /**
-   * Function that accepts enum role and returns it in the form of string
-   * @param r enum role
-   * @returns timeperiod in string
-   */
-   roleToString(r: UserRole): string
+   canAccess(accessLevel: UserRole)
    {
-     return User.roleToString(r);
+     
+     return this.dummy.role == accessLevel;
    }
 
   /**

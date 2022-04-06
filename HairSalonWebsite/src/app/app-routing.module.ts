@@ -11,16 +11,18 @@ import { StylistPageComponent } from './stylist-page/stylist-page.component';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
 import { ManagerGuard } from './guards/manager.guard';
+import { StylistGuard } from './guards/stylist.guard';
+import { ReceptionistGuard } from './guards/receptionist.guard';
 
 //list of url endings and associated components
 const routes: Routes = 
 [
   {path: 'home', component: HomePageComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
-  {path: 'stylists', component: StylistPageComponent},
-  {path: 'schedule', component: SchedulePageComponent},
-  {path: 'appointments', component: AppointmentPageComponent},
-  {path: 'unavailabilities', component: UnavailabilityPageComponent, canActivate: [ManagerGuard], }
+  {path: 'stylists', component: StylistPageComponent, canActivate: [StylistGuard]},
+  {path: 'schedule', component: SchedulePageComponent, canActivate: [ReceptionistGuard]},
+  {path: 'appointments', component: AppointmentPageComponent, canActivate: [ReceptionistGuard]},
+  {path: 'unavailabilities', component: UnavailabilityPageComponent, canActivate: [ManagerGuard]}
 ];
 
 @NgModule(
