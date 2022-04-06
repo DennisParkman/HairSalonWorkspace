@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-card-content>
+    <form #loginForm="ngForm">
+      <h2>Log In</h2>
+      <mat-form-field>
+        <input matInput placeholder="Username" [(ngModel)]="this.username" name="username" required>
+        <mat-error>
+          Please provide a valid username
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" [(ngModel)]="this.password" name="password" required>
+        <mat-error>
+          Please provide a valid password
+        </mat-error>
+      </mat-form-field>
+      <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="onSubmit()">Log-in</button>
+    </form>
+  </mat-card-content>
+</mat-card>
