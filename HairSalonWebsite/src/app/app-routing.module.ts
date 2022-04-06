@@ -22,7 +22,7 @@ const routes: Routes =
   {path: 'schedule', component: SchedulePageComponent},
   {path: 'appointments', component: AppointmentPageComponent},
   {path: 'unavailabilities', component: UnavailabilityPageComponent},
-  {path: 'loginpage', component: LoginPageComponent}
+  {path: 'loginpage', component: LoginPageComponent},
   {path: 'users', component: UsersPageComponent}
 ];
 
