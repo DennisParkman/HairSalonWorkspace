@@ -67,9 +67,5 @@ export class LoginPageComponent implements OnInit
     {
       this.toastr.error("Username is invalid");
     }
-    if(!validPassword)
-    {
-      this.toastr.error("Password is invalid");
-    }
   }
 }
