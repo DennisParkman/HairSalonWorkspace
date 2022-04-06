@@ -56,7 +56,7 @@ export class LoginPageComponent implements OnInit
         {
           let userData = user;
           userData.password = ""; //password is empty for security
-          this.sessionStorage.store(JSON.stringify(user), userData); //this gets lost once the browser tab is closed
+          this.sessionStorage.store("user", userData); //this gets lost once the browser tab is closed
           this.toastr.success("Login Successfull!");
           console.log("Login Successfull");
           this.router.navigateByUrl('/home');
