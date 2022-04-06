@@ -499,7 +499,7 @@ namespace HairSalonBackEnd.Database
                 //set up the Users table
                 modelBuilder.Entity<User>().ToTable("Users", "localSchema");
                 //set up the StylistHours table
-                modelBuilder.Entity<User>().ToTable("StylistHours", "localSchema");
+                modelBuilder.Entity<StylistHours>().ToTable("StylistHours", "localSchema");
 
                 //create the database
                 base.OnModelCreating(modelBuilder);
