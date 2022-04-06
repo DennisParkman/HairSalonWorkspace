@@ -13,6 +13,7 @@ import { UnavailabilityPageComponent } from './unavailability-page/unavailabilit
 import { ManagerGuard } from './guards/manager.guard';
 import { StylistGuard } from './guards/stylist.guard';
 import { ReceptionistGuard } from './guards/receptionist.guard';
+import { UsersPageComponent } from './users-page/users-page.component';
 
 //list of url endings and associated components
 const routes: Routes = 
@@ -23,6 +24,11 @@ const routes: Routes =
   {path: 'schedule', component: SchedulePageComponent, canActivate: [ReceptionistGuard]},
   {path: 'appointments', component: AppointmentPageComponent, canActivate: [ReceptionistGuard]},
   {path: 'unavailabilities', component: UnavailabilityPageComponent, canActivate: [ManagerGuard]}
+  {path: 'stylists', component: StylistPageComponent},
+  {path: 'schedule', component: SchedulePageComponent},
+  {path: 'appointments', component: AppointmentPageComponent},
+  {path: 'unavailabilities', component: UnavailabilityPageComponent},
+  {path: 'users', component: UsersPageComponent}
 ];
 
 @NgModule(

@@ -13,5 +13,6 @@
         <span class="btn btn-light" routerLink = "/appointments" *ngIf = "canAccess(managerRole) || canAccess(stylistRole) || canAccess(receptionistRole)">Appointment Page</span> 
         <span class="btn btn-light" routerLink = "/unavailabilities" *ngIf = "canAccess(managerRole)">Unavailability Page</span>
         <span class="btn btn-light" routerLink = "/schedule" *ngIf = "canAccess(managerRole) || canAccess(stylistRole)">Stylists Schedule</span>
+        <span class="btn btn-light" routerLink = "/users">Users</span>
     </div>
 </mat-toolbar>
