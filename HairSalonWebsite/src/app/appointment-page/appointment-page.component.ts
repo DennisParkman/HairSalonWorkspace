@@ -46,9 +46,12 @@ export class AppointmentPageComponent implements OnInit
   addingAppointment: boolean = false;
   updatingAppointment: boolean = false;
 
+  //lists
   events: CalendarEvent[] = []; //array to populate all appointments on the calendar
+  eventsToShow: CalendarEvent[] = []; //array to populate all appointments on the calendar
   appointments: Appointment[]; //array of appointments serviced from the backend 
   stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
+  selectedStylistList: Stylist[] = []; //list of all stylist selected by user
 
   constructor(private appointmentService: AppointmentService, 
     private stylistService: StylistService, 
@@ -95,11 +98,13 @@ export class AppointmentPageComponent implements OnInit
           map(value => (typeof value === 'string' ? value : value.name)), //but it also worked with stylistName???
           map(name => (name ? this.stylistDropdownFilter(name) : this.stylists.slice()))
         )
-
+        
+        this.eventsToShow = this.events; //load events to show on calendar
         // display the page and show that appointments are done loading
         this.loadingFinished = true; 
         this.appointmentLoading = false;
-      });
+      }
+    );
   }
 
   /**
@@ -138,6 +143,82 @@ export class AppointmentPageComponent implements OnInit
     }
   }
 
+  /**
+   * Function to maintain all stylists selected on the front end drop down menu and call the showScheduleBy
+   * function to update the calendar. The function checks to see if the stylist passed as a parameter is currently
+   * on the list. If they are not on the list, this indicates that the user selected them for viewing and they are
+   * appended to the list. If they are currently on the list, then that idicates that the user deselected them, and 
+   * they are removed from the list.
+   * @param stylist : stylist to be added or subtracted from the list of stylist selected
+   */
+   changeStylistSelected(stylist: Stylist)
+   {
+     let index = this.selectedStylistList.indexOf(stylist); //get index of stylist on selected list of stylists
+     if(index != -1) //if they are already on list, remove
+     {
+       this.selectedStylistList.splice(index,1);
+     }
+     else //else, add the stylist to the list
+     {
+       this.selectedStylistList.push(stylist);
+     }
+     console.log(this.selectedStylistList);
+     this.showScheduleBy(); //update the events being shown on the calendar
+   }
+
+   /**
+   * Function to show only calendar events of stylists selected by the user. Defaults to 
+   * showing all stylists if no stylists are selected
+   * @param stylist : the stylist to update the calendar events list by
+   */
+  showScheduleBy()
+  {
+    //check stylist selected to see if it is empty or not
+    if(this.selectedStylistList.length == 0) //if list is empty, show all events
+    {
+      this.eventsToShow = this.events;
+    }
+    else //show all events of selected stylists
+    {
+      this.eventsToShow = []; //create local list of events for one stylist
+
+      //iterate through selectedStylistsList to display all events associated with them
+      for(let stylist of this.selectedStylistList)
+      {
+        //get unavaiblites and appointments for the requested stylist
+        for(let appointment of this.appointments) //check for appointments
+        {
+          if(appointment.stylistID == stylist.id) //load appoinment if stylistID is equal to requested stylist
+          {
+            //create appointment and push it onto the event list
+            this.eventsToShow.push(
+              {
+                start: new Date(appointment.date),
+                title: appointment.name + " - " + appointment.description
+              }
+            );
+          }  
+        }
+        /*
+        for(let unavailability of this.unavailabilities) //check for unavailabilities
+        {
+          if(unavailability.stylistID == stylist.id) //load unavailability if stylistID is equal to requested stylist
+          {
+            //create unavailability and push it onto the event list
+            this.eventsToShow.push(
+              {
+                start: new Date(unavailability.startDate),
+                end: new Date(unavailability.endDate),
+                title: unavailability.stylistName + " time off"
+              }
+            );
+          }
+        }
+        */
+      }
+      console.log(this.eventsToShow);
+    }
+  }
 
   /**
    * Function to close and reset dialog box

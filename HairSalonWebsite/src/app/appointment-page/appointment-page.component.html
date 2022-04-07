@@ -1,7 +1,17 @@
 <!--Calendar and add appointment button-->
 <div *ngIf="!appointmentLoading"> <!--if appointments are done loading, show page-->
+  <div class="button-container">
+    <mat-button-toggle class = "schedule-card-color">
+      <mat-form-field>
+          <mat-label>Stylists</mat-label>
+          <mat-select multiple>
+            <mat-option *ngFor="let stylist of stylists" [value]="stylist"  (click)="changeStylistSelected(stylist)" class = "schedule-card-color">{{stylist.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </mat-button-toggle>
+  </div>
   <mat-button-toggle style="margin-left:100px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setCreateAppointment()">Add Appointment</mat-button-toggle>
-  <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteAppointment($event)" 
+  <app-event-calendar #appCalendar [calEvents]="eventsToShow" [supportCRUD]="true" (deleteEvent)="deleteAppointment($event)" 
                       (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment($event)"></app-event-calendar>
 </div>
 
