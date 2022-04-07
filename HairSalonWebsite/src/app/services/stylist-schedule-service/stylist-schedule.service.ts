@@ -37,6 +37,7 @@ export class StylistScheduleService
                 stylists: this.http.get<Stylist[]>(stylistsUrl)
             }).subscribe(({unavailabilities, hours, stylists}) => 
             {
+                console.log(hours);
                 let events : CalendarEvent[] = [];
                 // Assuming we're only adding weekly schedules, with single timeframes
 
@@ -50,7 +51,7 @@ export class StylistScheduleService
                 }
 
                 //Get each list of hours sorted by stylist id
-                let stylistHours:StylistHours[][] = []
+                let stylistHours:StylistHours[][] = [];
                 for(let hour of hours)
                 {
                   stylistHours[hour.stylistID].push(hour);
