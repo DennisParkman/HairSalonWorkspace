@@ -23,7 +23,7 @@ export class StylistScheduleService
   /**
      * 
      */
-   getStylistSchedule(): Observable<CalendarEvent[]>
+   getStylistSchedule(showUnavailabilities: boolean = false): Observable<CalendarEvent[][]>
    {
         let unavailabilityUrl = this.baseURL.concat("Unavailability");
         let stylistHoursUrl = this.baseURL.concat("StylistHours");
@@ -37,19 +37,26 @@ export class StylistScheduleService
                 stylists: this.http.get<Stylist[]>(stylistsUrl)
             }).subscribe(({unavailabilities, hours, stylists}) => 
             {
-                console.log(hours);
-                let events : CalendarEvent[] = [];
+                let allEvents : CalendarEvent[][] = [];
                 // Assuming we're only adding weekly schedules, with single timeframes
 
                 //Get each list of unavailabilities sorted by stylist id
                 let stylistUnavailabilities:Unavailability[][] = []
+
+                //Get each list of hours sorted by stylist id
+                let stylistHours:StylistHours[][] = []
+
+
                 for(let stylist of stylists)
                 {
                   if(stylist.id == null)
                     continue;
 
                   stylistUnavailabilities[stylist.id] = [];
+                  stylistHours[stylist.id] = [];
+                  allEvents[stylist.id] = [];
                 }
+
                 for(let unavailability of unavailabilities)
                 {
                   unavailability.startDate = new Date(unavailability.startDate);
@@ -57,15 +64,6 @@ export class StylistScheduleService
                   stylistUnavailabilities[unavailability.stylistID].push(unavailability);
                 }
 
-                //Get each list of hours sorted by stylist id
-                let stylistHours:StylistHours[][] = []
-                for(let stylist of stylists)
-                {
-                  if(stylist.id == null)
-                    continue;
-
-                  stylistHours[stylist.id] = [];
-                }
                 for(let hour of hours)
                 {
                   stylistHours[hour.stylistID].push(hour);
@@ -77,9 +75,11 @@ export class StylistScheduleService
                   if(stylistId == null)
                     continue;
 
-                  let hours = stylistHours[stylistId]
+                  let hours = stylistHours[stylistId];
                   if(hours == null || hours.length == 0)
                     continue;
+                  
+                  let events = allEvents[stylistId];
 
                   let unavailabilities = stylistUnavailabilities[stylistId]
 
@@ -132,6 +132,18 @@ export class StylistScheduleService
                   //remove unavailabilities
                   for(let unavailability of unavailabilities)
                   {
+                    if(showUnavailabilities)
+                    {
+                      events.push(
+                        {
+                          id: unavailability.id,
+                          start: unavailability.startDate,
+                          end: unavailability.endDate,
+                          title: "Unavailable"
+                        }
+                      )
+                    }
+                    
 
                     for(let i=0; i<events.length; i++)
                     {
@@ -190,7 +202,7 @@ export class StylistScheduleService
                   }
                 }
 
-                observer.next(events);
+                observer.next(allEvents);
 
                 observer.complete();
             });
