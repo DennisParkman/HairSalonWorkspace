@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
 
 @Component(
 {
@@ -10,18 +9,9 @@ import { StylistScheduleService } from '../services/stylist-schedule-service/sty
 export class HomePageComponent implements OnInit 
 {
 
-  constructor(private stylistScheduleService: StylistScheduleService) 
+  constructor() 
   { }
 
   ngOnInit(): void 
-  { 
-    this.stylistScheduleService.getStylistSchedule().subscribe(a =>
-      {
-        console.log(a);
-      }
-
-      );
-
-  }
-
+  { }
 }
