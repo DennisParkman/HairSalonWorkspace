@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { StylistService } from '../services/stylist-service/stylist.service';
 
 
+
 @Component(
 {
   selector: 'app-appointment-page',

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User,UserRole } from '../models/user.model';
+import { SessionStorageService } from 'ngx-webstorage';
 
 @Component(
 {
@@ -13,9 +14,8 @@ export class NavbarComponent implements OnInit
   managerRole: UserRole = UserRole.Manager;
   stylistRole: UserRole = UserRole.Stylist;
   receptionistRole: UserRole = UserRole.Receptionist;
-  dummy: User = {id: 1, username: "Dummy", password: "pass123", role: UserRole.Manager};
   
-  constructor() { }
+  constructor(private sessionStorage: SessionStorageService) {}
 
   ngOnInit(): void {}
 
@@ -24,7 +24,28 @@ export class NavbarComponent implements OnInit
    */
    canAccess(accessLevel: UserRole)
    {
-     
-     return this.dummy.role == accessLevel;
+     if(this.sessionStorage.retrieve('user') == null)
+     {
+       return false;
+     }
+     return this.sessionStorage.retrieve('user').role == accessLevel;
+   }
+
+   /**
+   * Function to check if a user has been set
+   * returns true if the user is set by the login page
+   */
+   isLoggedIn()
+   {
+     return this.sessionStorage.retrieve('user') != null;
+   }
+
+   /**
+   * Function to clear the user set in the session storage object
+   * by the login page
+   */
+   logout()
+   {
+      this.sessionStorage.clear('user');
    }
 }

@@ -12,9 +12,9 @@
         <span class="btn btn-light" routerLink = "/stylists" *ngIf = "canAccess(managerRole) || canAccess(stylistRole)"> Stylists</span> 
         <span class="btn btn-light" routerLink = "/appointments" *ngIf = "canAccess(managerRole) || canAccess(stylistRole) || canAccess(receptionistRole)">Appointment Page</span> 
         <span class="btn btn-light" routerLink = "/unavailabilities" *ngIf = "canAccess(managerRole)">Unavailability Page</span>
-        <span class="btn btn-light" routerLink = "/schedule" *ngIf = "canAccess(managerRole) || canAccess(stylistRole)">Stylists Schedule</span>
-        <span class="btn btn-light" routerLink = "/loginpage">Login</span>
-        <span class="btn btn-light" routerLink = "/stylists"> Stylists</span>
-        <span class="btn btn-light" routerLink = "/users">Users</span>
+        <span class="btn btn-light" routerLink = "/schedule" *ngIf = "canAccess(managerRole)">Stylists Schedule</span>
+        <span class="btn btn-light" routerLink = "/users" *ngIf = "canAccess(managerRole)">Users</span>
+        <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "!isLoggedIn()">Login</span>
+        <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "isLoggedIn()" (click) = "logout()">Logout</span>
     </div>
 </mat-toolbar>

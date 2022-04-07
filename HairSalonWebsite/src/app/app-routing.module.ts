@@ -22,15 +22,11 @@ const routes: Routes =
   {path: 'home', component: HomePageComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'stylists', component: StylistPageComponent, canActivate: [StylistGuard]},
-  {path: 'schedule', component: SchedulePageComponent, canActivate: [ReceptionistGuard]},
+  {path: 'schedule', component: SchedulePageComponent, canActivate: [ManagerGuard]},
   {path: 'appointments', component: AppointmentPageComponent, canActivate: [ReceptionistGuard]},
-  {path: 'unavailabilities', component: UnavailabilityPageComponent, canActivate: [ManagerGuard]}
-  {path: 'stylists', component: StylistPageComponent},
-  {path: 'schedule', component: SchedulePageComponent},
-  {path: 'appointments', component: AppointmentPageComponent},
-  {path: 'unavailabilities', component: UnavailabilityPageComponent},
+  {path: 'unavailabilities', component: UnavailabilityPageComponent, canActivate: [ManagerGuard]},
   {path: 'loginpage', component: LoginPageComponent},
-  {path: 'users', component: UsersPageComponent}
+  {path: 'users', component: UsersPageComponent, canActivate: [ManagerGuard]}
 ];
 
 @NgModule(

@@ -4,6 +4,7 @@ import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { MatDialog } from '@angular/material/dialog';
 import { User,UserRole } from '../models/user.model';
+import { SessionStorageService } from 'ngx-webstorage';
 
 
 
@@ -35,10 +36,9 @@ export class StylistPageComponent implements OnInit
 
 
   managerRole: UserRole = UserRole.Manager; // user role to restict access to crud buttons
-  dummy: User = {id: 1, username: "Dummy", password: "pass123", role: UserRole.Manager};
   
 
-  constructor(private stylistService: StylistService, private dialog: MatDialog) { }
+  constructor(private stylistService: StylistService, private dialog: MatDialog, private sessionStorage: SessionStorageService) { }
 
   /**
    * On loading page, all stylists on the database are loaded into a stylist array
@@ -59,8 +59,11 @@ export class StylistPageComponent implements OnInit
    */
    canAccess(accessLevel: UserRole)
    {
-     
-     return this.dummy.role == accessLevel;
+      if(this.sessionStorage.retrieve('user') == null)
+      {
+        return false;
+      }
+      return this.sessionStorage.retrieve('user').role == accessLevel;
    }
 
   /**
