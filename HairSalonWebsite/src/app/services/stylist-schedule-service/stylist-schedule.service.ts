@@ -43,6 +43,13 @@ export class StylistScheduleService
 
                 //Get each list of unavailabilities sorted by stylist id
                 let stylistUnavailabilities:Unavailability[][] = []
+                for(let stylist of stylists)
+                {
+                  if(stylist.id == null)
+                    continue;
+
+                  stylistUnavailabilities[stylist.id] = [];
+                }
                 for(let unavailability of unavailabilities)
                 {
                   unavailability.startDate = new Date(unavailability.startDate);
@@ -51,7 +58,14 @@ export class StylistScheduleService
                 }
 
                 //Get each list of hours sorted by stylist id
-                let stylistHours:StylistHours[][] = [];
+                let stylistHours:StylistHours[][] = []
+                for(let stylist of stylists)
+                {
+                  if(stylist.id == null)
+                    continue;
+
+                  stylistHours[stylist.id] = [];
+                }
                 for(let hour of hours)
                 {
                   stylistHours[hour.stylistID].push(hour);
