@@ -14,13 +14,13 @@ namespace HairSalonBackEnd.Models
         /// </summary>
         public enum WeekDay
         {
+            Sunday,
             Monday,
             Tuesday,
             Wednesday,
             Thursday,
             Friday,
-            Saturday,
-            Sunday
+            Saturday
         }
         
         /// <summary>

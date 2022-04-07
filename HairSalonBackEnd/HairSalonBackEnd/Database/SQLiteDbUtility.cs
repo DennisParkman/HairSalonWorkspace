@@ -495,11 +495,13 @@ namespace HairSalonBackEnd.Database
                 modelBuilder.Entity<Appointment>().ToTable("Appointments", "localSchema");
                 //set up the Unavailabilities table
                 modelBuilder.Entity<Unavailability>().ToTable("Unavailabilities", "localSchema");
-                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>();
+                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>(); //necessary for making enums appear as strings in the database
                 //set up the Users table
                 modelBuilder.Entity<User>().ToTable("Users", "localSchema");
+                modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>(); //necessary for making enums appear as strings in the database
                 //set up the StylistHours table
                 modelBuilder.Entity<StylistHours>().ToTable("StylistHours", "localSchema");
+                modelBuilder.Entity<StylistHours>().Property(u => u.Day).HasConversion<string>(); //necessary for making enums appear as strings in the database
 
                 //create the database
                 base.OnModelCreating(modelBuilder);
