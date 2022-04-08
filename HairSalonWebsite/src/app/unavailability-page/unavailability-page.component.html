@@ -1,4 +1,5 @@
 <!--Calendar and add appointment button-->
+<!--TODO: Add canAccess so that only Manager can view page, redirect to login if not allowed-->
 <div *ngIf="!unavailabilityLoading"> <!--if appointments are done loading, show page-->
     <mat-button-toggle style="margin-left:100px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setCreateUnavailability()">Add Unavailability</mat-button-toggle>
     <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteUnavailability($event)" 

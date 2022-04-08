@@ -7,13 +7,14 @@
 
 <!--navigation bar to show website pages-->
 <mat-toolbar  class = "navbar navbar-light bg-light">
-    <div class = "navB">
+    <div class = "navB"> <!--canAccess restricts links shown on depending on which role the user is (Receptionist/Stylist/Manager)-->
         <span class="btn btn-light" routerLink = "">Home</span>
-        <span class="btn btn-light" routerLink = "/loginpage">Login</span>
-        <span class="btn btn-light" routerLink = "/stylists"> Stylists</span>
-        <span class="btn btn-light" routerLink = "/users">Users</span>
-        <span class="btn btn-light" routerLink = "/appointments">Appointment Page</span>
-        <span class="btn btn-light" routerLink = "/unavailabilities">Unavailability Page</span>
-        <span class="btn btn-light" routerLink = "/schedule" >Stylists Schedule</span>
+        <span class="btn btn-light" routerLink = "/stylists" *ngIf = "canAccess(managerRole) || canAccess(stylistRole)"> Stylists</span> 
+        <span class="btn btn-light" routerLink = "/appointments" *ngIf = "canAccess(managerRole) || canAccess(stylistRole) || canAccess(receptionistRole)">Appointment Page</span> 
+        <span class="btn btn-light" routerLink = "/unavailabilities" *ngIf = "canAccess(managerRole)">Unavailability Page</span>
+        <span class="btn btn-light" routerLink = "/schedule" *ngIf = "canAccess(managerRole)">Stylists Schedule</span>
+        <span class="btn btn-light" routerLink = "/users" *ngIf = "canAccess(managerRole)">Users</span>
+        <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "!isLoggedIn()">Login</span>
+        <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "isLoggedIn()" (click) = "logout()">Logout</span>
     </div>
 </mat-toolbar>

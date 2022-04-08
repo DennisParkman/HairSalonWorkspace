@@ -3,6 +3,8 @@ import { Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { MatDialog } from '@angular/material/dialog';
+import { User,UserRole } from '../models/user.model';
+import { SessionStorageService } from 'ngx-webstorage';
 
 
 
@@ -31,15 +33,18 @@ export class StylistPageComponent implements OnInit
   addingStylist: boolean = false;
   updateSylist: boolean = false;
   stylistsLoading: boolean = true;
+
+
+  managerRole: UserRole = UserRole.Manager; // user role to restict access to crud buttons
   
 
-  constructor(private stylistService: StylistService, private dialog: MatDialog) { }
+  constructor(private stylistService: StylistService, private dialog: MatDialog, private sessionStorage: SessionStorageService) { }
 
   /**
    * On loading page, all stylists on the database are loaded into a stylist array
    */
   ngOnInit(): void 
-  { 
+  {
     this.stylistService.getStylists().subscribe(s => 
       {
         this.stylists = s; 
@@ -48,6 +53,18 @@ export class StylistPageComponent implements OnInit
       }
     );
   }
+
+  /**
+   * Function to allow access to certain features on the stylist page
+   */
+   canAccess(accessLevel: UserRole)
+   {
+      if(this.sessionStorage.retrieve('user') == null)
+      {
+        return false;
+      }
+      return this.sessionStorage.retrieve('user').role == accessLevel;
+   }
 
   /**
    * Function to close and reset dialog box
