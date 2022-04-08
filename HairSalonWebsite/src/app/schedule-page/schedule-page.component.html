@@ -1,43 +1,53 @@
 <div *ngIf="!scheduleLoading"> <!--If the the schedule page is done loading then show the calendar component-->
   <div class="button-container">
-    <mat-button-toggle class = "schedule-card-color">
+    <!-- <mat-button-toggle class = "schedule-card-color">
       <mat-form-field>
           <mat-label>Stylists</mat-label>
           <mat-select multiple>
             <mat-option *ngFor="let stylist of stylistList" [value]="stylist"  (click)="changeStylistSelected(stylist)" class = "schedule-card-color">{{stylist.name}}</mat-option>
           </mat-select>
         </mat-form-field>
-    </mat-button-toggle>
+    </mat-button-toggle> -->
+
+    <!-- stylist input-->
+    <mat-form-field appearance="fill">
+      <mat-label>Stylist</mat-label>
+      <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+      <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+        <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+        <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+          {{stylist.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
   </div>
-  <div *ngIf="!scheduleLoading"> <!--if appointments are done loading, show page-->
+
+  <!--if appointments are done loading, show page-->
+  <div *ngIf="!scheduleLoading"> 
     <mat-button-toggle style="margin-left:100px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setCreateSchedule()">Add Schedule</mat-button-toggle>
-    <app-event-calendar #appCalendar [calEvents]="eventsToShow" [supportCRUD]="true" (deleteEvent)="deleteSchedule($event)" 
-                        (updateEvent)="startUpdateSchedule($event)" (createEvent)="setCreateSchedule($event)"></app-event-calendar>
+    <!-- just shows the schedule -->
+    <app-event-calendar #appCalendar [calEvents]="eventsToShow"></app-event-calendar>
   </div>
+  
 </div>
 
-<ng-template #formDialog> <!--This template allows both forms to display as pop up menus-->
+<!--This template allows both forms to display as pop up menus-->
+<!-- <ng-template #formDialog>  -->
   <div *ngIf="updatingSchedule || addingSchedule" class = "container">
-    <div>
+    <div *ngFor="let hour of selectedStylistHours">
       <div style="float:left">
-        <!-- stylist input-->
-        <mat-form-field appearance="fill">
-          <mat-label>Stylist</mat-label>
-          <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
-          <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
-            <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
-            <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
-              {{stylist.name}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+        
 
         <br>
 
         <!-- day of week -->
-        <mat-form-field>
-          <mat-label>Day of the Week</mat-label>
-          <input matInput [(ngModel)]="this.day">
+        <mat-form-field appearance="fill">
+          <mat-label>Period</mat-label>
+          <mat-select [(ngModel)]="day">
+            <mat-option *ngFor="let w of weekDays" [value]="w">
+              {{weekDayToString(w)}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <br>
@@ -64,4 +74,4 @@
     <button *ngIf="updatingSchedule" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateSchedule()">Submit</button>
     <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
   </div>
-</ng-template>
+<!-- </ng-template> -->

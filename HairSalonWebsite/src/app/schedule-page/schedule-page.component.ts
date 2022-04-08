@@ -6,11 +6,12 @@ import { Stylist } from '../models/stylist.model';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { forkJoin, map, Observable, startWith } from 'rxjs';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DayDialogBoxComponent } from '../day-dialog-box/day-dialog-box.component';
+// import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+// import { DayDialogBoxComponent } from '../day-dialog-box/day-dialog-box.component';
 import { StylistHours, WeekDay } from '../models/stylisthours.model';
 import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
 import { FormControl } from '@angular/forms';
+import { StylisthoursService } from '../services/stylisthours-service/stylisthours.service';
 
 
 @Component({
@@ -28,12 +29,24 @@ export class SchedulePageComponent implements OnInit
 
   //lists that will be used to populate the event calendar list
   appointmentList: Appointment[];
-  stylistHours: StylistHours[];
-  stylistList: Stylist[];
-  selectedStylistList: Stylist[] = []; //list of all stylist selected by user
+  stylistHours: StylistHours[]; //all hours
+  selectedStylistHours: StylistHours[]; //hours of the stylist selected
+  stylistList: Stylist[]; //all stylists
+  weekDays: WeekDay[] = 
+  [
+    WeekDay.Sunday,
+    WeekDay.Monday,
+    WeekDay.Tuesday,
+    WeekDay.Wednesday,
+    WeekDay.Thursday,
+    WeekDay.Friday,
+    WeekDay.Saturday
+  ];
+  //selectedStylistList: Stylist[] = []; //list of all stylist selected by user
   
   eventsToShow: CalendarEvent[] = []; //calendar events list of unavailabilities and appointments
-  allEvents: CalendarEvent[]= []; //all calendar events for the schedule page
+  allHours: CalendarEvent[][] = [];
+  //allEvents: CalendarEvent[]= []; //all calendar events for the schedule page
 
   //page display booleans
   scheduleLoading: boolean = true; 
@@ -43,7 +56,7 @@ export class SchedulePageComponent implements OnInit
   //form fields
   stylistHourId?: number;
   stylistID: number;
-  day?: WeekDay;
+  day: WeekDay;
   startTime: string;
   endTime: string;
 
@@ -53,9 +66,10 @@ export class SchedulePageComponent implements OnInit
   filteredStylists: Observable<Stylist[]>;
 
   constructor(private stylistService: StylistService, 
-              private stylistScheduleService: StylistScheduleService, 
-              private appointmentService: AppointmentService,
-              public dialog: MatDialog ) { }
+              private stylistHoursService: StylisthoursService,
+              private stylistScheduleService: StylistScheduleService,
+              private appointmentService: AppointmentService
+              /*public dialog: MatDialog*/ ) { }
 
   /**
    * On loading page, all unavailabilities and appointments on the database are loaded in and put into the event calendar array
@@ -66,42 +80,25 @@ export class SchedulePageComponent implements OnInit
 
     forkJoin(
       {
-        //call service methods to fetch all unavaiblites, appointments, and stylists
-        appointments: this.appointmentService.getAppointment(), 
-        stylistHours: this.stylistScheduleService.getStylistSchedule(),
+        //call service methods to fetch all stylist hours and stylists
+        stylistHours: this.stylistHoursService.getStylistHours(),
+        stylistSchedules: this.stylistScheduleService.getStylistSchedule(),
+        appointments: this.appointmentService.getAppointment(),
         stylists: this.stylistService.getStylists()
-      }).subscribe(({appointments, stylistHours, stylists}) => {
-        this.appointmentList = appointments; //set appointments to appointment list
-        console.log(this.appointmentList);
-
-        //cycle through the returned schedule matrix and put the hours into the calendar
-        // ... except this just pushes a bunch of events that don't have the id of the associated hours....
-        for(let stylist of stylists)
-        {
-          //make the compiler happy since id is nullable
-          if(stylist.id == null)
-          {
-            continue;
-          }
-
-          //push the hours for the stylist identified by stylist.id
-          for(let hour of stylistHours[stylist.id])
-          {
-
-            this.allEvents.push(hour);
-            
-          }
-        }
-        
-        console.log(this.stylistHours);
-
-        this.stylistList = stylists; //set unavailabilities to unavailabilities list
+      }).subscribe(({stylistHours, stylistSchedules, appointments, stylists}) => 
+      {
+        this.stylistList = stylists; //all the stylists
         console.log(this.stylistList);
         
+        this.stylistHours = stylistHours; //all the stylist hours
+
+        this.appointmentList = appointments; //all the appointments
+        
+        //add all hours from 2d array returned from stylistSchedules
         //add appointments to calendar event list
         for(let appointment of this.appointmentList)
         {
-          this.allEvents.push(
+          this.eventsToShow.push(
             {
               start: new Date(appointment.date),
               title: appointment.name + " - " + appointment.description
@@ -110,12 +107,12 @@ export class SchedulePageComponent implements OnInit
         }
         this.eventsToShow = this.allEvents; //load events to show on calendar
         console.log(this.eventsToShow);
-
+        
         //set up the filter for the stylist selection dropdown
         this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
           startWith(''),
           map(value => (typeof value === 'string' ? value : value.name)), //but it also worked with stylistName???
-          map(name => (name ? this.stylistDropdownFilter(name) : this.selectedStylistList.slice())) 
+          map(name => (name ? this.stylistDropdownFilter(name) : this.stylistList.slice())) 
         )
         
         this.scheduleLoading = false; //show calendar
@@ -141,7 +138,7 @@ export class SchedulePageComponent implements OnInit
    * they are removed from the list.
    * @param stylist : stylist to be added or subtracted from the list of stylist selected
    */
-  changeStylistSelected(stylist: Stylist)
+  /*changeStylistSelected(stylist: Stylist)
   {
     let index = this.selectedStylistList.indexOf(stylist); //get index of stylist on selected list of stylists
     if(index != -1) //if they are already on list, remove
@@ -155,13 +152,13 @@ export class SchedulePageComponent implements OnInit
     console.log(this.selectedStylistList);
     this.showScheduleBy(); //update the events being shown on the calendar
   }
-
+*/
   /**
    * Function to show only calendar events of stylists selected by the user. Defaults to 
    * showing all stylists if no stylists are selected
    * @param stylist : the stylist to update the calendar events list by
    */
-  showScheduleBy()
+  /*showScheduleBy()
   {
     //check stylist selected to see if it is empty or not
     if(this.selectedStylistList.length == 0) //if list is empty, show all events
@@ -206,11 +203,11 @@ export class SchedulePageComponent implements OnInit
             );
           }
         }
-        */
+        
       }
       console.log(this.eventsToShow);
     }
-  }
+  }*/
 
   /**
    * helper function for ngOnInit to filter the stylist list by an entered stylist name
@@ -219,7 +216,7 @@ export class SchedulePageComponent implements OnInit
    {
      const filterValue = name.toLowerCase();
  
-     return this.selectedStylistList.filter(stylist => stylist.name.toLowerCase().includes(filterValue));
+     return this.stylistList.filter(stylist => stylist.name.toLowerCase().includes(filterValue));
    }
  
    /**
@@ -254,7 +251,7 @@ export class SchedulePageComponent implements OnInit
   closeDialog()
   {
     this.resetDialog();
-    this.dialog.closeAll(); //closes dialog boxes
+    // this.dialog.closeAll(); //closes dialog boxes
   }
 
   /**
@@ -262,9 +259,9 @@ export class SchedulePageComponent implements OnInit
    */
   clearFields()
   {
-    this.stylistID = 0;
-    this.stylistIDControl.reset(); //clear the dropdown value
-    this.day = undefined;
+    // this.stylistID = 0;
+    // this.stylistIDControl.reset(); //clear the dropdown value
+    this.day = 1; //Monday
     this.startTime = "";
     this.endTime = "";    
   }
@@ -293,57 +290,34 @@ export class SchedulePageComponent implements OnInit
       return;
     }
     //create appointment variable to store form fields
-    let appointment = 
+    let hours: StylistHours = 
     {
       stylistID: this.stylistID, 
-      name: this.name, 
-      email: this.email, 
-      phone: this.phone, 
-      date: this.date, 
-          length: this.length,
-      dateCreated: this.dateCreated, 
-      description: this.description
+      day: this.day, 
+      startTime: this.startTime, 
+      endTime: this.endTime
     };
+    
+    //call appointment service to add appointment to database
+    this.stylistHoursService.addStylistHours(hours).subscribe(value => 
+      {
+        this.addingSchedule = false; //hide add appointment form
 
-        
-        //To check if there is conflict with other appointments for same stylist 
-        var doesConflict = this.checkAppointmentConflict(appointment);
-        if(doesConflict)
-        {
-          return;
-        }
-        //call appointment service to add appointment to database
-        this.appointmentService.addAppointment(appointment).subscribe(value => 
-          {
-            this.addingAppointment = false; //hide add appointment form
-
-            //create calendar event to add to event list
-            let event : CalendarEvent = 
-            {
-              id: value.id, 
-              start: this.date, 
-              title: this.name + " - " + this.description
-            };
-            this.clearFields(); //clear form fields
-            this.appointments.push(value); //push appointment to appointment list
-
-            //call calendar event component function to reload event list with new item
-            this.appCalendar.updateCalendarEvent(event);
-            this.dialog.closeAll(); //close dialog box
-          }
-        );
+        this.clearFields(); //clear form fields
+        this.stylistHours.push(value); //push appointment to appointment list
+      }
+    );
     
   }
 
   /**
    * function to show create form from dialog box of events
    */
-  setCreateSchedule(date: Date = new Date())
+  setCreateSchedule()
   {
-    this.resetDialog();
-    this.date = date;
-    this.addingAppointment = true;
-    this.dialog.open(this.formDialog);
+    // this.resetDialog();
+    this.addingSchedule = true;
+    // this.dialog.open(this.formDialog);
   }
   
   /**
