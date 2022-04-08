@@ -51,9 +51,9 @@ export class AppointmentPageComponent implements OnInit
   stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
 
   constructor(private appointmentService: AppointmentService, 
-    private stylistService: StylistService, 
-    private dialog: MatDialog, 
-    private toastr: ToastrService) 
+              private stylistService: StylistService, 
+              private dialog: MatDialog, 
+              private toastr: ToastrService) 
   { }
 
   /**

@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarView } from 'angular-calendar';
 import { CalendarEvent} from 'angular-calendar';
-import { Unavailability } from '../models/unavailability.model';
 import { Appointment } from '../models/appointment.model';
 import { Stylist } from '../models/stylist.model';
-import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { StylistService } from '../services/stylist-service/stylist.service';
-import { forkJoin } from 'rxjs';
+import { forkJoin, map, Observable, startWith } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DayDialogBoxComponent } from '../day-dialog-box/day-dialog-box.component';
-import { StylistHours } from '../models/stylisthours.model';
+import { StylistHours, WeekDay } from '../models/stylisthours.model';
 import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -31,20 +30,32 @@ export class SchedulePageComponent implements OnInit
   appointmentList: Appointment[];
   stylistHours: StylistHours[];
   stylistList: Stylist[];
-  selectedSylistList: Stylist[] = []; //list of all stylist selected by user
+  selectedStylistList: Stylist[] = []; //list of all stylist selected by user
   
   eventsToShow: CalendarEvent[] = []; //calendar events list of unavailabilities and appointments
   allEvents: CalendarEvent[]= []; //all calendar events for the schedule page
 
-  scheduleLoading: boolean = true; //boolean to load page
+  //page display booleans
+  scheduleLoading: boolean = true; 
+  updatingSchedule: boolean = false;
+  addingSchedule: boolean = false; 
 
   //form fields
-  stylistid: number; //the id of the stylist the hours are for
+  stylistHourId?: number;
+  stylistID: number;
+  day?: WeekDay;
+  startTime: string;
+  endTime: string;
+
+  //form control for dropdown
+  stylistIDControl = new FormControl();
+  //filter observable for dropdown
+  filteredStylists: Observable<Stylist[]>;
 
   constructor(private stylistService: StylistService, 
-    private stylistScheduleService: StylistScheduleService, 
-    private appointmentService: AppointmentService,
-    public dialog: MatDialog ) { }
+              private stylistScheduleService: StylistScheduleService, 
+              private appointmentService: AppointmentService,
+              public dialog: MatDialog ) { }
 
   /**
    * On loading page, all unavailabilities and appointments on the database are loaded in and put into the event calendar array
@@ -63,9 +74,26 @@ export class SchedulePageComponent implements OnInit
         this.appointmentList = appointments; //set appointments to appointment list
         console.log(this.appointmentList);
 
-        //TO-DO: cycle through the hours and put them into the calendar
-        //this.stylistHours = stylistHours; //set unavailabilities to unavailabilities list
-        //console.log(this.stylistHours);
+        //cycle through the returned schedule matrix and put the hours into the calendar
+        // ... except this just pushes a bunch of events that don't have the id of the associated hours....
+        for(let stylist of stylists)
+        {
+          //make the compiler happy since id is nullable
+          if(stylist.id == null)
+          {
+            continue;
+          }
+
+          //push the hours for the stylist identified by stylist.id
+          for(let hour of stylistHours[stylist.id])
+          {
+
+            this.allEvents.push(hour);
+            
+          }
+        }
+        
+        console.log(this.stylistHours);
 
         this.stylistList = stylists; //set unavailabilities to unavailabilities list
         console.log(this.stylistList);
@@ -82,9 +110,27 @@ export class SchedulePageComponent implements OnInit
         }
         this.eventsToShow = this.allEvents; //load events to show on calendar
         console.log(this.eventsToShow);
+
+        //set up the filter for the stylist selection dropdown
+        this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
+          startWith(''),
+          map(value => (typeof value === 'string' ? value : value.name)), //but it also worked with stylistName???
+          map(name => (name ? this.stylistDropdownFilter(name) : this.selectedStylistList.slice())) 
+        )
+        
         this.scheduleLoading = false; //show calendar
       }
     );
+  }
+
+  /**
+   * converts a WeekDay enum into its equivalent string
+   * @param t the enum WeekDay value
+   * @returns the string equivalent to the passed WeekDay enum
+   */
+  weekDayToString(t: WeekDay): string
+  {
+    return StylistHours.weekDayToString(t);
   }
 
   /**
@@ -97,16 +143,16 @@ export class SchedulePageComponent implements OnInit
    */
   changeStylistSelected(stylist: Stylist)
   {
-    let index = this.selectedSylistList.indexOf(stylist); //get index of stylist on selected list of stylists
+    let index = this.selectedStylistList.indexOf(stylist); //get index of stylist on selected list of stylists
     if(index != -1) //if they are already on list, remove
     {
-      this.selectedSylistList.splice(index,1);
+      this.selectedStylistList.splice(index,1);
     }
     else //else, add the stylist to the list
     {
-      this.selectedSylistList.push(stylist);
+      this.selectedStylistList.push(stylist);
     }
-    console.log(this.selectedSylistList);
+    console.log(this.selectedStylistList);
     this.showScheduleBy(); //update the events being shown on the calendar
   }
 
@@ -118,7 +164,7 @@ export class SchedulePageComponent implements OnInit
   showScheduleBy()
   {
     //check stylist selected to see if it is empty or not
-    if(this.selectedSylistList.length == 0) //if list is empty, show all events
+    if(this.selectedStylistList.length == 0) //if list is empty, show all events
     {
       this.eventsToShow = this.allEvents;
     }
@@ -127,7 +173,7 @@ export class SchedulePageComponent implements OnInit
       this.eventsToShow = []; //create local list of events for one stylist
 
       //iterate through selectedStylistsList to display all events associated with them
-      for(let stylist of this.selectedSylistList)
+      for(let stylist of this.selectedStylistList)
       {
         //get unavaiblites and appointments for the requested stylist
         for(let appointment of this.appointmentList) //check for appointments
@@ -173,17 +219,17 @@ export class SchedulePageComponent implements OnInit
    {
      const filterValue = name.toLowerCase();
  
-     return this.stylistList.filter(stylist => stylist.name.toLowerCase().includes(filterValue));
+     return this.selectedStylistList.filter(stylist => stylist.name.toLowerCase().includes(filterValue));
    }
  
    /**
-    * event method that sets the form stylistid field
-    * @param stylist the stylist that was selected; it is type any because this.stylistid is not nullable, but stylist.id is
+    * event method that sets the form stylistID field
+    * @param stylist the stylist that was selected; it is type any because this.stylistID is not nullable, but stylist.id is
     */
    setStylistIdFromDropdown(stylist: any)
    {
      console.log(stylist);
-     this.stylistid = stylist.id;
+     this.stylistID = stylist.id;
    }
  
    /** 
@@ -216,31 +262,22 @@ export class SchedulePageComponent implements OnInit
    */
   clearFields()
   {
-    //TO-DO: use the right fields
-    /*
-    this.stylistid = 0;
+    this.stylistID = 0;
     this.stylistIDControl.reset(); //clear the dropdown value
-    this.name = "";
-    this.email = "";
-    this.phone = "";
-    this.date = new Date;
-    this.length = 0;
-    this.dateCreated = new Date;
-    this.description = "";
-    */
+    this.day = undefined;
+    this.startTime = "";
+    this.endTime = "";    
   }
 
   /**
    * function to reset the dialog box
    */
    resetDialog() 
-   {
-     //TO-DO: use the right fields
-    /*
-     this.updatingAppointment = false;
-     this.addingAppointment = false;
+   {    
+     this.updatingSchedule = false;
+     this.addingSchedule = false;
      this.clearFields();
-     */
+     
    }
 
    /**
@@ -258,7 +295,7 @@ export class SchedulePageComponent implements OnInit
     //create appointment variable to store form fields
     let appointment = 
     {
-      stylistID: this.stylistid, 
+      stylistID: this.stylistID, 
       name: this.name, 
       email: this.email, 
       phone: this.phone, 
@@ -342,8 +379,8 @@ export class SchedulePageComponent implements OnInit
  
      //set fields of current object form
      this.id = event.id;
-     this.stylistid =  appointmentToUpdate.stylistID;
-     this.stylistIDControl.setValue(this.stylistList.find(stylist => stylist.id == this.stylistid)); //autopopulate the dropdown with the stylist
+     this.stylistID =  appointmentToUpdate.stylistID;
+     this.stylistIDControl.setValue(this.stylistList.find(stylist => stylist.id == this.stylistID)); //autopopulate the dropdown with the stylist
      this.name = appointmentToUpdate.name;
      this.email = appointmentToUpdate.email;
      this.phone = appointmentToUpdate.phone;
@@ -373,7 +410,7 @@ export class SchedulePageComponent implements OnInit
      let appointment : Appointment= 
      {
        id: this.id, 
-       stylistID: this.stylistid, 
+       stylistID: this.stylistID, 
        name: this.name, 
        email: this.email, 
        phone: this.phone, 
@@ -465,7 +502,7 @@ export class SchedulePageComponent implements OnInit
      const regularExpression = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
      let validEmail = regularExpression.test(String(this.email).toLowerCase());
      let valid = true;
-     if(this.stylistid == null || this.stylistid == 0)
+     if(this.stylistID == null || this.stylistID == 0)
      {
        valid = false;
        this.toastr.error("Stylist ID is required");

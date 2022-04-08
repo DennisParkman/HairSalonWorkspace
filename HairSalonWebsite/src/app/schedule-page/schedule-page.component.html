@@ -15,3 +15,53 @@
                         (updateEvent)="startUpdateSchedule($event)" (createEvent)="setCreateSchedule($event)"></app-event-calendar>
   </div>
 </div>
+
+<ng-template #formDialog> <!--This template allows both forms to display as pop up menus-->
+  <div *ngIf="updatingSchedule || addingSchedule" class = "container">
+    <div>
+      <div style="float:left">
+        <!-- stylist input-->
+        <mat-form-field appearance="fill">
+          <mat-label>Stylist</mat-label>
+          <input type = "text" matInput [formControl] = "stylistIDControl" [matAutocomplete]="auto"> 
+          <mat-autocomplete #auto = "matAutocomplete" [displayWith]="stylistDropdownDisplay"> <!--no idea why you don't need argument; angular is weird-->
+            <!-- onSelectionChange function receives the stylist selected and sets necessary form fields -->
+            <mat-option *ngFor = "let stylist of filteredStylists | async" [value] = "stylist" (onSelectionChange) = "setStylistIdFromDropdown(stylist)">
+              {{stylist.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <br>
+
+        <!-- day of week -->
+        <mat-form-field>
+          <mat-label>Day of the Week</mat-label>
+          <input matInput [(ngModel)]="this.day">
+        </mat-form-field>
+
+        <br>
+
+        <!-- starttime -->
+        <mat-form-field>
+          <mat-label>In Time</mat-label>
+          <input matInput type = "time" [(ngModel)]="this.startTime">
+        </mat-form-field>
+
+        <br>
+
+        <!-- endtime -->
+        <mat-form-field><!--Input for Name-->
+          <mat-label>Out Time</mat-label>
+          <input matInput type = "time" [(ngModel)]="this.endTime">
+        </mat-form-field>
+
+      </div>
+          
+    </div>
+    <!--Buttons to submit or cancel appointment-->
+    <button *ngIf="addingSchedule" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="addSchedule()">Submit</button>
+    <button *ngIf="updatingSchedule" mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="updateSchedule()">Submit</button>
+    <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
+  </div>
+</ng-template>
