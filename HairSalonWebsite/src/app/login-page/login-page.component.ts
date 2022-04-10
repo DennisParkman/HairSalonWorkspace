@@ -59,16 +59,17 @@ export class LoginPageComponent implements OnInit
           this.toastr.success("Login Successfull!");
           console.log("Login Successfull");
           this.router.navigateByUrl('/home');
-        } 
+        }
+        if(!validPassword)
+        {
+          this.toastr.error("Password is invalid");
+        }
       }
     }
     if(!validUsername)
     {
       this.toastr.error("Username is invalid");
     }
-    else
-    {
-      this.toastr.error("Password is invalid");
-    }
+    
   }
 }

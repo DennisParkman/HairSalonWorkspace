@@ -11,6 +11,7 @@ import { FormControl } from '@angular/forms';
 import { Stylist } from '../models/stylist.model';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { ToastrService } from 'ngx-toastr';
+import { UserRole } from '../models/user.model';
 
 @Component(
 {
@@ -110,6 +111,12 @@ export class UnavailabilityPageComponent implements OnInit
         this.unavailabilityLoading = false;
       });
   }
+
+  canActivate(): boolean
+  {
+    return true;
+  }
+  
   /**
    * Function that accepts enum TimePeriod and returns it in the form of string
    * @param p enum timeperiod
