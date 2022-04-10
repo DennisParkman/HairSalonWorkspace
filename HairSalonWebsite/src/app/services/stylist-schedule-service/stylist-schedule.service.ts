@@ -196,9 +196,6 @@ export class StylistScheduleService
                       } 
 
                     }
-
-
-                  
                   }
                 }
 
