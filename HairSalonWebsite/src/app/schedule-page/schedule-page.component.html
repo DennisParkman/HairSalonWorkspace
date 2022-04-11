@@ -1,3 +1,4 @@
+<!--TODO: Add canAccess so that only Receptionist/Stylist/Manager can view page, redirect to login if not allowed-->
 <div *ngIf="!scheduleLoading"> <!--If the the schedule page is done loading then show the calendar component-->
   <div class="button-container">
     <!-- <mat-button-toggle class = "schedule-card-color">
@@ -21,14 +22,8 @@
       </mat-autocomplete>
     </mat-form-field>
   </div>
-
-  <!--if appointments are done loading, show page-->
-  <div *ngIf="!scheduleLoading"> 
     <mat-button-toggle style="margin-left:100px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setCreateSchedule()">Add Schedule</mat-button-toggle>
-    <!-- just shows the schedule -->
-    <app-event-calendar #appCalendar [calEvents]="eventsToShow"></app-event-calendar>
-  </div>
-  
+    <app-event-calendar [calEvents]="eventsToShow"></app-event-calendar>
 </div>
 
 <!--This template allows both forms to display as pop up menus-->
