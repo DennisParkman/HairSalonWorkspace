@@ -1,510 +1,831 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
+import { TimePeriod, Unavailability } from '../models/unavailability.model';
 import { CalendarView } from 'angular-calendar';
-import { CalendarEvent} from 'angular-calendar';
-import { Unavailability } from '../models/unavailability.model';
-import { Appointment } from '../models/appointment.model';
-import { Stylist } from '../models/stylist.model';
-import { AppointmentService } from '../services/appointment-service/appointment.service';
-import { StylistService } from '../services/stylist-service/stylist.service';
-import { forkJoin, map, Observable, startWith } from 'rxjs';
-// import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-// import { DayDialogBoxComponent } from '../day-dialog-box/day-dialog-box.component';
-import { StylistHours, WeekDay } from '../models/stylisthours.model';
-import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
+import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
+import { startOfDay } from 'date-fns';
+import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
+import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
+import { forkJoin, map, Observable, startWith, Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
+import { Stylist } from '../models/stylist.model';
+import { StylistService } from '../services/stylist-service/stylist.service';
+import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
+import { ToastrService } from 'ngx-toastr';
+import { UserRole } from '../models/user.model';
+import { AppointmentService } from '../services/appointment-service/appointment.service';
+import { Appointment } from '../models/appointment.model';
 import { StylisthoursService } from '../services/stylisthours-service/stylisthours.service';
+import { StylistHours, WeekDay } from '../models/stylisthours.model';
 
-
-@Component({
-  selector: 'app-schedule-page',
-  templateUrl: './schedule-page.component.html',
-  styleUrls: ['./schedule-page.component.scss']
-})
-export class SchedulePageComponent implements OnInit 
+@Component(
 {
-  //attributes to change and update calendar view
-  viewDate: Date = new Date();
-  view: CalendarView = CalendarView.Month;
-  CalendarView = CalendarView;
-  startOfDay: CalendarEvent;
+    selector: 'app-schedule-page',
+    templateUrl: './schedule-page.component.html',
+    styleUrls: ['./schedule-page.component.scss']
+})
+export class SchedulePageComponent implements OnInit
+{
+    //Decorator to mark appCalendar as a ViewChild which allows for information to passed between components
+    @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
+    @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
-  //lists that will be used to populate the event calendar list
-  appointmentList: Appointment[];
-  stylistHours: StylistHours[]; //all hours
-  selectedStylistHours: StylistHours[]; //hours of the stylist selected
-  stylistList: Stylist[]; //all stylists
-  weekDays: WeekDay[] = 
-  [
-    WeekDay.Sunday,
-    WeekDay.Monday,
-    WeekDay.Tuesday,
-    WeekDay.Wednesday,
-    WeekDay.Thursday,
-    WeekDay.Friday,
-    WeekDay.Saturday
-  ];
-  //selectedStylistList: Stylist[] = []; //list of all stylist selected by user
+    stylistHours: StylistHours[][] = []; //list of unavailabilities
+    appointments: Appointment[]; //list of appointments
+    stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
+    events: CalendarEvent[] = []; //array to populate all unavailabilities on the calendar
+    fullStylistSchedule: CalendarEvent[][] = []; //2d array of of calendar events indexed at the stylist's id
+    timePeriods: TimePeriod[]; //array of unavailabilities serviced from the backend
+
+    //unavailability attributes for forms
+    stylistid: number;
+
+    sundayActive: boolean;
+    sundayID: number | undefined;
+    sundayStartTime: string | undefined;
+    sundayEndTime: string | undefined;
+    
+    mondayActive: boolean;
+    mondayID: number | undefined;
+    mondayStartTime: string | undefined;
+    mondayEndTime: string | undefined;
+    
+    tuesdayActive: boolean;
+    tuesdayID: number | undefined;
+    tuesdayStartTime: string | undefined;
+    tuesdayEndTime: string | undefined;
+    
+    wednesdayActive: boolean;
+    wednesdayID: number | undefined;
+    wednesdayStartTime: string | undefined;
+    wednesdayEndTime: string | undefined;
+    
+    thursdayActive: boolean;
+    thursdayID: number | undefined;
+    thursdayStartTime: string | undefined;
+    thursdayEndTime: string | undefined;
+    
+    fridayActive: boolean;
+    fridayID: number | undefined;
+    fridayStartTime: string | undefined;
+    fridayEndTime: string | undefined;
+    
+    saturdayActive: boolean;
+    saturdayID: number | undefined;
+    saturdayStartTime: string | undefined;
+    saturdayEndTime: string | undefined;
+
+
+
+
+
+
+    //form control for dropdown
+    stylistIDControl = new FormControl();
+    //filter observable for dropdown
+    filteredStylists: Observable<Stylist[]>;
+
+    //booleans to display and hide forms on the unavailabilities page
+    loadingFinished: boolean = false; // boolean for displaying page
+    scheduleLoading: boolean = true; // boolean to show unavailabilities are being loaded from the backend
+    
+    editingSchedule: boolean = false;
+
+    constructor(private stylistHoursService: StylisthoursService, 
+                private stylistService: StylistService,
+                private stylistScheduleService:  StylistScheduleService,
+                private appointmentService: AppointmentService,
+                private dialog: MatDialog, 
+                private toastr: ToastrService) { }
+
+     /**
+     * On loading page, all unavailabilities on the database are loaded in and put into the event calendar array
+     * and the unavailabilities array
+     */           
+    ngOnInit(): void 
+    {
+        // set enumerable values for time period field
+    this.timePeriods = [
+        TimePeriod.Once,
+        TimePeriod.Daily,
+        TimePeriod.Weekly,
+        TimePeriod.Monthly,
+        TimePeriod.Yearly
+      ]
   
-  eventsToShow: CalendarEvent[] = []; //calendar events list of unavailabilities and appointments
-  allHours: CalendarEvent[][] = [];
-  //allEvents: CalendarEvent[]= []; //all calendar events for the schedule page
-
-  //page display booleans
-  scheduleLoading: boolean = true; 
-  updatingSchedule: boolean = false;
-  addingSchedule: boolean = false; 
-
-  //form fields
-  stylistHourId?: number;
-  stylistID: number;
-  day: WeekDay;
-  startTime: string;
-  endTime: string;
-
-  //form control for dropdown
-  stylistIDControl = new FormControl();
-  //filter observable for dropdown
-  filteredStylists: Observable<Stylist[]>;
-
-  constructor(private stylistService: StylistService, 
-              private stylistHoursService: StylisthoursService,
-              private stylistScheduleService: StylistScheduleService,
-              private appointmentService: AppointmentService
-              /*public dialog: MatDialog*/ ) { }
-
-  /**
-   * On loading page, all unavailabilities and appointments on the database are loaded in and put into the event calendar array
-   * and their corresponding object arrays.
-   */
-  ngOnInit(): void 
-  {
-
-    forkJoin(
-      {
-        //call service methods to fetch all stylist hours and stylists
-        stylistHours: this.stylistHoursService.getStylistHours(),
-        stylistSchedules: this.stylistScheduleService.getStylistSchedule(),
-        appointments: this.appointmentService.getAppointment(),
-        stylists: this.stylistService.getStylists()
-      }).subscribe(({stylistHours, stylistSchedules, appointments, stylists}) => 
-      {
-        this.stylistList = stylists; //all the stylists
-        console.log(this.stylistList);
-        
-        this.stylistHours = stylistHours; //all the stylist hours
-
-        this.appointmentList = appointments; //all the appointments
-        
-        //add all hours from 2d array returned from stylistSchedules
-        //add appointments to calendar event list
-        for(let appointment of this.appointmentList)
+      //forkjoin call to stylists and unavailabilities database tables so they happen correctly
+      forkJoin(
         {
-          this.eventsToShow.push(
+          stylistHours: this.stylistHoursService.getStylistHours(), //call unavailabilities service to load all unavailabilities from the database
+          appointments: this.appointmentService.getAppointment(), //call unavailabilities service to load all unavailabilities from the database
+          stylists: this.stylistService.getStylists(), //call service to load all stylists from the database
+          fullStylistSchedule: this.stylistScheduleService.getStylistSchedule(), //get full stylist work schedule
+        }).subscribe(({stylistHours, stylists, appointments, fullStylistSchedule}) => 
+        {
+          //load all unavailabilities into the unavailabilities array
+          for(let stylist of stylists)
+          {
+            if(stylist.id == null)
             {
-              start: new Date(appointment.date),
-              title: appointment.name + " - " + appointment.description
+              continue;
             }
-          );
-        }
-        this.eventsToShow = this.allEvents; //load events to show on calendar
-        console.log(this.eventsToShow);
-        
-        //set up the filter for the stylist selection dropdown
-        this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
-          startWith(''),
-          map(value => (typeof value === 'string' ? value : value.name)), //but it also worked with stylistName???
-          map(name => (name ? this.stylistDropdownFilter(name) : this.stylistList.slice())) 
-        )
-        
-        this.scheduleLoading = false; //show calendar
-      }
-    );
-  }
-
-  /**
-   * converts a WeekDay enum into its equivalent string
-   * @param t the enum WeekDay value
-   * @returns the string equivalent to the passed WeekDay enum
-   */
-  weekDayToString(t: WeekDay): string
-  {
-    return StylistHours.weekDayToString(t);
-  }
-
-  /**
-   * Function to maintain all stylists selected on the front end drop down menu and call the showScheduleBy
-   * function to update the calendar. The function checks to see if the stylist passed as a parameter is currently
-   * on the list. If they are not on the list, this indicates that the user selected them for viewing and they are
-   * appended to the list. If they are currently on the list, then that idicates that the user deselected them, and 
-   * they are removed from the list.
-   * @param stylist : stylist to be added or subtracted from the list of stylist selected
-   */
-  /*changeStylistSelected(stylist: Stylist)
-  {
-    let index = this.selectedStylistList.indexOf(stylist); //get index of stylist on selected list of stylists
-    if(index != -1) //if they are already on list, remove
-    {
-      this.selectedStylistList.splice(index,1);
-    }
-    else //else, add the stylist to the list
-    {
-      this.selectedStylistList.push(stylist);
-    }
-    console.log(this.selectedStylistList);
-    this.showScheduleBy(); //update the events being shown on the calendar
-  }
-*/
-  /**
-   * Function to show only calendar events of stylists selected by the user. Defaults to 
-   * showing all stylists if no stylists are selected
-   * @param stylist : the stylist to update the calendar events list by
-   */
-  /*showScheduleBy()
-  {
-    //check stylist selected to see if it is empty or not
-    if(this.selectedStylistList.length == 0) //if list is empty, show all events
-    {
-      this.eventsToShow = this.allEvents;
-    }
-    else //show all events of selected stylists
-    {
-      this.eventsToShow = []; //create local list of events for one stylist
-
-      //iterate through selectedStylistsList to display all events associated with them
-      for(let stylist of this.selectedStylistList)
-      {
-        //get unavaiblites and appointments for the requested stylist
-        for(let appointment of this.appointmentList) //check for appointments
-        {
-          if(appointment.stylistID == stylist.id) //load appoinment if stylistID is equal to requested stylist
-          {
-            //create appointment and push it onto the event list
-            this.eventsToShow.push(
-              {
-                start: new Date(appointment.date),
-                title: appointment.name + " - " + appointment.description
-              }
-            );
-          }  
-        }
-
-        //TO-DO: do the same stuff as in ngOnInit
-        /*
-        for(let unavailability of this.unavailabilitiesList) //check for unavailabilities
-        {
-          if(unavailability.stylistID == stylist.id) //load unavailability if stylistID is equal to requested stylist
-          {
-            //create unavailability and push it onto the event list
-            this.eventsToShow.push(
-              {
-                start: new Date(unavailability.startDate),
-                end: new Date(unavailability.endDate),
-                title: unavailability.stylistName + " time off"
-              }
-            );
+            this.stylistHours[stylist.id] = [];
           }
-        }
-        
-      }
-      console.log(this.eventsToShow);
-    }
-  }*/
 
-  /**
-   * helper function for ngOnInit to filter the stylist list by an entered stylist name
-   */
-   private stylistDropdownFilter(name: string): Stylist[]
-   {
-     const filterValue = name.toLowerCase();
- 
-     return this.stylistList.filter(stylist => stylist.name.toLowerCase().includes(filterValue));
-   }
- 
-   /**
-    * event method that sets the form stylistID field
-    * @param stylist the stylist that was selected; it is type any because this.stylistID is not nullable, but stylist.id is
+          for(let stylistHour of stylistHours)
+          {
+            this.stylistHours[stylistHour.stylistID].push(stylistHour);
+          }
+  
+          //load all appointments into the appointments array
+          appointments.forEach(appointments => 
+            {
+              appointments.date = new Date(appointments.date);
+              appointments.dateCreated = new Date(appointments.dateCreated);
+            });
+          this.appointments = appointments; //save the list of appointments
+  
+          this.stylists = stylists; //save the stylist list
+          this.fullStylistSchedule = fullStylistSchedule; //load full work schedule
+          
+          ////add work schedule to events list to be shown
+          this.showScheduleBy(stylists[0])
+          
+          //set up the dropdown filter
+          this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
+            startWith(''),
+            map(value => (typeof value === 'string' ? value : value.name)),
+            map(name => (name ? this.stylistDropdownFilter(name) : this.stylists.slice()))
+          )
+          
+          // display the page and show that unavailabilities are done loading
+          this.loadingFinished = true; 
+          this.scheduleLoading = false;
+        });
+    }
+
+    /*Stylist Dropdown and Event Methods */
+
+    /**
+    * event method that sets the form stylistid field
+    * @param event the event that was fired
     */
-   setStylistIdFromDropdown(stylist: any)
-   {
-     console.log(stylist);
-     this.stylistID = stylist.id;
-   }
- 
-   /** 
+    setStylistIdFromDropdown(stylist: any)
+    {
+        console.log(stylist); //debug
+        this.stylistid = stylist.id;
+    }
+
+    /**
+     * helper function for ngOnInit to filter the stylist list by an entered stylist name
+     */
+    private stylistDropdownFilter(name: string): Stylist[]
+    {
+        const filterValue = name.toLowerCase();
+        return this.stylists.filter(stylist => stylist.name.toLowerCase().includes(filterValue));
+    }
+
+    /** 
     * @param stylist the stylist whose name should be displayed
     * @returns the name of the stylist
     */
-   stylistDropdownDisplay(stylist: Stylist): string
-   {
-     if(stylist != null && stylist.name != null && stylist.name != '')
-     {
-       return stylist.name;
-     }
-     else
-     {
-       return '';
-     }
-   }
-   
-  /**
-   * Function to close and reset dialog box
-   */
-  closeDialog()
-  {
-    this.resetDialog();
-    // this.dialog.closeAll(); //closes dialog boxes
-  }
-
-  /**
-   * function to clear form fields
-   */
-  clearFields()
-  {
-    // this.stylistID = 0;
-    // this.stylistIDControl.reset(); //clear the dropdown value
-    this.day = 1; //Monday
-    this.startTime = "";
-    this.endTime = "";    
-  }
-
-  /**
-   * function to reset the dialog box
-   */
-   resetDialog() 
-   {    
-     this.updatingSchedule = false;
-     this.addingSchedule = false;
-     this.clearFields();
-     
-   }
-
-   /**
-   * function to add a new appointment to the database and front end lists
-   */
-  addSchedule()
-  {
-    //convert form dates to date objects
-    // this.dateCreated = new Date();
-    // this.date = new Date(this.date);
-    if(!this.validateFields())
+    stylistDropdownDisplay(stylist: Stylist): string
     {
-      return;
+        //debug; so selectionChange fires too frequently, 
+        //because I had it in a mat-select tag, which it
+        //shouldn't have; put the change event on the mat-option
+        console.log(stylist); 
+        if(stylist != null && stylist.name != null && stylist.name != '')
+        {
+            return stylist.name;
+        }
+        else
+        {
+            return '';
+        }
     }
-    //create appointment variable to store form fields
-    let hours: StylistHours = 
+
+    /**
+     * 
+     * @param stylist 
+     */
+    showScheduleBy(stylist: Stylist)
     {
-      stylistID: this.stylistID, 
-      day: this.day, 
-      startTime: this.startTime, 
-      endTime: this.endTime
-    };
-    
-    //call appointment service to add appointment to database
-    this.stylistHoursService.addStylistHours(hours).subscribe(value => 
-      {
-        this.addingSchedule = false; //hide add appointment form
+        this.events = [];
+        if(stylist.id == null)
+        {
+            return;
+        }
+        this.stylistid = stylist.id;
+        for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
+        {
+            this.events.push(this.fullStylistSchedule[index][i]); 
+        }
+    }
 
-        this.clearFields(); //clear form fields
-        this.stylistHours.push(value); //push appointment to appointment list
-      }
-    );
-    
-  }
+    /* Functions surrounding form operations */
 
-  /**
-   * function to show create form from dialog box of events
-   */
-  setCreateSchedule()
-  {
-    // this.resetDialog();
-    this.addingSchedule = true;
-    // this.dialog.open(this.formDialog);
-  }
-  
-  /**
-   * Function to delete an schedule from the database and from the front end lists
-   * @param event : event to be deleted
-   */
-   deleteSchedule(event: any)
-   {
-     //reload page
-     this.appCalendar.deleteCalendarEvent(event)
- 
-     //find appointment based on calendar event
-     let appIndexToDelete = this.appointments.findIndex(x => x.id === event.id);
- 
-     //delete appointent from database
-     this.appointmentService.deleteAppointment(this.appointments[appIndexToDelete])
- 
-     //remove appointment from appointment list
-     this.appointments.splice(appIndexToDelete, 1);
-   }
+    /**
+     * Validate fields before updating / creating unavailability
+     */
+    validateFields() : boolean
+    {
+        let valid = true;
 
-  /**
-   * Function to show update stylist hours form and set all form fields
-   * @param event : object to be updated
-   */
-   startUpdateSchedule(event: any)
-   {
-     this.resetDialog();
- 
-     //find appointment based on calendar event
-     let appIndex = this.stylistHours.findIndex(x => x.id === event.id);
-     let appointmentToUpdate: Appointment = this.appointments[appIndex]
- 
-     //set fields of current object form
-     this.id = event.id;
-     this.stylistID =  appointmentToUpdate.stylistID;
-     this.stylistIDControl.setValue(this.stylistList.find(stylist => stylist.id == this.stylistID)); //autopopulate the dropdown with the stylist
-     this.name = appointmentToUpdate.name;
-     this.email = appointmentToUpdate.email;
-     this.phone = appointmentToUpdate.phone;
-     this.date = appointmentToUpdate.date;
-     this.length = appointmentToUpdate.length;
-     this.dateCreated = appointmentToUpdate.dateCreated;
-     this.description = appointmentToUpdate.description; 
- 
-     //show update form
-     this.updatingAppointment = true;
-     this.dialog.open(this.formDialog);
-   }
+        //TODO Check hours
 
-  /**
-   * Function to update database with changed stylist hours information and update front end list 
-   * with new information
-   */
-   updateSchedule()
-   {
-     //convert this.date to date object
-     this.date = new Date(this.date);
-     if(!this.validateFields())
+        return valid;
+    }
+
+    /**
+     * Function to hide the the add unavailability field
+     */
+     closeDialog()
      {
-       return;
+         this.resetDialog();
+         this.dialog.closeAll(); //closes dialog boxes
      }
-     //package fields into an appointment object
-     let appointment : Appointment= 
-     {
-       id: this.id, 
-       stylistID: this.stylistID, 
-       name: this.name, 
-       email: this.email, 
-       phone: this.phone, 
-       date: this.date, 
-       length: this.length,
-       dateCreated: this.dateCreated, 
-       description: this.description
-     };
  
-     //To check if there is conflict with other appointments for same stylist 
-     var doesConflict = this.checkAppointmentConflict(appointment);
-     if(doesConflict)
+     /**
+      * function to clear form fields
+      */
+     clearFields()
      {
-       return;
+        //TODO Reset fields
      }
-     //create a calendar event from appointment object
-     let event = 
-     {
-       id:this.id, 
-       start: this.date, 
-       title: this.name + " - " + this.description
-     };
- 
-     //call service to update appointment in database
-     this.appointmentService.updateAppointment(appointment);
-     
-     //find index of appoinment to change and replace existing information in appoinment list
-     let appIndexToUpdate = this.appointments.findIndex(x => x.id === appointment.id);
-     this.appointments[appIndexToUpdate] = appointment;
- 
-     //clear fields and set booleans
-     this.updatingAppointment = false;
-     this.clearFields();
-     
-     //reload calendar view and close dialog box
-     this.appCalendar.updateCalendarEvent(event);
-     this.dialog.closeAll();
-   }
 
-  /**
-   * 
-   */
-   checkScheduleConflict(newHours: StylistHours)
-   {
-     //loop through all the appointments
-     for(let app of this.appointments)
-     {	
-       //if appointment is the same as one being updated, then skip it
-       if(app.id == newAppointment.id)
-       {
-         continue;
-       }
-       
-       //if stylist matches
-       if(app.stylistID == newAppointment.stylistID)
-       {
-         let newAppStarttime = new Date(newAppointment.date).valueOf();
-         let newAppEndtime = new Date(newAppointment.date).valueOf() + (newAppointment.length * 60 * 1000);
-         let oldAppStarttime = new Date(app.date).valueOf();
-         let oldAppEndtime =new Date(app.date).valueOf() + (app.length * 60 * 1000);
-         // Check for any overlap between the time period of a current appointment by assessing 
-         // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated.
-          
-         if((newAppStarttime >= oldAppStarttime && newAppStarttime <= oldAppEndtime) || 
-           (newAppEndtime >= oldAppStarttime && newAppEndtime <= oldAppEndtime) || 
-           (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
+    /**
+     * function to reset the dialog box
+     */
+     resetDialog() 
+     {
+        this.editingSchedule = false;
+        this.clearFields();
+     }
+ 
+    /**
+     * Function that accepts enum TimePeriod and returns it in the form of string
+     * @param p enum timeperiod
+     * @returns timeperiod in string
+     */
+     timePeriodToString(p: TimePeriod): string
+     {
+        return Unavailability.timePeriodToString(p);
+     }
+
+    /**
+     * Function to check unavailability conflicts from a given unavailability. Returns either true or false, if the 
+     * unavailability given does or does not conflict.
+     * @param unavailability : unavailability to validate
+     * @returns returns true if there is a confilct, false if there is no conflicts
+     */
+    checkUnavailabilityConflict(unavailability: Unavailability)
+    {
+        //check for conflicts with appointments
+        for(let i = 0; i<this.appointments.length; i++)
+        {
+            // check if stylist has appointmens in list and that the appointment date falls between the start and end date of the 
+            if(this.appointments[i].stylistID === unavailability.stylistID && 
+                unavailability.startDate <= this.appointments[i].date && 
+                this.appointments[i].date <= unavailability.endDate)
+            {
+                // Add call to display error message for conflict
+                this.toastr.error("Unavailability " + unavailability.startDate + " to " + unavailability.endDate + " conflicts with\n"
+                                    + "appointment " + this.appointments[i].date);
+                
+                // Print unavailability range conflict, return to cancel adding the unavailability entry.
+                console.log("Unavailability " + unavailability.startDate + " to " + unavailability.endDate + " conflicts with\n"
+                                + "appointment " + this.appointments[i].date);
+                                
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /* CRUD Functions for Unavaliablities */
+
+    /**
+     * Function to show update unavailability form and set all form fields
+     * @param event : object to be updated
+     */
+     setEditingSchedule()
+     {
+         this.resetDialog();
+ 
+         let sunday;
+         let monday;
+         let tuesday;
+         let wednesday;
+         let thursday;
+         let friday;
+         let saturday;
+
+         for(let stylistHour of this.stylistHours[this.stylistid])
          {
-           //Add toast message
-           this.toastr.error("Appointment" + newAppointment.date + "with length of time" + newAppointment.length + "has conflicts with\n"
-           + "appointment" + app.date + "with length" + app.length, "Appointment Conflict Detection");
-             
-           console.log("Appointment" + newAppointment.date + "with length of time" + newAppointment.length + "has conflicts with\n"
-                         + "appointment" + app.date + "with length" + app.length);
-           return true;
+          if(stylistHour.day == WeekDay.Sunday)
+          {
+            sunday = stylistHour;
+          } 
+          else if(stylistHour.day == WeekDay.Monday)
+          {
+            monday = stylistHour;
+          }
+          else if(stylistHour.day == WeekDay.Tuesday)
+          {
+            tuesday = stylistHour;
+          }
+          else if(stylistHour.day == WeekDay.Wednesday)
+          {
+            wednesday = stylistHour;
+          }
+          else if(stylistHour.day == WeekDay.Thursday)
+          {
+            thursday = stylistHour;
+          }
+          else if(stylistHour.day == WeekDay.Friday)
+          {
+            friday = stylistHour;
+          }
+          else if(stylistHour.day == WeekDay.Saturday)
+          {
+            saturday = stylistHour;
+          }
          }
-         
-       }
-     }
-     //No conflicts 
-     return false;
-   }
-   
-   /**
-    * Validate Fields before adding/updating an appointment
-    */
-   validateFields() : boolean
-   {
-     //regular expression used to validate email
-     const regularExpression = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-     let validEmail = regularExpression.test(String(this.email).toLowerCase());
-     let valid = true;
-     if(this.stylistID == null || this.stylistID == 0)
-     {
-       valid = false;
-       this.toastr.error("Stylist ID is required");
-     }
-     else if(this.name == null || this.name == "")
-     {
-       valid = false;
-       this.toastr.error("Name is required");
-     }
-     else if(this.email == null || (!validEmail))
-     {
-       valid = false;
-       this.toastr.error("Email is invalid");
-     }
-     //to check if the phone number is a 10 digit number
-     else if((this.phone == "") || (!this.phone.match(/^\d{10}$/)))
-     {
-       valid = false;
-       this.toastr.error("Phone Number is invalid");
-     }
+
+         this.sundayActive = sunday != null;
+         this.sundayID = sunday?.id;
+         this.sundayStartTime = sunday?.startTime;
+         this.sundayEndTime = sunday?.endTime;
+        
+         this.mondayActive = monday != null;
+         this.mondayID = monday?.id;
+         this.mondayStartTime = monday?.startTime;
+         this.mondayEndTime = monday?.endTime;
+        
+         this.tuesdayActive = tuesday != null;
+        this.tuesdayID = tuesday?.id;
+        this.tuesdayStartTime = tuesday?.startTime;
+        this.tuesdayEndTime = tuesday?.endTime;
+        
+        this.wednesdayActive = wednesday != null;
+        this.wednesdayID = wednesday?.id;
+        this.wednesdayStartTime = wednesday?.startTime;
+        this.wednesdayEndTime = wednesday?.endTime;
+        
+        this.thursdayActive = thursday != null;
+        this.thursdayID = thursday?.id;
+        this.thursdayStartTime = thursday?.startTime;
+        this.thursdayEndTime = thursday?.endTime;
+        
+        this.fridayActive = friday != null;
+        this.fridayID = friday?.id;
+        this.fridayStartTime = friday?.startTime;
+        this.fridayEndTime = friday?.endTime;
+        
+        this.saturdayActive = saturday != null;
+        this.saturdayID = saturday?.id;
+        this.saturdayStartTime = saturday?.startTime;
+        this.saturdayEndTime = saturday?.endTime;
  
-     else if(this.date.getTime() < Date.now() - (24 * 60 * 60 * 1000))
-     {
-       valid = false;
-       this.toastr.error("Date is invalid");
+         //show update form
+         this.editingSchedule = true;
+         this.dialog.open(this.formDialog);
      }
- 
-     return valid;
-   }
+
+     submitEditSchedule() 
+     {
+      if(this.sundayActive && this.sundayID == null)
+      {
+        if(!this.sundayStartTime || !this.sundayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          startTime: this.sundayStartTime,
+          endTime: this.sundayEndTime,
+          day: WeekDay.Sunday,
+          stylistID: this.stylistid
+        }
+        this.addStylistHours(day)
+      }
+      else if(this.sundayActive && this.sundayID)
+      {
+        if(!this.sundayStartTime || !this.sundayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.sundayID,
+          startTime: this.sundayStartTime,
+          endTime: this.sundayEndTime,
+          day: WeekDay.Sunday,
+          stylistID: this.stylistid
+        }
+        this.updateStylistHours(day)
+      }
+      else if(!this.sundayActive && this.sundayID)
+      {
+        if(!this.sundayStartTime || !this.sundayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.sundayID,
+          startTime: this.sundayStartTime,
+          endTime: this.sundayEndTime,
+          day: WeekDay.Sunday,
+          stylistID: this.stylistid
+        }
+        this.deleteStylistHours(day)
+      }
+
+      if(this.mondayActive && this.mondayID == null)
+      {
+        if(!this.mondayEndTime || !this.mondayStartTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          startTime: this.mondayStartTime,
+          endTime: this.mondayEndTime,
+          day: WeekDay.Monday,
+          stylistID: this.stylistid
+        }
+        this.addStylistHours(day)
+      }
+      else if(this.mondayActive && this.mondayID)
+      {
+        if(!this.mondayEndTime || !this.mondayStartTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.mondayID,
+          startTime: this.mondayStartTime,
+          endTime: this.mondayEndTime,
+          day: WeekDay.Monday,
+          stylistID: this.stylistid
+        }
+        this.updateStylistHours(day)
+      }
+      else if(!this.mondayActive && this.mondayID)
+      {
+        if(!this.mondayEndTime || !this.mondayStartTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.mondayID,
+          startTime: this.mondayStartTime,
+          endTime: this.mondayEndTime,
+          day: WeekDay.Monday,
+          stylistID: this.stylistid
+        }
+        this.deleteStylistHours(day)
+      }
+
+      if(this.tuesdayActive && this.tuesdayID == null)
+      {
+        if(!this.tuesdayStartTime || !this.tuesdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          startTime: this.tuesdayStartTime,
+          endTime: this.tuesdayEndTime,
+          day: WeekDay.Tuesday,
+          stylistID: this.stylistid
+        }
+        this.addStylistHours(day)
+      }
+      else if(this.tuesdayActive && this.tuesdayID)
+      {
+        if(!this.tuesdayStartTime || !this.tuesdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.tuesdayID,
+          startTime: this.tuesdayStartTime,
+          endTime: this.tuesdayEndTime,
+          day: WeekDay.Tuesday,
+          stylistID: this.stylistid
+        }
+        this.updateStylistHours(day)
+      }
+      else if(!this.tuesdayActive && this.tuesdayID)
+      {
+        if(!this.tuesdayStartTime || !this.tuesdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.tuesdayID,
+          startTime: this.tuesdayStartTime,
+          endTime: this.tuesdayEndTime,
+          day: WeekDay.Tuesday,
+          stylistID: this.stylistid
+        }
+        this.deleteStylistHours(day)
+      }
+
+      if(this.wednesdayActive && this.wednesdayID == null)
+      {
+        if(!this.wednesdayStartTime || !this.wednesdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          startTime: this.wednesdayStartTime,
+          endTime: this.wednesdayEndTime,
+          day: WeekDay.Wednesday,
+          stylistID: this.stylistid
+        }
+        this.addStylistHours(day)
+      }
+      else if(this.wednesdayActive && this.wednesdayID)
+      {
+        if(!this.wednesdayStartTime || !this.wednesdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.wednesdayID,
+          startTime: this.wednesdayStartTime,
+          endTime: this.wednesdayEndTime,
+          day: WeekDay.Wednesday,
+          stylistID: this.stylistid
+        }
+        this.updateStylistHours(day)
+      }
+      else if(!this.wednesdayActive && this.wednesdayID)
+      {
+        if(!this.wednesdayStartTime || !this.wednesdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.wednesdayID,
+          startTime: this.wednesdayStartTime,
+          endTime: this.wednesdayEndTime,
+          day: WeekDay.Wednesday,
+          stylistID: this.stylistid
+        }
+        this.deleteStylistHours(day)
+      }
+
+      if(this.thursdayActive && this.thursdayID == null)
+      {
+        if(!this.thursdayStartTime || !this.thursdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          startTime: this.thursdayStartTime,
+          endTime: this.thursdayEndTime,
+          day: WeekDay.Thursday,
+          stylistID: this.stylistid
+        }
+        this.addStylistHours(day)
+      }
+      else if(this.thursdayActive && this.thursdayID)
+      {
+        if(!this.thursdayStartTime || !this.thursdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.thursdayID,
+          startTime: this.thursdayStartTime,
+          endTime: this.thursdayEndTime,
+          day: WeekDay.Thursday,
+          stylistID: this.stylistid
+        }
+        this.updateStylistHours(day)
+      }
+      else if(!this.thursdayActive && this.thursdayID)
+      {
+        if(!this.thursdayStartTime || !this.thursdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.thursdayID,
+          startTime: this.thursdayStartTime,
+          endTime: this.thursdayEndTime,
+          day: WeekDay.Thursday,
+          stylistID: this.stylistid
+        }
+        this.deleteStylistHours(day)
+      }
+
+      if(this.fridayActive && this.fridayID == null)
+      {
+        if(!this.fridayStartTime || !this.fridayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          startTime: this.fridayStartTime,
+          endTime: this.fridayEndTime,
+          day: WeekDay.Friday,
+          stylistID: this.stylistid
+        }
+        this.addStylistHours(day)
+      }
+      else if(this.fridayActive && this.fridayID)
+      {
+        if(!this.fridayStartTime || !this.fridayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.fridayID,
+          startTime: this.fridayStartTime,
+          endTime: this.fridayEndTime,
+          day: WeekDay.Friday,
+          stylistID: this.stylistid
+        }
+        this.updateStylistHours(day)
+      }
+      else if(!this.fridayActive && this.fridayID)
+      {
+        if(!this.fridayStartTime || !this.fridayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.fridayID,
+          startTime: this.fridayStartTime,
+          endTime: this.fridayEndTime,
+          day: WeekDay.Friday,
+          stylistID: this.stylistid
+        }
+        this.deleteStylistHours(day)
+      }
+
+      if(this.saturdayActive && this.saturdayID == null)
+      {
+        if(!this.saturdayStartTime || !this.saturdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          startTime: this.saturdayStartTime,
+          endTime: this.saturdayEndTime,
+          day: WeekDay.Saturday,
+          stylistID: this.stylistid
+        }
+        this.addStylistHours(day)
+      }
+      else if(this.saturdayActive && this.saturdayID)
+      {
+        if(!this.saturdayStartTime || !this.saturdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.saturdayID,
+          startTime: this.saturdayStartTime,
+          endTime: this.saturdayEndTime,
+          day: WeekDay.Saturday,
+          stylistID: this.stylistid
+        }
+        this.updateStylistHours(day)
+      }
+      else if(!this.saturdayActive && this.saturdayID)
+      {
+        if(!this.saturdayStartTime || !this.saturdayEndTime)
+        {
+          return;
+        }
+        let day : StylistHours = {
+          id: this.saturdayID,
+          startTime: this.saturdayStartTime,
+          endTime: this.saturdayEndTime,
+          day: WeekDay.Saturday,
+          stylistID: this.stylistid
+        }
+        this.deleteStylistHours(day)
+      }
+
+     }
+
+    /**
+     * function to add a new unavailability to the database and front end lists
+     */
+    addStylistHours(hours: StylistHours)
+    {
+        if(!this.validateFields())
+        {
+            return;
+        }
+        
+        // TODO Check for conflicts
+        // var doesConflict = this.checkUnavailabilityConflict(unavailability);
+        // if(doesConflict)
+        // {
+        //     return;
+        // }
+
+        
+
+        //call unavailability service to add unavailability to database
+        this.stylistHoursService.addStylistHours(hours).subscribe(value => 
+        {
+            this.editingSchedule = false; //hide add unavailability form
+
+            this.stylistHours[this.stylistid].push(value); //push unavailability to unavailability list
+
+            // Update with service
+            // Update calendar
+
+            this.dialog.closeAll(); //close dialog box
+
+            this.clearFields(); //clear form fields
+
+            this.stylistScheduleService.getStylistSchedule().subscribe(value =>
+              {
+                  this.fullStylistSchedule = value;
+                  console.log(this.stylistid)
+                  this.events = value[this.stylistid]
+              });
+        });
+        
+    }
+
+    /**
+     * Function to delete an unavailability from the database and from the front end lists
+     * @param event : event to be deleted
+     */
+    deleteStylistHours(hours: StylistHours)
+    {
+
+        //find unavailability based on calendar event
+        let appIndexToDelete = this.stylistHours[this.stylistid].findIndex(x => x.id === hours.id);
+
+        //delete appointent from database
+        this.stylistHoursService.deleteStylistHours(hours).subscribe(() => {
+            
+            //remove unavailability from unavailability list
+            this.stylistHours[this.stylistid].splice(appIndexToDelete, 1);
+
+            this.dialog.closeAll();
+
+            //load full work schedule by same stylist
+            this.stylistScheduleService.getStylistSchedule().subscribe(value =>
+            {
+                this.fullStylistSchedule = value;
+                console.log(this.stylistid)
+                this.events = value[this.stylistid]
+            });
+            this.clearFields(); //clear form fields
+        })
+
+    }
+
+    /**
+     * Function to update database with changed appointment information and update front end list 
+     * with new information
+     */
+    updateStylistHours(hours: StylistHours)
+    {
+        if(!this.validateFields())
+        {
+            return;
+        }
+
+        // Check for unavailability conflicts.
+        //var doesConflict = this.checkUnavailabilityConflict(hours);
+        //if(doesConflict)
+        //{
+        //    return;
+        //}
+
+        //call service to update unavailability in database
+        this.stylistHoursService.updateStylistHours(hours).subscribe(() => {
+
+            //find index of unavailability to change and replace existing information in unavailability list
+            let appIndexToUpdate = this.stylistHours[this.stylistid].findIndex(x => x.id === hours.id);
+            this.stylistHours[this.stylistid][appIndexToUpdate] = hours;
+
+            //clear fields and set booleans
+            this.editingSchedule = false;
+
+            this.dialog.closeAll();
+
+            //load full work schedule by same stylist
+            this.stylistScheduleService.getStylistSchedule().subscribe(value =>
+            {
+                this.fullStylistSchedule = value;
+                console.log(this.stylistid)
+                this.events = value[this.stylistid]
+            });
+            this.clearFields(); //clear form fields
+        });
+        
+        
+    }
 }
