@@ -423,14 +423,6 @@ export class AppointmentPageComponent implements OnInit
         
         if(newAppStarttime >= hoursStartTime && newAppEndtime <= hoursEndTime)
         {
-          //Add toast message
-          /*
-          this.toastr.error("Appointment " + newAppointment.date + " with length of time " + newAppointment.length + " is outside of stylist working hours\n"
-          + "Hours start at " + ws.start + " and end at" + ws.end);
-            
-          console.log("Appointment " + newAppointment.date + " with length of time " + newAppointment.length + " is outside of stylist working hours\n"
-          + "Hours start at " + ws.start + " and end at" + ws.end);
-          */
           //if we get here, the appointment is valid
           return false;
         }
