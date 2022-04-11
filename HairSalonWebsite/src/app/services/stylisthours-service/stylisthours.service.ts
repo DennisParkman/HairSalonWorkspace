@@ -45,10 +45,10 @@ export class StylisthoursService
     * @baseURL variable in the form of an enumrable array
     * @param stylisthours is the object that contains updated information for a stylisthours entry in the database
     */
-   updateStylistHours(stylisthours: StylistHours): void
+   updateStylistHours(stylisthours: StylistHours): Observable<any>
    {
        let url = this.baseURL.concat("StylistHours");
-       this.http.put(url, stylisthours).subscribe();
+       return this.http.put(url, stylisthours);
    }
 
    /**
@@ -56,10 +56,10 @@ export class StylisthoursService
     * @baseURL variable in the form of an enumerable array
     * @param stylisthours is the object that needs to be deleted
     */
-   deleteStylistHours(stylisthours: StylistHours): void
+   deleteStylistHours(stylisthours: StylistHours): Observable<any>
    {
        let url = this.baseURL.concat("StylistHours/" + stylisthours.id);
-       this.http.delete(url).subscribe();
+       return this.http.delete(url);
    }
 
 }
