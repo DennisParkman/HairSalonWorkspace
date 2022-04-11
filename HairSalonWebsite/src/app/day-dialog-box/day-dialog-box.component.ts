@@ -6,6 +6,7 @@ import { CalendarEvent } from "angular-calendar";
 export class DialogDataObject {
   events: CalendarEvent[]
   crudFeatures: boolean
+  crudCondition: string;
 }
 
 @Component({

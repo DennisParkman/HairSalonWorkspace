@@ -85,6 +85,9 @@ export class UnavailabilityPageComponent implements OnInit
           fullStylistSchedule: this.stylistScheduleService.getStylistSchedule(true), //get full stylist work schedule
         }).subscribe(({unavailabilities, stylists, appointments, fullStylistSchedule}) => 
         {
+
+            console.log(fullStylistSchedule);
+
           //load all unavailabilities into the unavailabilities array
           unavailabilities.forEach(unavailability => 
             {
@@ -343,29 +346,18 @@ export class UnavailabilityPageComponent implements OnInit
         {
             this.addingUnavailability = false; //hide add unavailability form
 
-            //create calendar event to add to event list
-            let event : CalendarEvent = 
-            {
-                id: value.id, 
-                start: new Date(this.startDate), 
-                end: new Date(this.endDate), 
-                title: this.stylistName
-            };
             this.unavailabilities.push(value); //push unavailability to unavailability list
 
+            // Update with service
+            // Update calendar
+
             this.dialog.closeAll(); //close dialog box
+
+            this.stylistScheduleService.refreshStylistScheduleWithUnavailability(this.events, value);
+            this.clearFields(); //clear form fields
+            this.appCalendar.updateFullCalendar(this.events);
         });
         
-        //load full work schedule by same stylist
-        console.log(this.fullStylistSchedule)
-        this.stylistScheduleService.getStylistSchedule().subscribe(value =>
-        {
-            this.fullStylistSchedule = value;
-        });
-        console.log(this.fullStylistSchedule)
-        let indexOfStylistToFind = this.stylists.findIndex(x=>x.id === this.stylistid)
-        this.clearFields(); //clear form fields
-        this.showScheduleBy(this.stylists[indexOfStylistToFind]);
     }
 
     /**
