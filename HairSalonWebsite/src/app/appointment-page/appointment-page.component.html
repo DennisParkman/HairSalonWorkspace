@@ -6,7 +6,7 @@
     </mat-menu >
 
   <mat-button-toggle style="margin-left:20px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setCreateAppointment()">Add Appointment</mat-button-toggle>
-  <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" (deleteEvent)="deleteAppointment($event)" 
+  <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" [supportCRUDCondition]="'-'" (deleteEvent)="deleteAppointment($event)" 
                       (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment($event)"></app-event-calendar>
 </div>
 
