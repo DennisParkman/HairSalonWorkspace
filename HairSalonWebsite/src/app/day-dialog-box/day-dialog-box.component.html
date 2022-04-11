@@ -12,7 +12,7 @@
         <div *ngIf="x.end">
             End: {{x.end}}
         </div>
-        <div *ngIf="data.crudFeatures"> <!--if set to true, user can update and delete an event-->
+        <div *ngIf="data.crudFeatures && x.title.indexOf(data.crudCondition) > -1"> <!--if set to true, user can update and delete an event-->
             <button mat-button mat-dialog-close (click)="deleteEventHandler(x)">Delete</button>
             <button mat-button mat-dialog-close (click)="updateEventHandler(x)">Update</button>
         </div>

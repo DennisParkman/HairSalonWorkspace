@@ -136,14 +136,19 @@ export class StylistScheduleService
                 id: unavailability.id,
                 start: unavailability.startDate,
                 end: unavailability.endDate,
-                title: "Unavailable"
-              })
+                title: "Unavailable",
+                color: {primary: '#8b0000', secondary: '#008b8b'}
+              });
             }
                     
 
             for(let i=0; i<events.length; i++)
             {
               let event = events[i];
+              if(event.title == "Unavailable")
+              {
+                continue;
+              }
               if(event.end == null)
               {
                 continue;
@@ -205,4 +210,82 @@ export class StylistScheduleService
       });
     })
   }  
+
+  public refreshStylistScheduleWithUnavailability(events: CalendarEvent[], unavailability: Unavailability): CalendarEvent[]
+  {
+
+    let stylistId = unavailability.stylistID;
+
+    events.push(
+    {
+      id: unavailability.id,
+      start: unavailability.startDate,
+      end: unavailability.endDate,
+      title: "Unavailable",
+      color: {primary: '#8b0000', secondary: '#008b8b'}
+    });
+                    
+
+    for(let i=0; i<events.length; i++)
+    {
+      let event = events[i];
+      if(event.title == "Unavailable")
+      {
+        continue;
+      }
+      if(event.end == null)
+      {
+        continue;
+      }
+
+      // Check if unavailability starts in event
+      if(unavailability.startDate.getTime() > event.start.getTime() && unavailability.startDate.getTime() < event.end.getTime())
+      {
+        //unavailability start date falls within event
+        if(unavailability.endDate.getTime() < event.end.getTime())
+        {
+          //Unavailability falls entirely within event
+
+          //Make new event for segmented second part
+          let newEvent : CalendarEvent = 
+          {
+            id: stylistId,
+            start: unavailability.endDate,
+            end: event.end,
+            title: ""
+          }
+          //Add new event
+          events.push(newEvent);
+
+          //Update event end time
+          event.end = unavailability.startDate;
+
+        }
+        else
+        {
+          //Unavailability starts in middle of event, but ends after
+          //Cut off event end early
+          event.end = unavailability.startDate;
+        }
+      }
+      // Check if event end falls inside of unavailability
+      else if(unavailability.endDate.getTime() > event.start.getTime() && unavailability.endDate.getTime() < event.end.getTime())
+      {
+        //unavailability end date falls within event
+        event.start = unavailability.endDate;
+      }
+      // Check if unavailablity encompasses event
+      else if (unavailability.startDate.getTime() <= event.start.getTime() && event.end.getTime() <= unavailability.endDate.getTime())
+      {
+        events.splice(i, 1);
+        i--;
+      } 
+
+    }
+
+
+    return events;
+                  
+  }
+
 }

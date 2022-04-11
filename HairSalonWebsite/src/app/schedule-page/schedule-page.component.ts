@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarView } from 'angular-calendar';
 import { CalendarEvent} from 'angular-calendar';
-import { startOfDay } from 'date-fns';
 import { Unavailability } from '../models/unavailability.model';
 import { Appointment } from '../models/appointment.model';
 import { Stylist } from '../models/stylist.model';
