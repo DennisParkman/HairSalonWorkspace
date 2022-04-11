@@ -56,10 +56,10 @@ export class UnavailabilityService
      * @baseURL variable in the form of an enumrable array
      * @param unavailability is the object that needs to be deleted
      */
-    deleteUnavailability(unavailability: Unavailability): void
+    deleteUnavailability(unavailability: Unavailability): Observable<any>
     {
         let url = this.baseURL.concat("Unavailability/" + unavailability.id);
-        this.http.delete(url).subscribe();
+        return this.http.delete(url);
     }
     
     /**

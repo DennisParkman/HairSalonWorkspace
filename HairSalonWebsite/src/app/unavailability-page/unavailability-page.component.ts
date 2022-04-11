@@ -373,10 +373,23 @@ export class UnavailabilityPageComponent implements OnInit
         let appIndexToDelete = this.unavailabilities.findIndex(x => x.id === event.id);
 
         //delete appointent from database
-        this.unavailabilityService.deleteUnavailability(this.unavailabilities[appIndexToDelete])
+        this.unavailabilityService.deleteUnavailability(this.unavailabilities[appIndexToDelete]).subscribe(() => {
+            
+            //remove unavailability from unavailability list
+            this.unavailabilities.splice(appIndexToDelete, 1);
 
-        //remove unavailability from unavailability list
-        this.unavailabilities.splice(appIndexToDelete, 1);
+            this.dialog.closeAll();
+
+            //load full work schedule by same stylist
+            this.stylistScheduleService.getStylistSchedule(true).subscribe(value =>
+            {
+                this.fullStylistSchedule = value;
+                console.log(this.stylistid)
+                this.events = value[this.stylistid]
+            });
+            this.clearFields(); //clear form fields
+        })
+
     }
 
     /**
