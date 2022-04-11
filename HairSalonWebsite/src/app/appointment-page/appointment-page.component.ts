@@ -254,7 +254,12 @@ export class AppointmentPageComponent implements OnInit
             this.appointments.push(value); //push appointment to appointment list
 
             //call calendar event component function to reload event list with new item
-            this.appCalendar.updateCalendarEvent(event);
+            this.stylistScheduleService.getStylistSchedule().subscribe(value =>
+              {
+                  this.fullStylistSchedule = value;
+                  console.log(this.stylistid)
+                  this.events = value[this.stylistid]
+              });
             this.dialog.closeAll(); //close dialog box
           }
         );
@@ -267,8 +272,6 @@ export class AppointmentPageComponent implements OnInit
    */
   deleteAppointment(event: any)
   {
-    //reload page
-    this.appCalendar.deleteCalendarEvent(event)
 
     //find appointment based on calendar event
     let appIndexToDelete = this.appointments.findIndex(x => x.id === event.id);
@@ -278,6 +281,13 @@ export class AppointmentPageComponent implements OnInit
 
     //remove appointment from appointment list
     this.appointments.splice(appIndexToDelete, 1);
+
+    this.stylistScheduleService.getStylistSchedule().subscribe(value =>
+      {
+          this.fullStylistSchedule = value;
+          console.log(this.stylistid)
+          this.events = value[this.stylistid]
+      });
   }
 
   /**
@@ -362,7 +372,12 @@ export class AppointmentPageComponent implements OnInit
     this.clearFields();
     
     //reload calendar view and close dialog box
-    this.appCalendar.updateCalendarEvent(event);
+    this.stylistScheduleService.getStylistSchedule().subscribe(value =>
+      {
+          this.fullStylistSchedule = value;
+          console.log(this.stylistid)
+          this.events = value[this.stylistid]
+      });
     this.dialog.closeAll();
   }
 
