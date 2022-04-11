@@ -16,6 +16,7 @@ export class EventCalendarComponent implements OnInit
   // Variables that are taken as input from parent component
   @Input() calEvents: CalendarEvent[] = []; //the list of CalendarEvents to display in the calendar
   @Input() supportCRUD: boolean = false;
+  @Input() supportCRUDCondition: string = '';
   
   viewDate: Date = new Date();
   clickedDate: Date;
@@ -39,6 +40,13 @@ export class EventCalendarComponent implements OnInit
   setView(view: CalendarView) 
   {
     this.view = view;
+  }
+
+  // Update calender event list when event is updated / created
+  public updateFullCalendar(events: CalendarEvent[]) 
+  {
+    this.calEvents = events;
+    this.refresh.next("");
   }
 
   // Update calender event list when event is updated / created
@@ -71,7 +79,8 @@ export class EventCalendarComponent implements OnInit
         data:
         {
           events: this.dayOfEvents, 
-          crudFeatures:this.supportCRUD
+          crudFeatures:this.supportCRUD,
+          crudCondition: this.supportCRUDCondition
         }
       }
     );
