@@ -10,6 +10,8 @@ import { FormControl } from '@angular/forms';
 import { forkJoin, Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { StylistService } from '../services/stylist-service/stylist.service';
+import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
+import  {EventColor} from '../../../node_modules/calendar-utils/calendar-utils.d';
 
 
 
@@ -53,11 +55,14 @@ export class AppointmentPageComponent implements OnInit
   appointments: Appointment[]; //array of appointments serviced from the backend 
   stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
   selectedStylistList: Stylist[] = []; //list of all stylist selected by user
+  fullStylistSchedule: CalendarEvent[][] = []; //2d array of of calendar events indexed at the stylist's id
 
   constructor(private appointmentService: AppointmentService, 
-    private stylistService: StylistService, 
+    private stylistService: StylistService,
+    private stylistScheduleService:  StylistScheduleService,
     private dialog: MatDialog, 
-    private toastr: ToastrService) 
+    private toastr: ToastrService,
+    ) 
   { }
 
   /**
@@ -69,29 +74,27 @@ export class AppointmentPageComponent implements OnInit
     //forkjoin call to stylists and appointments database tables so they happen correctly
     forkJoin(
       {
-        //call service to load all appointments from the database
-        appointments: this.appointmentService.getAppointment(),
-        //call service to load all stylists from the database
-        stylists: this.stylistService.getStylists()
-      }).subscribe(({appointments, stylists}) => 
+        appointments: this.appointmentService.getAppointment(), //call unavailabilities service to load all unavailabilities from the database
+          stylists: this.stylistService.getStylists(), //call service to load all stylists from the database
+          fullStylistSchedule: this.stylistScheduleService.getStylistSchedule(), //get full stylist work schedule
+      }).subscribe(({appointments, stylists, fullStylistSchedule}) => 
       {
-        this.appointments = appointments; //set appointments to appointment list
-        console.log(this.appointments);
+        //load all appointments into the appointments array
+        appointments.forEach(appointments => 
+          {
+            appointments.date = new Date(appointments.date);
+            appointments.dateCreated = new Date(appointments.dateCreated);
+          });
+        this.appointments = appointments; //save the list of appointments
 
         this.stylists = stylists; //save the stylist list
         console.log(this.stylists);
+
+        this.fullStylistSchedule = fullStylistSchedule; //load full work schedule
+        console.log(this.fullStylistSchedule);
         
-        //add appointments to calendar event list
-        for(let appointment of this.appointments)
-        {
-          this.events.push(
-            {
-              id:appointment.id,
-              start: new Date(appointment.date),
-              title: appointment.name + " - " + appointment.description //appointment.name is the client
-            }
-          );
-        }
+        //add work schedule to events list to be shown
+        this.showWorkScheduleBy(this.stylists[0])
 
         //set up the dropdown filter
         this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
@@ -106,6 +109,39 @@ export class AppointmentPageComponent implements OnInit
         this.appointmentLoading = false;
       }
     );
+  }
+
+/**
+ * Function to load stylists onto the calendar with their events being shown
+ * @param stylist 
+ */
+  showWorkScheduleBy(stylist: Stylist)
+  {
+      this.events = [];
+      if(stylist.id == null)
+      {
+        return;
+      }
+      for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
+      {
+          this.events.push(this.fullStylistSchedule[index][i]); 
+      }
+      for (let appointment of this.appointments)
+      {
+        if(appointment.stylistID == stylist.id)
+        this.events.push(
+          {
+            
+            id:appointment.id,
+            start: new Date(appointment.date),
+            title: appointment.name + " - " + appointment.description, //appointment.name is the client
+            color: {primary: '#228B22', secondary: '#ffffff'}
+          }
+        )
+      }
+
+      console.log(this.events);
+
   }
 
   /**
@@ -142,84 +178,7 @@ export class AppointmentPageComponent implements OnInit
     {
       return '';
     }
-  }
-
-  /**
-   * Function to maintain all stylists selected on the front end drop down menu and call the showScheduleBy
-   * function to update the calendar. The function checks to see if the stylist passed as a parameter is currently
-   * on the list. If they are not on the list, this indicates that the user selected them for viewing and they are
-   * appended to the list. If they are currently on the list, then that idicates that the user deselected them, and 
-   * they are removed from the list.
-   * @param stylist : stylist to be added or subtracted from the list of stylist selected
-   */
-   changeStylistSelected(stylist: Stylist)
-   {
-     let index = this.selectedStylistList.indexOf(stylist); //get index of stylist on selected list of stylists
-     if(index != -1) //if they are already on list, remove
-     {
-       this.selectedStylistList.splice(index,1);
-     }
-     else //else, add the stylist to the list
-     {
-       this.selectedStylistList.push(stylist);
-     }
-     console.log(this.selectedStylistList);
-     this.showScheduleBy(); //update the events being shown on the calendar
-   }
-
-   /**
-   * Function to show only calendar events of stylists selected by the user. Defaults to 
-   * showing all stylists if no stylists are selected
-   * @param stylist : the stylist to update the calendar events list by
-   */
-  showScheduleBy()
-  {
-    //check stylist selected to see if it is empty or not
-    if(this.selectedStylistList.length == 0) //if list is empty, show all events
-    {
-      this.eventsToShow = this.events;
-    }
-    else //show all events of selected stylists
-    {
-      this.eventsToShow = []; //create local list of events for one stylist
-
-      //iterate through selectedStylistsList to display all events associated with them
-      for(let stylist of this.selectedStylistList)
-      {
-        //get unavaiblites and appointments for the requested stylist
-        for(let appointment of this.appointments) //check for appointments
-        {
-          if(appointment.stylistID == stylist.id) //load appoinment if stylistID is equal to requested stylist
-          {
-            //create appointment and push it onto the event list
-            this.eventsToShow.push(
-              {
-                start: new Date(appointment.date),
-                title: appointment.name + " - " + appointment.description
-              }
-            );
-          }  
-        }
-        /*
-        for(let unavailability of this.unavailabilities) //check for unavailabilities
-        {
-          if(unavailability.stylistID == stylist.id) //load unavailability if stylistID is equal to requested stylist
-          {
-            //create unavailability and push it onto the event list
-            this.eventsToShow.push(
-              {
-                start: new Date(unavailability.startDate),
-                end: new Date(unavailability.endDate),
-                title: unavailability.stylistName + " time off"
-              }
-            );
-          }
-        }
-        */
-      }
-      console.log(this.eventsToShow);
-    }
-  }
+  } 
 
   /**
    * Function to close and reset dialog box
@@ -288,7 +247,8 @@ export class AppointmentPageComponent implements OnInit
             {
               id: value.id, 
               start: this.date, 
-              title: this.name + " - " + this.description
+              title: this.name + " - " + this.description,
+              color: {primary: '#228B22', secondary: '#ffffff'}
             };
             this.clearFields(); //clear form fields
             this.appointments.push(value); //push appointment to appointment list
@@ -386,7 +346,8 @@ export class AppointmentPageComponent implements OnInit
     {
       id:this.id, 
       start: this.date, 
-      title: this.name + " - " + this.description
+      title: this.name + " - " + this.description,
+      color: {primary: '#228B22', secondary: '#ffffff'}
     };
 
     //call service to update appointment in database
@@ -411,9 +372,12 @@ export class AppointmentPageComponent implements OnInit
    */
   checkAppointmentConflict(newAppointment: Appointment)
   {
+    let newAppStarttime = new Date(newAppointment.date).valueOf();
+    let newAppEndtime = new Date(newAppointment.date).valueOf() + (newAppointment.length * 60 * 1000);
     //loop through all the appointments
     for(let app of this.appointments)
     {	
+      console.log("Heeeee")
       //if appointment is the same as one being updated, then skip it
       if(app.id == newAppointment.id)
       {
@@ -423,8 +387,6 @@ export class AppointmentPageComponent implements OnInit
       //if stylist matches
       if(app.stylistID == newAppointment.stylistID)
       {
-        let newAppStarttime = new Date(newAppointment.date).valueOf();
-        let newAppEndtime = new Date(newAppointment.date).valueOf() + (newAppointment.length * 60 * 1000);
         let oldAppStarttime = new Date(app.date).valueOf();
         let oldAppEndtime =new Date(app.date).valueOf() + (app.length * 60 * 1000);
         // Check for any overlap between the time period of a current appointment by assessing 
@@ -435,16 +397,43 @@ export class AppointmentPageComponent implements OnInit
           (newAppStarttime < oldAppStarttime && newAppEndtime > oldAppEndtime))
         {
           //Add toast message
-          this.toastr.error("Appointment" + newAppointment.date + "with length of time" + newAppointment.length + "has conflicts with\n"
-          + "appointment" + app.date + "with length" + app.length, "Appointment Conflict Detection");
+          this.toastr.error("Appointment " + newAppointment.date + " with length of time " + newAppointment.length + " has conflicts with\n"
+          + " appointment " + app.date + " with length " + app.length, " Appointment Conflict Detection");
             
-          console.log("Appointment" + newAppointment.date + "with length of time" + newAppointment.length + "has conflicts with\n"
-                        + "appointment" + app.date + "with length" + app.length);
-          return true;
+          console.log("Appointment " + newAppointment.date + " with length of time " + newAppointment.length + " has conflicts with\n"
+          + " appointment " + app.date + " with length " + app.length, " Appointment Conflict Detection");
+          return true
         }
         
       }
+
     }
+
+    for(let ws of this.fullStylistSchedule[newAppointment.stylistID])
+      {
+        console.log("oniks")
+        let hoursStartTime = new Date(ws.start).valueOf();
+        if(ws.end == undefined)
+        {
+          continue
+        }
+        let hoursEndTime =new Date(ws.end).valueOf();
+        // Check for any overlap between the time period of a current appointment by assessing 
+        // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated.
+         
+        if(!((newAppStarttime >= hoursStartTime && newAppStarttime <= hoursEndTime) || 
+          (newAppEndtime >= hoursStartTime && newAppEndtime <= hoursEndTime) || 
+          (newAppStarttime < hoursStartTime && newAppEndtime > hoursEndTime)))
+        {
+          //Add toast message
+          this.toastr.error("Appointment " + newAppointment.date + " with length of time " + newAppointment.length + " is outside of stylist working hours\n"
+          + "Hours start at " + ws.start + " and end at" + ws.end);
+            
+          console.log("Appointment " + newAppointment.date + " with length of time " + newAppointment.length + " is outside of stylist working hours\n"
+          + "Hours start at " + ws.start + " and end at" + ws.end);
+          return true
+        }
+      }
     //No conflicts 
     return false;
   }
