@@ -1,18 +1,19 @@
-<!-- Tufts VUE 3.3.0 concept-map (.~sprint2-dataflow-in_progress.vue) 2022-03-05 -->
+<!-- Tufts VUE 3.3.0 concept-map (.~sprint4-stylist-crud-dataflow-in_progress.vue) 2022-04-11 -->
 <!-- Tufts VUE: http://vue.tufts.edu/ -->
 <!-- Do Not Remove: VUE mapping @version(1.1) jar:file:/C:/Program%20Files%20(x86)/VUE/VUE.jar!/tufts/vue/resources/lw_mapping_1_1.xml -->
-<!-- Do Not Remove: Saved date Sat Mar 05 13:26:57 EST 2022 by jpangia on platform Windows 8 6.2 in JVM 1.7.0_21-b11 -->
+<!-- Do Not Remove: Saved date Mon Apr 11 14:35:13 EDT 2022 by jpangia on platform Windows 8 6.2 in JVM 1.7.0_21-b11 -->
 <!-- Do Not Remove: Saving version @(#)VUE: built October 8 2015 at 1658 by tomadm on Linux 2.6.32-504.23.4.el6.x86_64 i386 JVM 1.7.0_21-b11(bits=32) -->
 <?xml version="1.0" encoding="US-ASCII"?>
 <LW-MAP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="none" ID="0"
-    label=".~sprint2-dataflow-in_progress.vue" created="1643933819466"
-    x="0.0" y="0.0" width="1.4E-45" height="1.4E-45" strokeWidth="0.0" autoSized="false">
-    <resource referenceCreated="1646504817214" size="17803"
-        spec="C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\sprint2\.~sprint2-dataflow-in_progress.vue"
+    label=".~sprint4-stylist-crud-dataflow-in_progress.vue"
+    created="1643933819466" x="0.0" y="0.0" width="1023.10657"
+    height="2181.4802" strokeWidth="0.0" autoSized="false">
+    <resource referenceCreated="1649702113795" size="30059"
+        spec="C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\hair-stylist-workspace\HairSalonWorkspace\docs\sprint4\.~sprint4-stylist-crud-dataflow-in_progress.vue"
         type="1" xsi:type="URLResource">
-        <title>.~sprint2-dataflow-in_progress.vue</title>
-        <property key="File" value="C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\sprint2\.~sprint2-dataflow-in_progress.vue"/>
+        <title>.~sprint4-stylist-crud-dataflow-in_progress.vue</title>
+        <property key="File" value="C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\hair-stylist-workspace\HairSalonWorkspace\docs\sprint4\.~sprint4-stylist-crud-dataflow-in_progress.vue"/>
     </resource>
     <fillColor>#FFFFFF</fillColor>
     <strokeColor>#404040</strokeColor>
@@ -50,9 +51,9 @@
         <URIString>http://vue.tufts.edu/rdf/resource/c22461abc0a838010108c91c540d889f</URIString>
         <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
     </child>
-    <child ID="9" label="user" layerID="1" created="1643933881294"
-        x="306.0" y="-182.66646" width="153.0" height="118.0"
-        strokeWidth="1.0" autoSized="false" xsi:type="node">
+    <child ID="9" label="logged in user&#xa;that is a manager"
+        layerID="1" created="1643933881294" x="306.0" y="-182.66646"
+        width="153.0" height="118.0" strokeWidth="1.0" autoSized="false" xsi:type="node">
         <fillColor>#F2AE45</fillColor>
         <strokeColor>#776D6D</strokeColor>
         <textColor>#000000</textColor>
@@ -72,7 +73,7 @@
         <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
     </child>
     <child ID="11" label="select stylist page" layerID="1"
-        created="1643933934091" x="341.12784" y="-65.16797" width="88.0"
+        created="1643933934091" x="341.62784" y="-65.16797" width="87.0"
         height="326.7517" strokeWidth="1.0" autoSized="false"
         controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
@@ -86,7 +87,7 @@
         <ctrlPoint0 x="385.12668" y="246.83334" xsi:type="point"/>
     </child>
     <child ID="14" label="view request for all stylists" layerID="1"
-        created="1643933995729" x="238.49399" y="387.5" width="132.0"
+        created="1643933995729" x="238.99399" y="387.5" width="131.0"
         height="263.0" strokeWidth="1.0" autoSized="false"
         controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
@@ -114,24 +115,9 @@
         <ID2 xsi:type="node">10</ID2>
         <ctrlPoint0 x="48.69464" y="528.1669" xsi:type="point"/>
     </child>
-    <child ID="19"
-        label="issues create unavailability command&#xa;(entering new unavailability data)"
-        layerID="1" created="1644080875204" x="458.5" y="-136.23485"
-        width="541.346" height="397.87915" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/cae73df7c0a83801000ccc708bd29e98</URIString>
-        <point1 x="459.0" y="-128.8539"/>
-        <point2 x="512.9949" y="261.1443"/>
-        <ID1 xsi:type="node">9</ID1>
-        <ID2 xsi:type="node">10</ID2>
-        <ctrlPoint0 x="1333.6946" y="-188.16667" xsi:type="point"/>
-    </child>
     <child ID="20" label="view stylist api call" layerID="1"
-        created="1644081007946" x="192.62549" y="735.5"
-        width="167.96231" height="426.33325" strokeWidth="1.0"
+        created="1644081007946" x="193.12549" y="735.5"
+        width="167.46231" height="426.33325" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -145,8 +131,8 @@
     </child>
     <child ID="21"
         label="view data&#xa;(stylist data fetched&#xa;from database)"
-        layerID="1" created="1644081030491" x="301.1191" y="735.5"
-        width="97.0" height="426.33325" strokeWidth="1.0"
+        layerID="1" created="1644081030491" x="301.6191" y="735.5"
+        width="96.0" height="426.33325" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -159,7 +145,7 @@
         <ctrlPoint0 x="316.72665" y="1023.5" xsi:type="point"/>
     </child>
     <child ID="22" label="create apstylist i call" layerID="1"
-        created="1644081138687" x="392.6884" y="735.5" width="99.0"
+        created="1644081138687" x="393.1884" y="735.5" width="98.0"
         height="426.33325" strokeWidth="1.0" autoSized="false"
         controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
@@ -229,8 +215,8 @@
         <ctrlPoint0 x="452.69464" y="1292.8334" xsi:type="point"/>
     </child>
     <child ID="31" label="displays stylist page" layerID="1"
-        created="1644081545637" x="253.80356" y="-65.16644"
-        width="100.236755" height="326.75006" strokeWidth="1.0"
+        created="1644081545637" x="254.30356" y="-65.16644"
+        width="99.736755" height="326.75006" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -242,53 +228,10 @@
         <ID2 xsi:type="node">9</ID2>
         <ctrlPoint0 x="255.12668" y="135.83334" xsi:type="point"/>
     </child>
-    <child ID="32" label="back-end C# appointment controller"
-        layerID="1" created="1646498969979" x="-191.30536" y="1131.3333"
-        width="246.0" height="81.0" strokeWidth="1.0" autoSized="false" xsi:type="node">
-        <fillColor>#F2AE45</fillColor>
-        <strokeColor>#776D6D</strokeColor>
-        <textColor>#000000</textColor>
-        <font>Arial-plain-12</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5afdfbe6c0a8380101e5ffbd9ae83729</URIString>
-        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
-    </child>
-    <child ID="33"
-        label="back-end C# stylist &#xa;unavailabilities controller"
-        layerID="1" created="1646498970490" x="674.69464" y="1114.3333"
-        width="254.0" height="81.0" strokeWidth="1.0" autoSized="false" xsi:type="node">
-        <fillColor>#F2AE45</fillColor>
-        <strokeColor>#776D6D</strokeColor>
-        <textColor>#000000</textColor>
-        <font>Arial-plain-12</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5afdfbe6c0a8380101e5ffbd2e220730</URIString>
-        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
-    </child>
-    <child ID="35"
-        label="front-end appointment service&#xa;(angular service class)"
-        layerID="1" created="1646499088166" x="-186.30536" y="613.8333"
-        width="198.0" height="86.0" strokeWidth="1.0" autoSized="false" xsi:type="node">
-        <fillColor>#F2AE45</fillColor>
-        <strokeColor>#776D6D</strokeColor>
-        <textColor>#000000</textColor>
-        <font>Arial-plain-12</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b245c0a8380101e5ffbdd8250091</URIString>
-        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
-    </child>
-    <child ID="36"
-        label="front-end unavailabilities service&#xa;(angular service class)"
-        layerID="1" created="1646499088761" x="685.69464" y="610.8333"
-        width="198.0" height="86.0" strokeWidth="1.0" autoSized="false" xsi:type="node">
-        <fillColor>#F2AE45</fillColor>
-        <strokeColor>#776D6D</strokeColor>
-        <textColor>#000000</textColor>
-        <font>Arial-plain-12</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b245c0a8380101e5ffbd5b944af9</URIString>
-        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
-    </child>
     <child ID="37"
         label="issues update stylist command&#xa;(entering stylist data)"
         layerID="1" created="1646499253469" x="428.04068" y="-65.16644"
-        width="214.61545" height="346.52924" strokeWidth="1.0"
+        width="214.11545" height="346.52924" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -300,40 +243,10 @@
         <ID2 xsi:type="node">10</ID2>
         <ctrlPoint0 x="660.69464" y="232.83331" xsi:type="point"/>
     </child>
-    <child ID="39"
-        label="issues update unavailability command&#xa;(entering unavailability data)"
-        layerID="1" created="1646500065464" x="458.5" y="-121.93482"
-        width="734.771" height="407.95148" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b246c0a8380101e5ffbd96ea2a92</URIString>
-        <point1 x="459.0" y="-121.43482"/>
-        <point2 x="522.69464" y="285.51666"/>
-        <ID1 xsi:type="node">9</ID1>
-        <ID2 xsi:type="node">10</ID2>
-        <ctrlPoint0 x="1713.6946" y="-84.833115" xsi:type="point"/>
-    </child>
-    <child ID="40"
-        label="issues update appointment command&#xa;(entering appointment data)"
-        layerID="1" created="1646500233667" x="-325.729" y="-118.29199"
-        width="632.229" height="404.2945" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b246c0a8380101e5ffbd877f4503</URIString>
-        <point1 x="306.0" y="-117.79199"/>
-        <point2 x="271.69464" y="285.5025"/>
-        <ID1 xsi:type="node">9</ID1>
-        <ID2 xsi:type="node">10</ID2>
-        <ctrlPoint0 x="-761.30536" y="-35.83313" xsi:type="point"/>
-    </child>
     <child ID="41"
         label="update stylist request&#xa;(with stylist update data)"
-        layerID="1" created="1646500318970" x="336.90857" y="387.5"
-        width="121.0" height="263.0" strokeWidth="1.0" autoSized="false"
+        layerID="1" created="1646500318970" x="337.40857" y="387.5"
+        width="120.0" height="263.0" strokeWidth="1.0" autoSized="false"
         controlCount="0" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -343,124 +256,6 @@
         <point2 x="397.55267" y="650.0"/>
         <ID1 xsi:type="node">10</ID1>
         <ID2 xsi:type="node">7</ID2>
-    </child>
-    <child ID="43"
-        label="create request&#xa;(with new unavailability data)"
-        layerID="1" created="1646501016378" x="522.19464" y="262.17612"
-        width="559.3391" height="349.1572" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b247c0a8380101e5ffbd486c8f85</URIString>
-        <point1 x="522.69464" y="300.99814"/>
-        <point2 x="832.0513" y="610.8333"/>
-        <ID1 xsi:type="node">10</ID1>
-        <ID2 xsi:type="node">36</ID2>
-        <ctrlPoint0 x="1342.6946" y="147.16687" xsi:type="point"/>
-    </child>
-    <child ID="44"
-        label="update stylist request&#xa;(with unavailability update data)"
-        layerID="1" created="1646501131701" x="522.19464" y="295.83124"
-        width="467.38177" height="315.502" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b247c0a8380101e5ffbdb5d950e0</URIString>
-        <point1 x="522.69464" y="309.19693"/>
-        <point2 x="822.222" y="610.83325"/>
-        <ID1 xsi:type="node">10</ID1>
-        <ID2 xsi:type="node">36</ID2>
-        <ctrlPoint0 x="1152.6946" y="232.16687" xsi:type="point"/>
-    </child>
-    <child ID="45" label="view request for all unavailabilities"
-        layerID="1" created="1646501371894" x="522.19464" y="319.74042"
-        width="404.20447" height="291.59283" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b247c0a8380101e5ffbd68a9728f</URIString>
-        <point1 x="522.69464" y="320.82538"/>
-        <point2 x="813.5125" y="610.83325"/>
-        <ID1 xsi:type="node">10</ID1>
-        <ID2 xsi:type="node">36</ID2>
-        <ctrlPoint0 x="1017.69464" y="306.16687" xsi:type="point"/>
-    </child>
-    <child ID="46" label="view request for all appointment" layerID="1"
-        created="1646501929724" x="-76.618744" y="332.9011"
-        width="348.81335" height="281.43222" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b248c0a8380101e5ffbd2e2b696c</URIString>
-        <point1 x="271.69464" y="333.4011"/>
-        <point2 x="-76.118744" y="613.8333"/>
-        <ID1 xsi:type="node">10</ID1>
-        <ID2 xsi:type="node">35</ID2>
-        <ctrlPoint0 x="-8.305359" y="353.16687" xsi:type="point"/>
-    </child>
-    <child ID="47"
-        label="update stylist request&#xa;(with appointment update data)"
-        layerID="1" created="1646501944332" x="-122.504074" y="297.6301"
-        width="394.69873" height="316.70322" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b248c0a8380101e5ffbd94330f26</URIString>
-        <point1 x="271.69464" y="307.10526"/>
-        <point2 x="-97.100204" y="613.8333"/>
-        <ID1 xsi:type="node">10</ID1>
-        <ID2 xsi:type="node">35</ID2>
-        <ctrlPoint0 x="-181.30536" y="244.16687" xsi:type="point"/>
-    </child>
-    <child ID="48"
-        label="create request&#xa;(with new appointment data)"
-        layerID="1" created="1646501957125" x="-205.08257" y="231.89418"
-        width="477.27716" height="382.43915" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b248c0a8380101e5ffbd65286644</URIString>
-        <point1 x="271.69464" y="285.2969"/>
-        <point2 x="-107.414185" y="613.8333"/>
-        <ID1 xsi:type="node">10</ID1>
-        <ID2 xsi:type="node">35</ID2>
-        <ctrlPoint0 x="-352.30536" y="90.16687" xsi:type="point"/>
-    </child>
-    <child ID="49"
-        label="view data&#xa;(appointment data fetched&#xa;from database)"
-        layerID="1" created="1646502055859" x="-47.700718" y="370.7818"
-        width="319.89536" height="243.55151" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b249c0a8380101e5ffbdbdc63ae9</URIString>
-        <point1 x="-47.200718" y="613.8333"/>
-        <point2 x="271.69464" y="371.2818"/>
-        <ID1 xsi:type="node">35</ID1>
-        <ID2 xsi:type="node">10</ID2>
-        <ctrlPoint0 x="129.69464" y="424.16687" xsi:type="point"/>
-    </child>
-    <child ID="50"
-        label="view data&#xa;(unavailabilities data fetched&#xa;from database)"
-        layerID="1" created="1646502149927" x="522.19464" y="342.24002"
-        width="294.94183" height="269.09323" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b249c0a8380101e5ffbde398cbc7</URIString>
-        <point1 x="793.3721" y="610.83325"/>
-        <point2 x="522.69464" y="342.74002"/>
-        <ID1 xsi:type="node">36</ID1>
-        <ID2 xsi:type="node">10</ID2>
-        <ctrlPoint0 x="838.2396" y="388.4958" xsi:type="point"/>
     </child>
     <child ID="52"
         label="issues create command&#xa;(entering new stylist data)"
@@ -477,80 +272,9 @@
         <ID2 xsi:type="node">10</ID2>
         <ctrlPoint0 x="521.69464" y="129.16687" xsi:type="point"/>
     </child>
-    <child ID="53" label="select unavailability page" layerID="1"
-        created="1646503050182" x="458.5" y="-123.41382"
-        width="433.54956" height="384.99747" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24ac0a8380101e5ffbdec09a62b</URIString>
-        <point1 x="459.0" y="-122.91382"/>
-        <point2 x="509.80902" y="261.08365"/>
-        <ID1 xsi:type="node">9</ID1>
-        <ID2 xsi:type="node">10</ID2>
-        <ctrlPoint0 x="1178.6946" y="-115.83313" xsi:type="point"/>
-    </child>
-    <child ID="54" label="displays unavailability  page" layerID="1"
-        created="1646503070736" x="458.5" y="-132.19975"
-        width="358.84912" height="393.7834" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24ac0a8380101e5ffbdb85abf89</URIString>
-        <point1 x="479.00742" y="261.08365"/>
-        <point2 x="459.0" y="-128.761"/>
-        <ID1 xsi:type="node">10</ID1>
-        <ID2 xsi:type="node">9</ID2>
-        <ctrlPoint0 x="1030.6946" y="-166.83313" xsi:type="point"/>
-    </child>
-    <child ID="55" label="displays appointment  page" layerID="1"
-        created="1646503309551" x="-157.61179" y="-121.42629"
-        width="464.1118" height="387.2387" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24bc0a8380101e5ffbdb8026de4</URIString>
-        <point1 x="273.74722" y="265.31238"/>
-        <point2 x="306.0" y="-120.92629"/>
-        <ID1 xsi:type="node">10</ID1>
-        <ID2 xsi:type="node">9</ID2>
-        <ctrlPoint0 x="-473.0972" y="-93.01965" xsi:type="point"/>
-    </child>
-    <child ID="56" label="select appointment page" layerID="1"
-        created="1646503363083" x="-53.949806" y="-124.30378"
-        width="360.4498" height="385.88742" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24bc0a8380101e5ffbdedb85c7d</URIString>
-        <point1 x="306.0" y="-123.80378"/>
-        <point2 x="299.76962" y="261.08365"/>
-        <ID1 xsi:type="node">9</ID1>
-        <ID2 xsi:type="node">10</ID2>
-        <ctrlPoint0 x="-292.78442" y="-124.87866" xsi:type="point"/>
-    </child>
-    <child ID="57"
-        label="issues create appointmentcommand&#xa;(entering new appointment data)"
-        layerID="1" created="1646503495120" x="11.63884" y="-112.844505"
-        width="300.03455" height="374.42816" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24bc0a8380101e5ffbd210ce88d</URIString>
-        <point1 x="306.0" y="-112.344505"/>
-        <point2 x="311.1734" y="261.08365"/>
-        <ID1 xsi:type="node">9</ID1>
-        <ID2 xsi:type="node">10</ID2>
-        <ctrlPoint0 x="-111.30902" y="-50.58304" xsi:type="point"/>
-    </child>
     <child ID="58" label="update stylist api call" layerID="1"
         created="1646503529431" x="428.09396" y="735.5"
-        width="147.32071" height="426.33325" strokeWidth="1.0"
+        width="146.82071" height="426.33325" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -562,151 +286,37 @@
         <ID2 xsi:type="node">8</ID2>
         <ctrlPoint0 x="616.69464" y="928.0836" xsi:type="point"/>
     </child>
-    <child ID="59" label="update unavailability api call" layerID="1"
-        created="1646503856430" x="827.2476" y="696.3333"
-        width="157.85895" height="418.49994" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24cc0a8380101e5ffbdb5d83379</URIString>
-        <point1 x="827.7476" y="696.8333"/>
-        <point2 x="831.4086" y="1114.3333"/>
-        <ID1 xsi:type="node">36</ID1>
-        <ID2 xsi:type="node">33</ID2>
-        <ctrlPoint0 x="1006.635" y="875.5006" xsi:type="point"/>
-    </child>
-    <child ID="60" label="create unavailability api call" layerID="1"
-        created="1646503862266" x="772.6271" y="696.3333" width="132.0"
-        height="418.4997" strokeWidth="1.0" autoSized="false"
-        controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24dc0a8380101e5ffbd7c6dd84c</URIString>
-        <point1 x="814.11584" y="696.8333"/>
-        <point2 x="808.5021" y="1114.333"/>
-        <ID1 xsi:type="node">36</ID1>
-        <ID2 xsi:type="node">33</ID2>
-        <ctrlPoint0 x="865.9452" y="772.58374" xsi:type="point"/>
-    </child>
-    <child ID="61"
-        label="view unavailabilities data&#xa;(unavailabilities data fetched&#xa;from database)"
-        layerID="1" created="1646503867495" x="669.7717" y="696.33325"
-        width="138.0" height="418.5" strokeWidth="1.0" autoSized="false"
-        controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24dc0a8380101e5ffbd7b89c538</URIString>
-        <point1 x="777.4571" y="1114.3333"/>
-        <point2 x="774.0256" y="696.83325"/>
-        <ID1 xsi:type="node">33</ID1>
-        <ID2 xsi:type="node">36</ID2>
-        <ctrlPoint0 x="701.8022" y="987.917" xsi:type="point"/>
-    </child>
-    <child ID="62"
-        label="view datappointment a&#xa;(appointment data fetched&#xa;from database)"
-        layerID="1" created="1646503877229" x="-211.45123" y="699.3333"
-        width="128.9499" height="432.49994" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24dc0a8380101e5ffbd75f788ff</URIString>
-        <point1 x="-83.00133" y="1131.3333"/>
-        <point2 x="-116.19283" y="699.8333"/>
-        <ID1 xsi:type="node">32</ID1>
-        <ID2 xsi:type="node">35</ID2>
-        <ctrlPoint0 x="-196.30536" y="819.0836" xsi:type="point"/>
-    </child>
-    <child ID="63" label="view unavailabilities api call" layerID="1"
-        created="1646503904068" x="574.19794" y="696.3333"
-        width="190.82007" height="418.49994" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24ec0a8380101e5ffbd31eb31fb</URIString>
-        <point1 x="732.6442" y="696.8333"/>
-        <point2 x="764.518" y="1114.3333"/>
-        <ID1 xsi:type="node">36</ID1>
-        <ID2 xsi:type="node">33</ID2>
-        <ctrlPoint0 x="532.8147" y="861.917" xsi:type="point"/>
-    </child>
-    <child ID="64" label="view appointment api call" layerID="1"
-        created="1646503920038" x="-333.67267" y="699.3333"
-        width="210.42184" height="432.49994" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24fc0a8380101e5ffbd38a379d6</URIString>
-        <point1 x="-140.56915" y="699.8333"/>
-        <point2 x="-123.75082" y="1131.3333"/>
-        <ID1 xsi:type="node">35</ID1>
-        <ID2 xsi:type="node">32</ID2>
-        <ctrlPoint0 x="-413.18533" y="919.917" xsi:type="point"/>
-    </child>
-    <child ID="65" label="create appointment api call" layerID="1"
-        created="1646503927296" x="-100.912384" y="699.3333"
-        width="129.0" height="432.49994" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b24fc0a8380101e5ffbdcfed2989</URIString>
-        <point1 x="-76.99687" y="699.8333"/>
-        <point2 x="-54.54306" y="1131.3333"/>
-        <ID1 xsi:type="node">35</ID1>
-        <ID2 xsi:type="node">32</ID2>
-        <ctrlPoint0 x="-7.0548096" y="991.58374" xsi:type="point"/>
-    </child>
-    <child ID="66" label="update appointment api call" layerID="1"
-        created="1646503937513" x="-48.369446" y="699.3333"
-        width="154.62001" height="432.49994" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b250c0a8380101e5ffbd9515affe</URIString>
-        <point1 x="-47.869446" y="699.8333"/>
-        <point2 x="-40.51756" y="1131.3333"/>
-        <ID1 xsi:type="node">35</ID1>
-        <ID2 xsi:type="node">32</ID2>
-        <ctrlPoint0 x="125.69464" y="889.0836" xsi:type="point"/>
-    </child>
-    <child ID="67" label="Summoning Codethulhu" layerID="1"
-        created="1646504078780" x="310.69464" y="-233.91635"
-        width="158.0" height="18.0" strokeWidth="0.0" autoSized="false" xsi:type="text">
+    <child ID="67" label="Summoning stylist Codethulhu" layerID="1"
+        created="1646504078780" x="275.69464" y="-526.3135"
+        width="230.0" height="33.0" strokeWidth="0.0" autoSized="false" xsi:type="text">
         <strokeColor>#404040</strokeColor>
         <textColor>#000000</textColor>
-        <font>-plain-0</font>
+        <font>-plain-12</font>
         <URIString>http://vue.tufts.edu/rdf/resource/5b55b250c0a8380101e5ffbd94a6fa44</URIString>
         <richText>&lt;html&gt;
-  &lt;head style="color: #000000" color="#000000"&gt;
+  &lt;head color="#000000" style="color: #000000"&gt;
     &lt;style type="text/css"&gt;
       &lt;!--
-        body { font-family: Arial; margin-left: 0px; margin-right: 0px; font-size: 12; margin-top: 0px; color: #000000; margin-bottom: 0px }
-        ol { margin-left: 30; font-family: Arial; font-size: 12; margin-top: 6; list-style-position: outside; vertical-align: middle }
-        p { margin-left: 0; margin-right: 0; margin-top: 0; color: #000000; margin-bottom: 0 }
-        ul { margin-left: 30; font-family: Arial; font-size: 12; margin-top: 6; list-style-position: outside; vertical-align: middle }
+        body { color: #000000; font-family: Arial; margin-left: 0px; margin-bottom: 0px; margin-top: 0px; margin-right: 0px; font-size: 12 }
+        ol { font-family: Arial; list-style-position: outside; margin-left: 30; margin-top: 6; vertical-align: middle; font-size: 12 }
+        p { color: #000000; margin-left: 0; margin-bottom: 0; margin-top: 0; margin-right: 0 }
+        ul { font-family: Arial; list-style-position: outside; margin-left: 30; margin-top: 6; vertical-align: middle; font-size: 12 }
       --&gt;
     &lt;/style&gt;
     
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;p style="color: #000000" color="#000000"&gt;
-      Summoning Codethulhu
+    &lt;p color="#000000" style="color: #000000"&gt;
+      Summoning stylist Codethulhu
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;
 </richText>
-        <label>Summoning Codethulhu</label>
+        <label>Summoning stylist Codethulhu</label>
     </child>
     <child ID="68" label="set statement for stylist update" layerID="1"
         created="1646504265858" x="432.78937" y="1241.8333"
-        width="156.02911" height="312.3335" strokeWidth="1.0"
+        width="155.52911" height="312.3335" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -718,126 +328,182 @@
         <ID2 xsi:type="node">6</ID2>
         <ctrlPoint0 x="585.635" y="1407.5006" xsi:type="point"/>
     </child>
-    <child ID="69" label="set statement for unavailability update"
-        layerID="1" created="1646504404692" x="465.09998" y="1194.8333"
-        width="462.4447" height="487.9048" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b251c0a8380101e5ffbdb3ffeee5</URIString>
-        <point1 x="815.18976" y="1195.3333"/>
-        <point2 x="465.59998" y="1627.7749"/>
-        <ID1 xsi:type="node">33</ID1>
-        <ID2 xsi:type="node">6</ID2>
-        <ctrlPoint0 x="1031.6946" y="1845.0836" xsi:type="point"/>
+    <child ID="69" label="login" layerID="1" created="1649702044952"
+        x="-17.915894" y="-220.70755" width="70.56553"
+        height="61.899994" strokeWidth="1.0" autoSized="false" xsi:type="node">
+        <fillColor>#F2AE45</fillColor>
+        <strokeColor>#776D6D</strokeColor>
+        <textColor>#000000</textColor>
+        <font>Arial-plain-12</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf4c0a83801008c481b92b4d9f7</URIString>
+        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
     </child>
-    <child ID="70" label="set statement for appointment update"
-        layerID="1" created="1646504409000" x="-48.983826" y="1211.8333"
-        width="392.0838" height="366.01648" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
+    <child ID="70" label="enters username and password" layerID="1"
+        created="1649702044952" x="52.149628" y="-319.00848"
+        width="273.38394" height="114.98596" strokeWidth="1.0"
+        autoSized="false" controlCount="0" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
         <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b251c0a8380101e5ffbd137a9ac5</URIString>
-        <point1 x="-48.483826" y="1212.3333"/>
-        <point2 x="342.59998" y="1577.3497"/>
-        <ID1 xsi:type="node">32</ID1>
-        <ID2 xsi:type="node">6</ID2>
-        <ctrlPoint0 x="72.52573" y="1459.5842" xsi:type="point"/>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf5c0a83801008c481b5dd8d514</URIString>
+        <point1 x="325.03357" y="-318.50848"/>
+        <point2 x="52.649635" y="-204.52252"/>
+        <ID1 xsi:type="node">81</ID1>
+        <ID2 xsi:type="node">69</ID2>
     </child>
-    <child ID="71" label="insert unavailability for &#xa;stylist create"
-        layerID="1" created="1646504411762" x="465.09998" y="1194.8333"
-        width="358.25824" height="445.77405" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b251c0a8380101e5ffbd61974144</URIString>
-        <point1 x="808.26697" y="1195.3333"/>
-        <point2 x="465.59998" y="1620.4198"/>
-        <ID1 xsi:type="node">33</ID1>
-        <ID2 xsi:type="node">6</ID2>
-        <ctrlPoint0 x="895.69464" y="1734.0836" xsi:type="point"/>
+    <child ID="71" label="user service" layerID="1"
+        created="1649702044952" x="-214.71588" y="-109.50755"
+        width="78.0" height="23.0" strokeWidth="1.0" autoSized="true" xsi:type="node">
+        <fillColor>#F2AE45</fillColor>
+        <strokeColor>#776D6D</strokeColor>
+        <textColor>#000000</textColor>
+        <font>Arial-plain-12</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf5c0a83801008c481b706b1720</URIString>
+        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
     </child>
-    <child ID="72" label="insert appointment for &#xa;stylist create"
-        layerID="1" created="1646504413525" x="-114.91981" y="1211.8333"
-        width="458.01978" height="370.94995" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
+    <child ID="72" label="fetch user table" layerID="1"
+        created="1649702044952" x="-152.01479" y="-173.49171"
+        width="134.59889" height="64.48416" strokeWidth="1.0"
+        autoSized="false" controlCount="0" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
         <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b252c0a8380101e5ffbd5b1a128f</URIString>
-        <point1 x="-94.96947" y="1212.3333"/>
-        <point2 x="342.59998" y="1582.2832"/>
-        <ID1 xsi:type="node">32</ID1>
-        <ID2 xsi:type="node">6</ID2>
-        <ctrlPoint0 x="-209.25238" y="1385.917" xsi:type="point"/>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf5c0a83801008c481bf590547b</URIString>
+        <point1 x="-17.915894" y="-172.99171"/>
+        <point2 x="-151.51479" y="-109.50755"/>
+        <ID1 xsi:type="node">69</ID1>
+        <ID2 xsi:type="node">71</ID2>
     </child>
-    <child ID="73"
-        label="appointment data&#xa;from select&#xa;statement"
-        layerID="1" created="1646504417046" x="-154.05914" y="1211.8333"
-        width="497.1591" height="380.2788" strokeWidth="1.0"
+    <child ID="73" label="user table data" layerID="1"
+        created="1649702044952" x="-174.74344" y="-207.4946"
+        width="157.32755" height="98.48703" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
         <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b252c0a8380101e5ffbd9679e695</URIString>
-        <point1 x="342.59998" y="1591.612"/>
-        <point2 x="-102.84932" y="1212.3333"/>
-        <ID1 xsi:type="node">6</ID1>
-        <ID2 xsi:type="node">32</ID2>
-        <ctrlPoint0 x="-312.31708" y="1457.917" xsi:type="point"/>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf5c0a83801008c481ba908b160</URIString>
+        <point1 x="-174.24344" y="-109.50757"/>
+        <point2 x="-17.915894" y="-198.92346"/>
+        <ID1 xsi:type="node">71</ID1>
+        <ID2 xsi:type="node">69</ID2>
+        <ctrlPoint0 x="-158.13089" y="-235.34915" xsi:type="point"/>
     </child>
-    <child ID="74"
-        label="unavailability data&#xa;from select&#xa;statement"
-        layerID="1" created="1646504419868" x="465.09998" y="1194.8335"
-        width="330.85132" height="420.71692" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
-        <strokeColor>#404040</strokeColor>
-        <textColor>#404040</textColor>
-        <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b252c0a8380101e5ffbdeadc1c8e</URIString>
-        <point1 x="465.59998" y="1612.5336"/>
-        <point2 x="795.4513" y="1195.3335"/>
-        <ID1 xsi:type="node">6</ID1>
-        <ID2 xsi:type="node">33</ID2>
-        <ctrlPoint0 x="725.6829" y="1647.917" xsi:type="point"/>
+    <child ID="74" label="user C# backend controller" layerID="1"
+        created="1649702044952" x="-336.3159" y="-19.907562"
+        width="159.0" height="23.0" strokeWidth="1.0" autoSized="true" xsi:type="node">
+        <fillColor>#F2AE45</fillColor>
+        <strokeColor>#776D6D</strokeColor>
+        <textColor>#000000</textColor>
+        <font>Arial-plain-12</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf5c0a83801008c481becd78628</URIString>
+        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
     </child>
-    <child ID="75" label="select statement for &#xa;unavailability view"
-        layerID="1" created="1646504423540" x="465.09998" y="1194.8333"
-        width="319.56116" height="391.78918" strokeWidth="1.0"
-        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
+    <child ID="75" label="fetch user table" layerID="1"
+        created="1649702044952" x="-254.76588" y="-87.00755"
+        width="77.0" height="67.59999" strokeWidth="1.0"
+        autoSized="false" controlCount="0" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
         <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b253c0a8380101e5ffbd609a1c46</URIString>
-        <point1 x="784.16113" y="1195.3333"/>
-        <point2 x="465.59998" y="1586.1224"/>
-        <ID1 xsi:type="node">33</ID1>
-        <ID2 xsi:type="node">6</ID2>
-        <ctrlPoint0 x="636.7134" y="1535.917" xsi:type="point"/>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf5c0a83801008c481b6a4627ad</URIString>
+        <point1 x="-186.12492" y="-86.50755"/>
+        <point2 x="-246.40685" y="-19.907562"/>
+        <ID1 xsi:type="node">71</ID1>
+        <ID2 xsi:type="node">74</ID2>
     </child>
-    <child ID="76" label="select statement for &#xa;appointment view"
-        layerID="1" created="1646504425667" x="-174.23575" y="1211.8333"
-        width="517.3357" height="392.49634" strokeWidth="1.0"
+    <child ID="76" label="user table data" layerID="1"
+        created="1649702044952" x="-302.7582" y="-100.6015"
+        width="88.66223" height="81.19391" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
         <font>Arial-plain-11</font>
-        <URIString>http://vue.tufts.edu/rdf/resource/5b55b253c0a8380101e5ffbddb2276c8</URIString>
-        <point1 x="-96.96974" y="1212.3333"/>
-        <point2 x="342.59998" y="1603.8296"/>
-        <ID1 xsi:type="node">32</ID1>
-        <ID2 xsi:type="node">6</ID2>
-        <ctrlPoint0 x="-371.28662" y="1599.917" xsi:type="point"/>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf6c0a83801008c481b80ff61b3</URIString>
+        <point1 x="-261.33615" y="-19.907593"/>
+        <point2 x="-214.59598" y="-100.1015"/>
+        <ID1 xsi:type="node">74</ID1>
+        <ID2 xsi:type="node">71</ID2>
+        <ctrlPoint0 x="-294.55035" y="-104.40756" xsi:type="point"/>
+    </child>
+    <child ID="77" label="database &#xa;utility" layerID="1"
+        created="1649702044952" x="-345.1159" y="104.892456"
+        width="66.0" height="38.0" strokeWidth="1.0" autoSized="true" xsi:type="node">
+        <fillColor>#F2AE45</fillColor>
+        <strokeColor>#776D6D</strokeColor>
+        <textColor>#000000</textColor>
+        <font>Arial-plain-12</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf6c0a83801008c481b2d9b0bd1</URIString>
+        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
+    </child>
+    <child ID="78" label="fetch user table" layerID="1"
+        created="1649702044952" x="-321.39844" y="2.5923462"
+        width="77.0" height="102.80017" strokeWidth="1.0"
+        autoSized="false" controlCount="0" arrowState="2" xsi:type="link">
+        <strokeColor>#404040</strokeColor>
+        <textColor>#404040</textColor>
+        <font>Arial-plain-11</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf6c0a83801008c481b5e4dfef2</URIString>
+        <point1 x="-261.62274" y="3.0923462"/>
+        <point2 x="-304.17413" y="104.89252"/>
+        <ID1 xsi:type="node">74</ID1>
+        <ID2 xsi:type="node">77</ID2>
+    </child>
+    <child ID="79" label="user table data" layerID="1"
+        created="1649702044952" x="-380.95038" y="2.5924416"
+        width="73.0" height="102.80001" strokeWidth="1.0"
+        autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
+        <strokeColor>#404040</strokeColor>
+        <textColor>#404040</textColor>
+        <font>Arial-plain-11</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf6c0a83801008c481b747c6c85</URIString>
+        <point1 x="-321.37634" y="104.892456"/>
+        <point2 x="-322.15634" y="3.0924416"/>
+        <ID1 xsi:type="node">77</ID1>
+        <ID2 xsi:type="node">74</ID2>
+        <ctrlPoint0 x="-367.13446" y="11.008652" xsi:type="point"/>
+    </child>
+    <child ID="80" label="is username and password&#xa;are valid"
+        layerID="1" created="1649702044952" x="52.149643" y="-183.87117"
+        width="254.35037" height="46.857788" strokeWidth="1.0"
+        autoSized="false" controlCount="0" arrowState="2" xsi:type="link">
+        <strokeColor>#404040</strokeColor>
+        <textColor>#404040</textColor>
+        <font>Arial-plain-11</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf7c0a83801008c481b235fcaf6</URIString>
+        <point1 x="52.649635" y="-183.37117"/>
+        <point2 x="306.0" y="-137.51338"/>
+        <ID1 xsi:type="node">69</ID1>
+        <ID2 xsi:type="node">9</ID2>
+    </child>
+    <child ID="81" label="user" layerID="1" created="1649702069863"
+        x="321.29962" y="-380.1223" width="149.0" height="64.0"
+        strokeWidth="1.0" autoSized="false" xsi:type="node">
+        <fillColor>#F2AE45</fillColor>
+        <strokeColor>#776D6D</strokeColor>
+        <textColor>#000000</textColor>
+        <font>Arial-plain-12</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf7c0a83801008c481b310fbabe</URIString>
+        <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
+    </child>
+    <child ID="82" label="logs out" layerID="1" created="1649702076364"
+        x="370.44974" y="-316.62256" width="39.0" height="134.45605"
+        strokeWidth="1.0" autoSized="false" controlCount="0"
+        arrowState="2" xsi:type="link">
+        <strokeColor>#404040</strokeColor>
+        <textColor>#404040</textColor>
+        <font>Arial-plain-11</font>
+        <URIString>http://vue.tufts.edu/rdf/resource/19e86cf7c0a83801008c481bf7da2353</URIString>
+        <point1 x="385.9959" y="-182.6665"/>
+        <point2 x="393.90356" y="-316.12256"/>
+        <ID1 xsi:type="node">9</ID1>
+        <ID2 xsi:type="node">81</ID2>
     </child>
     <layer ID="1" label="Layer 1" created="1643933819468" x="0.0"
         y="0.0" width="1.4E-45" height="1.4E-45" strokeWidth="0.0" autoSized="false">
         <URIString>http://vue.tufts.edu/rdf/resource/c22461afc0a838010108c91c40317291</URIString>
     </layer>
     <userZoom>1.0</userZoom>
-    <userOrigin x="-606.30536" y="-498.91635"/>
+    <userOrigin x="-613.7004" y="-617.1223"/>
     <presentationBackground>#202020</presentationBackground>
     <PathwayList currentPathway="0" revealerIndex="-1">
         <pathway ID="0" label="Untitled Pathway" created="1643933819465"
@@ -889,6 +555,6 @@
     </PathwayList>
     <date>2022-02-03</date>
     <modelVersion>6</modelVersion>
-    <saveLocation>C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\sprint2</saveLocation>
-    <saveFile>C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\sprint2\.~sprint2-dataflow-in_progress.vue</saveFile>
+    <saveLocation>C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\hair-stylist-workspace\HairSalonWorkspace\docs\sprint4</saveLocation>
+    <saveFile>C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\hair-stylist-workspace\HairSalonWorkspace\docs\sprint4\.~sprint4-stylist-crud-dataflow-in_progress.vue</saveFile>
 </LW-MAP>

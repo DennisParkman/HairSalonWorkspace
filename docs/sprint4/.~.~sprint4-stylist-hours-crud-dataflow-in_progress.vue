@@ -1,7 +1,7 @@
 <!-- Tufts VUE 3.3.0 concept-map (.~sprint4-stylist-hours-crud-dataflow-in_progress.vue) 2022-04-11 -->
 <!-- Tufts VUE: http://vue.tufts.edu/ -->
 <!-- Do Not Remove: VUE mapping @version(1.1) jar:file:/C:/Program%20Files%20(x86)/VUE/VUE.jar!/tufts/vue/resources/lw_mapping_1_1.xml -->
-<!-- Do Not Remove: Saved date Mon Apr 11 14:47:33 EDT 2022 by jpangia on platform Windows 8 6.2 in JVM 1.7.0_21-b11 -->
+<!-- Do Not Remove: Saved date Mon Apr 11 14:28:30 EDT 2022 by jpangia on platform Windows 8 6.2 in JVM 1.7.0_21-b11 -->
 <!-- Do Not Remove: Saving version @(#)VUE: built October 8 2015 at 1658 by tomadm on Linux 2.6.32-504.23.4.el6.x86_64 i386 JVM 1.7.0_21-b11(bits=32) -->
 <?xml version="1.0" encoding="US-ASCII"?>
 <LW-MAP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -9,7 +9,7 @@
     label=".~sprint4-stylist-hours-crud-dataflow-in_progress.vue"
     created="1643933819466" x="0.0" y="0.0" width="1.4E-45"
     height="1.4E-45" strokeWidth="0.0" autoSized="false">
-    <resource referenceCreated="1649702854037" size="30232"
+    <resource referenceCreated="1649701710551" size="21414"
         spec="C:\Users\jpangia\Documents\college and school\Spring Semester 2022\CSCI 4320-01\salon project\hair-stylist-workspace\HairSalonWorkspace\docs\sprint4\.~sprint4-stylist-hours-crud-dataflow-in_progress.vue"
         type="1" xsi:type="URLResource">
         <title>.~sprint4-stylist-hours-crud-dataflow-in_progress.vue</title>
@@ -73,8 +73,8 @@
         <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
     </child>
     <child ID="11" label="select stylist hours page" layerID="1"
-        created="1643933934091" x="327.63983" y="-35.216797"
-        width="118.0" height="296.80054" strokeWidth="1.0"
+        created="1643933934091" x="327.13983" y="-35.216797"
+        width="119.0" height="296.80054" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -87,8 +87,8 @@
         <ctrlPoint0 x="385.12668" y="246.83334" xsi:type="point"/>
     </child>
     <child ID="14" label="view request for all stylist hours"
-        layerID="1" created="1643933995729" x="218.51459" y="387.5"
-        width="156.73764" height="263.0" strokeWidth="1.0"
+        layerID="1" created="1643933995729" x="218.01459" y="387.5"
+        width="157.23764" height="263.0" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -102,8 +102,8 @@
     </child>
     <child ID="17"
         label="view data&#xa;(stylist hours data fetched&#xa;from database)"
-        layerID="1" created="1643934144857" x="109.79051" y="387.5"
-        width="197.89497" height="263.28552" strokeWidth="1.0"
+        layerID="1" created="1643934144857" x="109.29051" y="387.5"
+        width="198.39497" height="263.28552" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -116,8 +116,8 @@
         <ctrlPoint0 x="48.69464" y="528.1669" xsi:type="point"/>
     </child>
     <child ID="20" label="view stylist hours api call" layerID="1"
-        created="1644081007946" x="177.62549" y="735.5"
-        width="182.96231" height="426.33325" strokeWidth="1.0"
+        created="1644081007946" x="177.12549" y="735.5"
+        width="183.46231" height="426.33325" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -131,21 +131,21 @@
     </child>
     <child ID="21"
         label="view data&#xa;(stylist hours data fetched&#xa;from database)"
-        layerID="1" created="1644081030491" x="289.3459" y="735.5"
-        width="127.0" height="426.33325" strokeWidth="1.0"
+        layerID="1" created="1644081030491" x="285.6191" y="735.5"
+        width="128.0" height="426.33325" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
         <font>Arial-plain-11</font>
         <URIString>http://vue.tufts.edu/rdf/resource/cae73df8c0a83801000ccc70f63ff323</URIString>
-        <point1 x="385.3795" y="1161.3333"/>
-        <point2 x="382.95084" y="736.0"/>
+        <point1 x="377.94525" y="1161.3333"/>
+        <point2 x="387.07788" y="736.0"/>
         <ID1 xsi:type="node">8</ID1>
         <ID2 xsi:type="node">7</ID2>
-        <ctrlPoint0 x="321.52664" y="916.3" xsi:type="point"/>
+        <ctrlPoint0 x="316.72665" y="1023.5" xsi:type="point"/>
     </child>
     <child ID="22" label="create stylist hours api call" layerID="1"
-        created="1644081138687" x="377.6884" y="735.5" width="129.0"
+        created="1644081138687" x="377.1884" y="735.5" width="130.0"
         height="426.33325" strokeWidth="1.0" autoSized="false"
         controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
@@ -159,38 +159,38 @@
         <ctrlPoint0 x="473.3933" y="1036.1667" xsi:type="point"/>
     </child>
     <child ID="26" label="select statement for &#xa;view" layerID="1"
-        created="1644081389163" x="226.76541" y="1241.8333"
-        width="139.55362" height="322.0692" strokeWidth="1.0"
+        created="1644081389163" x="258.98975" y="1241.8333"
+        width="113.372314" height="312.3335" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
         <font>Arial-plain-11</font>
         <URIString>http://vue.tufts.edu/rdf/resource/cae73df9c0a83801000ccc70005f1780</URIString>
-        <point1 x="365.81903" y="1242.3333"/>
-        <point2 x="342.65335" y="1563.4025"/>
+        <point1 x="371.86206" y="1242.3333"/>
+        <point2 x="356.70764" y="1553.6667"/>
         <ID1 xsi:type="node">8</ID1>
         <ID2 xsi:type="node">6</ID2>
-        <ctrlPoint0 x="198.29463" y="1467.6334" xsi:type="point"/>
+        <ctrlPoint0 x="252.69464" y="1442.8334" xsi:type="point"/>
     </child>
     <child ID="27"
         label="stylist hours data&#xa;from select&#xa;statement"
-        layerID="1" created="1644081416729" x="318.595" y="1241.8333"
-        width="83.0" height="312.3335" strokeWidth="1.0"
+        layerID="1" created="1644081416729" x="335.70636" y="1241.8333"
+        width="84.0" height="312.3335" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
         <font>Arial-plain-11</font>
         <URIString>http://vue.tufts.edu/rdf/resource/cae73dfac0a83801000ccc70181f2954</URIString>
-        <point1 x="388.04883" y="1553.6667"/>
-        <point2 x="382.54187" y="1242.3333"/>
+        <point1 x="395.7145" y="1553.6667"/>
+        <point2 x="387.72156" y="1242.3333"/>
         <ID1 xsi:type="node">6</ID1>
         <ID2 xsi:type="node">8</ID2>
-        <ctrlPoint0 x="334.89465" y="1386.4335" xsi:type="point"/>
+        <ctrlPoint0 x="363.69464" y="1360.8334" xsi:type="point"/>
     </child>
     <child ID="28"
         label="create request&#xa;(with new stylist hours data)"
         layerID="1" created="1644081472471" x="441.6625" y="387.5"
-        width="160.04611" height="263.0" strokeWidth="1.0"
+        width="160.54611" height="263.0" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -204,8 +204,8 @@
     </child>
     <child ID="30"
         label="insert statement for &#xa;stylist hours create"
-        layerID="1" created="1644081527611" x="386.14166" y="1241.8333"
-        width="97.0" height="312.3335" strokeWidth="1.0"
+        layerID="1" created="1644081527611" x="385.64166" y="1241.8333"
+        width="98.0" height="312.3335" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -218,7 +218,7 @@
         <ctrlPoint0 x="452.69464" y="1292.8334" xsi:type="point"/>
     </child>
     <child ID="31" label="displays stylist hours page" layerID="1"
-        created="1644081545637" x="242.0683" y="-35.21637" width="129.0"
+        created="1644081545637" x="241.5683" y="-35.21637" width="130.0"
         height="296.80002" strokeWidth="1.0" autoSized="false"
         controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
@@ -234,7 +234,7 @@
     <child ID="37"
         label="issues update stylist hours command&#xa;(entering stylist hours data)"
         layerID="1" created="1646499253469" x="437.2732" y="-35.21637"
-        width="264.69104" height="310.66907" strokeWidth="1.0"
+        width="265.19104" height="310.66907" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -248,8 +248,8 @@
     </child>
     <child ID="41"
         label="update stylist hours request&#xa;(with stylist hours update data)"
-        layerID="1" created="1646500318970" x="321.90857" y="387.5"
-        width="151.0" height="263.0" strokeWidth="1.0" autoSized="false"
+        layerID="1" created="1646500318970" x="321.40857" y="387.5"
+        width="152.0" height="263.0" strokeWidth="1.0" autoSized="false"
         controlCount="0" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -262,8 +262,8 @@
     </child>
     <child ID="52"
         label="issues create command&#xa;(entering new stylist hours data)"
-        layerID="1" created="1646502960469" x="394.4278" y="-35.21637"
-        width="158.0" height="296.80005" strokeWidth="1.0"
+        layerID="1" created="1646502960469" x="393.9278" y="-35.21637"
+        width="159.0" height="296.80005" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -277,7 +277,7 @@
     </child>
     <child ID="58" label="update stylist hours api call" layerID="1"
         created="1646503529431" x="428.09396" y="735.5"
-        width="162.32071" height="426.33325" strokeWidth="1.0"
+        width="162.82071" height="426.33325" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -297,19 +297,19 @@
         <font>-plain-12</font>
         <URIString>http://vue.tufts.edu/rdf/resource/5b55b250c0a8380101e5ffbd94a6fa44</URIString>
         <richText>&lt;html&gt;
-  &lt;head style="color: #000000" color="#000000"&gt;
+  &lt;head color="#000000" style="color: #000000"&gt;
     &lt;style type="text/css"&gt;
       &lt;!--
-        body { font-size: 12; margin-left: 0px; font-family: Arial; margin-bottom: 0px; color: #000000; margin-right: 0px; margin-top: 0px }
-        ol { font-size: 12; margin-left: 30; font-family: Arial; vertical-align: middle; list-style-position: outside; margin-top: 6 }
-        p { margin-left: 0; margin-bottom: 0; color: #000000; margin-right: 0; margin-top: 0 }
-        ul { font-size: 12; margin-left: 30; font-family: Arial; vertical-align: middle; list-style-position: outside; margin-top: 6 }
+        body { color: #000000; font-family: Arial; margin-left: 0px; margin-bottom: 0px; margin-top: 0px; margin-right: 0px; font-size: 12 }
+        ol { font-family: Arial; list-style-position: outside; margin-left: 30; margin-top: 6; vertical-align: middle; font-size: 12 }
+        p { color: #000000; margin-left: 0; margin-bottom: 0; margin-top: 0; margin-right: 0 }
+        ul { font-family: Arial; list-style-position: outside; margin-left: 30; margin-top: 6; vertical-align: middle; font-size: 12 }
       --&gt;
     &lt;/style&gt;
     
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;p style="color: #000000" color="#000000"&gt;
+    &lt;p color="#000000" style="color: #000000"&gt;
       Summoning Stylist Hours Codethulhu
     &lt;/p&gt;
   &lt;/body&gt;
@@ -318,8 +318,8 @@
         <label>Summoning Stylist Hours Codethulhu</label>
     </child>
     <child ID="68" label="set statement for stylist hours update"
-        layerID="1" created="1646504265858" x="423.81848" y="1241.8333"
-        width="180.0" height="312.3335" strokeWidth="1.0"
+        layerID="1" created="1646504265858" x="423.31848" y="1241.8333"
+        width="181.0" height="312.3335" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -402,8 +402,8 @@
         <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
     </child>
     <child ID="83" label="fetch user table" layerID="1"
-        created="1649701166996" x="-224.82265" y="-52.516357"
-        width="76.0" height="67.600006" strokeWidth="1.0"
+        created="1649701166996" x="-225.32265" y="-52.516357"
+        width="77.0" height="67.600006" strokeWidth="1.0"
         autoSized="false" controlCount="0" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -415,8 +415,8 @@
         <ID2 xsi:type="node">82</ID2>
     </child>
     <child ID="84" label="user table data" layerID="1"
-        created="1649701188858" x="-272.815" y="-66.110306"
-        width="88.16225" height="81.193924" strokeWidth="1.0"
+        created="1649701188858" x="-273.315" y="-66.110306"
+        width="88.66225" height="81.193924" strokeWidth="1.0"
         autoSized="false" controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
         <textColor>#404040</textColor>
@@ -439,7 +439,7 @@
         <shape arcwidth="20.0" archeight="20.0" xsi:type="roundRect"/>
     </child>
     <child ID="86" label="fetch user table" layerID="1"
-        created="1649701203747" x="-291.45523" y="37.08362" width="76.0"
+        created="1649701203747" x="-291.95523" y="37.08362" width="77.0"
         height="102.80005" strokeWidth="1.0" autoSized="false"
         controlCount="0" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
@@ -452,7 +452,7 @@
         <ID2 xsi:type="node">85</ID2>
     </child>
     <child ID="87" label="user table data" layerID="1"
-        created="1649701244613" x="-351.00714" y="37.08364" width="72.0"
+        created="1649701244613" x="-351.50714" y="37.08364" width="73.0"
         height="102.800026" strokeWidth="1.0" autoSized="false"
         controlCount="1" arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
@@ -490,7 +490,7 @@
         <ID2 xsi:type="node">88</ID2>
     </child>
     <child ID="90" label="logs out" layerID="1" created="1649701374706"
-        x="373.03476" y="-220.36621" width="38.0" height="116.25"
+        x="372.53476" y="-220.36621" width="39.0" height="116.25"
         strokeWidth="1.0" autoSized="false" controlCount="0"
         arrowState="2" xsi:type="link">
         <strokeColor>#404040</strokeColor>
@@ -506,8 +506,8 @@
         y="0.0" width="1.4E-45" height="1.4E-45" strokeWidth="0.0" autoSized="false">
         <URIString>http://vue.tufts.edu/rdf/resource/c22461afc0a838010108c91c40317291</URIString>
     </layer>
-    <userZoom>1.25</userZoom>
-    <userOrigin x="-453.7589" y="-536.3954"/>
+    <userZoom>1.0</userZoom>
+    <userOrigin x="-565.3071" y="-431.11633"/>
     <presentationBackground>#202020</presentationBackground>
     <PathwayList currentPathway="0" revealerIndex="-1">
         <pathway ID="0" label="Untitled Pathway" created="1643933819465"
