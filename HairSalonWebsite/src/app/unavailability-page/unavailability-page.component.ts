@@ -176,6 +176,7 @@ export class UnavailabilityPageComponent implements OnInit
         {
             return;
         }
+        this.stylistid = stylist.id;
         for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
         {
             this.events.push(this.fullStylistSchedule[index][i]); 
@@ -241,7 +242,6 @@ export class UnavailabilityPageComponent implements OnInit
       */
      clearFields()
      {
-        this.stylistid = 0;
         this.stylistName = "";
         this.stylistIDControl.reset(); //clear the dropdown value
         this.startDate = new Date;
@@ -446,18 +446,27 @@ export class UnavailabilityPageComponent implements OnInit
         };
 
         //call service to update unavailability in database
-        this.unavailabilityService.updateUnavailability(unavailability);
-        
-        //find index of unavailability to change and replace existing information in unavailability list
-        let appIndexToUpdate = this.unavailabilities.findIndex(x => x.id === unavailability.id);
-        this.unavailabilities[appIndexToUpdate] = unavailability;
+        this.unavailabilityService.updateUnavailability(unavailability).subscribe(() => {
 
-        //clear fields and set booleans
-        this.updatingUnavailability = false;
-        this.clearFields();
+            //find index of unavailability to change and replace existing information in unavailability list
+            let appIndexToUpdate = this.unavailabilities.findIndex(x => x.id === unavailability.id);
+            this.unavailabilities[appIndexToUpdate] = unavailability;
+
+            //clear fields and set booleans
+            this.updatingUnavailability = false;
+
+            this.dialog.closeAll();
+
+            //load full work schedule by same stylist
+            this.stylistScheduleService.getStylistSchedule(true).subscribe(value =>
+            {
+                this.fullStylistSchedule = value;
+                console.log(this.stylistid)
+                this.events = value[this.stylistid]
+            });
+            this.clearFields(); //clear form fields
+        });
         
-        //reload calendar view and close dialog box
-        this.appCalendar.updateCalendarEvent(event);
-        this.dialog.closeAll();
+        
     }
 }

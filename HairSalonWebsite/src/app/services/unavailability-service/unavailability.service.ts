@@ -44,11 +44,11 @@ export class UnavailabilityService
      * @baseURL variable in the form of an enumrable array
      * @param unavailability is the object that contains updated information for a unavailability entry in the database
      */
-    updateUnavailability(unavailability: Unavailability): void
+    updateUnavailability(unavailability: Unavailability): Observable<any>
     {
         console.log(unavailability); //debug
         let url = this.baseURL.concat("Unavailability");
-        this.http.put(url, unavailability).subscribe();
+        return this.http.put(url, unavailability);
     }
 
     /**
