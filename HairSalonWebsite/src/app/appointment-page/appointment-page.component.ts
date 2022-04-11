@@ -420,22 +420,27 @@ export class AppointmentPageComponent implements OnInit
         let hoursEndTime =new Date(ws.end).valueOf();
         // Check for any overlap between the time period of a current appointment by assessing 
         // whether the new appointment start time or new appointment end time falls between the range of the next time being evaluated.
-         
-        if(!((newAppStarttime >= hoursStartTime && newAppStarttime <= hoursEndTime) || 
-          (newAppEndtime >= hoursStartTime && newAppEndtime <= hoursEndTime) || 
-          (newAppStarttime < hoursStartTime && newAppEndtime > hoursEndTime)))
+        
+        if(newAppStarttime >= hoursStartTime && newAppEndtime <= hoursEndTime)
         {
           //Add toast message
+          /*
           this.toastr.error("Appointment " + newAppointment.date + " with length of time " + newAppointment.length + " is outside of stylist working hours\n"
           + "Hours start at " + ws.start + " and end at" + ws.end);
             
           console.log("Appointment " + newAppointment.date + " with length of time " + newAppointment.length + " is outside of stylist working hours\n"
           + "Hours start at " + ws.start + " and end at" + ws.end);
-          return true
+          */
+          //if we get here, the appointment is valid
+          return false;
         }
       }
-    //No conflicts 
-    return false;
+    //appointment outside stylist hours
+    console.log("Appointment " + newAppointment + " outside of work hours for stylist " + 
+                this.stylists.find(s => s.id == this.stylistid)?.name);
+    this.toastr.error("Appointment " + newAppointment + " outside of work hours for stylist " + 
+    this.stylists.find(s => s.id == this.stylistid)?.name)
+    return true;
   }
   /**
    * function to close update form and clear all form fields
