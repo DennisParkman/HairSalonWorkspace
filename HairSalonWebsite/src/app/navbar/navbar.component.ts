@@ -14,10 +14,12 @@ export class NavbarComponent implements OnInit
   managerRole: UserRole = UserRole.Manager;
   stylistRole: UserRole = UserRole.Stylist;
   receptionistRole: UserRole = UserRole.Receptionist;
+  username: string;
   
   constructor(private sessionStorage: SessionStorageService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void 
+  { }
 
   /**
    * Function to allow access to certain features on the navbar
@@ -37,7 +39,9 @@ export class NavbarComponent implements OnInit
    */
    isLoggedIn()
    {
-     return this.sessionStorage.retrieve('user') != null;
+    let userData = this.sessionStorage.retrieve('user');
+    this.username = userData.username;
+    return this.sessionStorage.retrieve('user') != null;
    }
 
    /**
