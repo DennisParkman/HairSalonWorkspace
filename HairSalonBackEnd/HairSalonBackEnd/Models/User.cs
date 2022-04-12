@@ -20,7 +20,8 @@ namespace HairSalonBackEnd.Models
         {
             Manager,
             Stylist,
-            Receptionist
+            Receptionist,
+            Client
         }
 
         /// <summary>
