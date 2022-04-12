@@ -19,7 +19,14 @@ export class NavbarComponent implements OnInit
   constructor(private sessionStorage: SessionStorageService) {}
 
   ngOnInit(): void 
-  { }
+  {
+    if(this.sessionStorage.retrieve('user') != null)
+    {
+      let userData = this.sessionStorage.retrieve('user');
+      this.username = userData.username;
+    }
+    
+  }
 
   /**
    * Function to allow access to certain features on the navbar
@@ -39,8 +46,6 @@ export class NavbarComponent implements OnInit
    */
    isLoggedIn()
    {
-    let userData = this.sessionStorage.retrieve('user');
-    this.username = userData.username;
     return this.sessionStorage.retrieve('user') != null;
    }
 
