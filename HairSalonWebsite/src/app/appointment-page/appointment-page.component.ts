@@ -27,6 +27,8 @@ export class AppointmentPageComponent implements OnInit
   @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
   @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
+  stylistSelected: string; //the stylist shown on the front end when changing schedule button
+
   //appointment attributes for forms
   id: number;
   stylistid: number;
@@ -117,18 +119,25 @@ export class AppointmentPageComponent implements OnInit
  */
   showWorkScheduleBy(stylist: Stylist)
   {
-      this.events = [];
-      if(stylist.id == null)
+      this.events = []; //reset events
+
+      //check if stylist id is null and return if true
+      if(stylist.id == null) 
       {
         return;
       }
+
+      //load work schedule for stylist
       for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
       {
           this.events.push(this.fullStylistSchedule[index][i]); 
       }
+
+      //load appointments schedule for stylist
       for (let appointment of this.appointments)
       {
-        if(appointment.stylistID == stylist.id)
+        // if appointment for correct stylist, add appointment to
+        if(appointment.stylistID == stylist.id) 
         this.events.push(
           {
             
@@ -139,6 +148,9 @@ export class AppointmentPageComponent implements OnInit
           }
         )
       }
+
+      //display stylist name on screen
+      this.stylistSelected = stylist.name;
 
       console.log(this.events);
 
