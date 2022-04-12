@@ -296,6 +296,152 @@ namespace HairSalonBackEnd.Database
 
         #endregion
 
+        #region User Methods
+
+        /// <summary>
+        /// Method for adding an user record to the database.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="user">the user to add</param>
+        /// <returns>the user added </returns>
+        public static User AddUser(User user)
+        {
+            dbAccess.WaitOne();
+
+            dbContext.Users.Add(user);
+            dbContext.SaveChanges();
+
+            dbAccess.Release();
+            return user;
+        }
+
+        /// <summary>
+        /// Method for getting all the users.
+        /// locks the database until completed
+        /// </summary>
+        /// <returns> an enumerable array of all the users in the database</returns>
+        public static IEnumerable<User> GetAllUsers()
+        {
+            dbAccess.WaitOne();
+
+            IEnumerable<User> users = dbContext.Users.ToList();
+
+            dbAccess.Release();
+
+            return users;
+        }
+
+        /// <summary>
+        /// The Update method for updating an user record.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="user"> the user to update</param>
+        public static void UpdateUser(User user)
+        {
+            dbAccess.WaitOne();
+
+            // Get the record with same username.
+            var UserEntry = dbContext.Users.Where(x => x.ID == user.ID).FirstOrDefault();
+
+            // Update Fields and Save
+            UserEntry.Username = user.Username;
+            UserEntry.Password = user.Password;
+            UserEntry.Role = user.Role;
+
+            dbContext.SaveChanges();
+
+            dbAccess.Release();
+        }
+
+        /// <summary>
+        /// The delete method for removing an user record.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="id">the id of the user to delete</param>
+        public static void DeleteUser(int id)
+        {
+            dbAccess.WaitOne();
+            var UserEntry = dbContext.Users.Where(x => x.ID == id).FirstOrDefault();
+            dbContext.Users.Remove(UserEntry);
+            dbContext.SaveChanges();
+            dbAccess.Release();
+        }
+        #endregion
+
+        #region StylistHours Methods
+
+        /// <summary>
+        /// Method for adding a stylisthours record to the database.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="stylisthours">the stylisthours to add</param>
+        /// <returns>the stylisthours added with automatically assigned id</returns>
+        public static StylistHours AddStylistHours(StylistHours stylisthours)
+        {
+            dbAccess.WaitOne();
+
+            dbContext.StylistHours.Add(stylisthours);
+            dbContext.SaveChanges();
+
+            dbAccess.Release();
+            return stylisthours;
+        }
+
+        /// <summary>
+        /// Method for getting all the stylisthours.
+        /// locks the database until completed
+        /// </summary>
+        /// <returns> an enumerable array of all the stylisthours in the database</returns>
+        public static IEnumerable<StylistHours> GetAllStylistHours()
+        {
+            dbAccess.WaitOne();
+
+            IEnumerable<StylistHours> stylisthours = dbContext.StylistHours.ToList();
+
+            dbAccess.Release();
+
+            return stylisthours;
+        }
+
+        /// <summary>
+        /// The Update method for updating a stylisthours record.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="stylisthours"> the stylisthours to update</param>
+        public static void UpdateStylistHours(StylistHours stylisthours)
+        {
+            dbAccess.WaitOne();
+
+            // Get the record with same ID.
+            var StylistHoursEntry = dbContext.StylistHours.Where(x => x.ID == stylisthours.ID).FirstOrDefault();
+
+            // Update Fields and Save
+            StylistHoursEntry.StylistID = stylisthours.StylistID;
+            StylistHoursEntry.Day = stylisthours.Day;
+            StylistHoursEntry.StartTime = stylisthours.StartTime;
+            StylistHoursEntry.EndTime = stylisthours.EndTime;
+
+            dbContext.SaveChanges();
+
+            dbAccess.Release();
+        }
+
+        /// <summary>
+        /// The delete method for removing a stylisthour record.
+        /// locks the database until completed
+        /// </summary>
+        /// <param name="id">the id of the stylisthour to delete</param>
+        public static void DeleteStylistHours(int id)
+        {
+            dbAccess.WaitOne();
+            var StylistHoursEntry = dbContext.StylistHours.Where(x => x.ID == id).FirstOrDefault();
+            dbContext.StylistHours.Remove(StylistHoursEntry);
+            dbContext.SaveChanges();
+            dbAccess.Release();
+        }
+
+        #endregion
+
         private class SQLiteDbContext : DbContext
         {
             /// <summary>
@@ -312,6 +458,16 @@ namespace HairSalonBackEnd.Database
             /// abstraction of the unavailabilities table
             /// </summary>
             public DbSet<Unavailability> Unavailabilities { get; set; }
+
+             /// <summary>
+            /// abstraction of the users table
+            /// </summary>
+            public DbSet<User> Users { get; set; }
+
+            /// <summary>
+            /// abstraction of the stylisthours table
+            /// </summary>
+            public DbSet<StylistHours> StylistHours { get; set; }
 
             /// <summary>
             /// method for configuring the database
@@ -339,7 +495,13 @@ namespace HairSalonBackEnd.Database
                 modelBuilder.Entity<Appointment>().ToTable("Appointments", "localSchema");
                 //set up the Unavailabilities table
                 modelBuilder.Entity<Unavailability>().ToTable("Unavailabilities", "localSchema");
-                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>(); 
+                modelBuilder.Entity<Unavailability>().Property(u => u.Period).HasConversion<string>(); //necessary for making enums appear as strings in the database
+                //set up the Users table
+                modelBuilder.Entity<User>().ToTable("Users", "localSchema");
+                modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>(); //necessary for making enums appear as strings in the database
+                //set up the StylistHours table
+                modelBuilder.Entity<StylistHours>().ToTable("StylistHours", "localSchema");
+                modelBuilder.Entity<StylistHours>().Property(u => u.Day).HasConversion<string>(); //necessary for making enums appear as strings in the database
 
                 //create the database
                 base.OnModelCreating(modelBuilder);
