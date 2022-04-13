@@ -1,3 +1,6 @@
+<mat-toolbar class = "title">
+  <span>Appointments Page</span>
+</mat-toolbar>
 <!--Calendar and add appointment button-->
 <div *ngIf="!appointmentLoading"> <!--if appointments are done loading, show page-->
   <mat-button-toggle [matMenuTriggerFor]="infoMenu"  class = "schedule-by-button">{{stylistSelected}}</mat-button-toggle>
