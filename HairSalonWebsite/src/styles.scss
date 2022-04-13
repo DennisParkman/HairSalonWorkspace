@@ -17,6 +17,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background: rgb(18,24,48);
 }
 
+.customize+* .mat-focus-indicator
+{
+    background-color: rgb(18,24,48)!important;
+    background:rgb(18,24,48) !important;
+    filter: contrast(100%) 
+}
+
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 @import "../node_modules/angular-calendar/css/angular-calendar.css";

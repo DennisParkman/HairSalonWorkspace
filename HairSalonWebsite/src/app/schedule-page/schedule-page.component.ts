@@ -222,9 +222,9 @@ export class SchedulePageComponent implements OnInit
         {
             this.events.push(this.fullStylistSchedule[index][i]); 
         }
-
+        
         //display stylist name on screen
-        this.stylistSelected = stylist.name;
+        this.stylistSelected = stylist.name.split(" ")[0].toUpperCase();
     }
 
     /* Functions surrounding form operations */

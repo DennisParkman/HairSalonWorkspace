@@ -188,7 +188,7 @@ export class UnavailabilityPageComponent implements OnInit
         }
 
         //display stylist name on screen
-        this.stylistSelected = stylist.name;
+        this.stylistSelected = stylist.name.split(" ")[0].toUpperCase();
     }
 
     /* Functions surrounding form operations */

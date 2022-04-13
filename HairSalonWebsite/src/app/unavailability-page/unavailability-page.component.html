@@ -2,8 +2,8 @@
   <div *ngIf="!unavailabilityLoading"> <!--if appointments are done loading, show page-->
 
     <mat-button-toggle [matMenuTriggerFor]="infoMenu"  class = "schedule-by-button">{{stylistSelected}}</mat-button-toggle>
-    <mat-menu #infoMenu="matMenu" backdropClass="customize" style="background-color: rgb(18,24,48)">
-        <mat-option *ngFor="let stylist of stylists" [value]="stylist"  (click)="showWorkScheduleBy(stylist)">{{stylist.name}}</mat-option>
+    <mat-menu #infoMenu="matMenu" backdropClass="customize">
+        <mat-option  backdropClass="customize" *ngFor="let stylist of stylists" [value]="stylist"  (click)="showWorkScheduleBy(stylist)">{{stylist.name}}</mat-option>
     </mat-menu>
 
   <mat-button-toggle class = "add-button" (click)="setCreateUnavailability()">Add Unavailability</mat-button-toggle>
