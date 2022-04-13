@@ -150,7 +150,7 @@ export class AppointmentPageComponent implements OnInit
       }
 
       //display stylist name on screen
-      this.stylistSelected = stylist.name.split(" ")[0].toUpperCase();
+      this.stylistSelected = stylist.name.split(" ")[0];
 
       console.log(this.events);
 
