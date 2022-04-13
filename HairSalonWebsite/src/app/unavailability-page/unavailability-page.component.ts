@@ -28,6 +28,8 @@ export class UnavailabilityPageComponent implements OnInit
     @ViewChild(EventCalendarComponent) appCalendar!: EventCalendarComponent
     @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
+    stylistSelected: string; //the stylist shown on the front end when changing schedule button
+
     unavailabilities: Unavailability[]; //list of unavailabilities
     appointments: Appointment[]; //list of appointments
     stylists: Stylist[]; //an array of stylists used to get id-name pairs from the stylists for the dropdown menu
@@ -108,7 +110,7 @@ export class UnavailabilityPageComponent implements OnInit
           this.fullStylistSchedule = fullStylistSchedule; //load full work schedule
           
           ////add work schedule to events list to be shown
-          this.showScheduleBy(stylists[0])
+          this.showWorkScheduleBy(stylists[0])
           
           //set up the dropdown filter
           this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
@@ -169,18 +171,24 @@ export class UnavailabilityPageComponent implements OnInit
      * 
      * @param stylist 
      */
-    showScheduleBy(stylist: Stylist)
+    showWorkScheduleBy(stylist: Stylist)
     {
-        this.events = [];
-        if(stylist.id == null)
+        this.events = []; //reset events
+
+        //check if stylist id is null and return if true
+        if(stylist.id == null) 
         {
             return;
         }
-        this.stylistid = stylist.id;
+
+        //load work schedule for stylist
         for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
         {
             this.events.push(this.fullStylistSchedule[index][i]); 
         }
+
+        //display stylist name on screen
+        this.stylistSelected = stylist.name.split(" ")[0].toUpperCase();
     }
 
     /* Functions surrounding form operations */

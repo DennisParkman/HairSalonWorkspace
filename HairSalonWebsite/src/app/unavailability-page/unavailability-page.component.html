@@ -1,14 +1,14 @@
 <!--Calendar and add appointment button-->
   <div *ngIf="!unavailabilityLoading"> <!--if appointments are done loading, show page-->
 
-    <mat-button-toggle [matMenuTriggerFor]="infoMenu"  class = "schedule-card">Select Stylists</mat-button-toggle>
-    <mat-menu #infoMenu="matMenu" backdropClass="customize" style="background-color: rgb(18,24,48)">
-        <mat-option *ngFor="let stylist of stylists" [value]="stylist"  (click)="showScheduleBy(stylist)">{{stylist.name}}</mat-option>
-    </mat-menu >
+    <mat-button-toggle [matMenuTriggerFor]="infoMenu"  class = "schedule-by-button">{{stylistSelected}}</mat-button-toggle>
+    <mat-menu #infoMenu="matMenu" backdropClass="customize">
+        <mat-option  backdropClass="customize" *ngFor="let stylist of stylists" [value]="stylist"  (click)="showWorkScheduleBy(stylist)">{{stylist.name}}</mat-option>
+    </mat-menu>
 
-    <mat-button-toggle style="margin-left:20px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setCreateUnavailability()">Add Unavailability</mat-button-toggle>
-    <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" [supportCRUDCondition]="'Unavailable'" (deleteEvent)="deleteUnavailability($event)" 
-                        (updateEvent)="startUpdateUnavailability($event)" (createEvent)="setCreateUnavailability($event)"></app-event-calendar>
+  <mat-button-toggle class = "add-button" (click)="setCreateUnavailability()">Add Unavailability</mat-button-toggle>
+  <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" [supportCRUDCondition]="'-'" (deleteEvent)="deleteUnavailability($event)" 
+                      (updateEvent)="startUpdateUnavailability($event)" (createEvent)="setCreateUnavailability($event)"></app-event-calendar>
   </div>
     
   <ng-template #formDialog> <!--This template allows both forms to display as pop up menus-->
