@@ -15,9 +15,21 @@
     display: none !important; //will override all previous styling rules for cal-events
 }
 
-.schedule-card
+.add-button
 {
-    margin-left:100px; 
+    margin-left:2%; 
+    margin-right:0.5%; 
     margin-top:20px; 
-    background-color: rgb(18,24,48)
+    background-color: rgb(18,24,48);
+    width: 8%;
+    
+}
+
+.schedule-by-button
+{
+    margin-left:2%; 
+    margin-right:0.5%; 
+    margin-top:20px; 
+    background-color: rgb(18,24,48);
+    width: 6%;
 }
