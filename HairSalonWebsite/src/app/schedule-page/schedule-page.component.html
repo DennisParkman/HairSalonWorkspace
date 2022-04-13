@@ -7,9 +7,11 @@
     <mat-menu #infoMenu="matMenu" backdropClass="customize" style="background-color: rgb(18,24,48)">
         <mat-option *ngFor="let stylist of stylists" [value]="stylist"  (click)="showWorkScheduleBy(stylist)">{{stylist.name}}</mat-option>
     </mat-menu>
-
-
-  <mat-button-toggle class = "edit-button" (click)="setEditingSchedule()">Edit Schedule</mat-button-toggle>
+  <mat-button-toggle class = "schedule-create-button" (click)="setEditingSchedule()">Edit Schedule</mat-button-toggle>
+  
+  <div class = "schedule-page-title-box">
+    <h2 class = "schedule-page-title">{{stylistSelected}}'s Schedule</h2>
+  </div>
   <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="false"></app-event-calendar>
 </div>
 

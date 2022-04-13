@@ -8,7 +8,11 @@
         <mat-option *ngFor="let stylist of stylists" [value]="stylist"  (click)="showWorkScheduleBy(stylist)">{{stylist.name}}</mat-option>
     </mat-menu>
 
-  <mat-button-toggle class = "add-button" (click)="setCreateAppointment()">Add Appointment</mat-button-toggle>
+  <mat-button-toggle class = "schedule-create-button" (click)="setCreateAppointment()">Add Appointment</mat-button-toggle>
+
+  <div class = "schedule-page-title-box">
+    <h2 class = "schedule-page-title">{{stylistSelected}}'s Schedule</h2>
+  </div>
   <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="true" [supportCRUDCondition]="'-'" (deleteEvent)="deleteAppointment($event)" 
                       (updateEvent)="startUpdateAppointment($event)" (createEvent)="setCreateAppointment($event)"></app-event-calendar>
 </div>
