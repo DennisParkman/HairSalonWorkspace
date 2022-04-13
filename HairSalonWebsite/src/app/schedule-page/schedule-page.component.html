@@ -1,12 +1,12 @@
 <!--TODO: Add canAccess so that only Receptionist/Stylist/Manager can view page, redirect to login if not allowed-->
 <div *ngIf="!scheduleLoading"> <!--If the the schedule page is done loading then show the calendar component-->
-  <mat-button-toggle [matMenuTriggerFor]="infoMenu"  class = "schedule-card">Select Stylists</mat-button-toggle>
-  <mat-menu #infoMenu="matMenu" backdropClass="customize" style="background-color: rgb(18,24,48)">
-    <mat-option *ngFor="let stylist of stylists" [value]="stylist"  (click)="showScheduleBy(stylist)">{{stylist.name}}</mat-option>
-  </mat-menu >
+  <mat-button-toggle [matMenuTriggerFor]="infoMenu"  class = "schedule-by-button">{{stylistSelected}}</mat-button-toggle>
+    <mat-menu #infoMenu="matMenu" backdropClass="customize" style="background-color: rgb(18,24,48)">
+        <mat-option *ngFor="let stylist of stylists" [value]="stylist"  (click)="showWorkScheduleBy(stylist)">{{stylist.name}}</mat-option>
+    </mat-menu>
 
 
-  <mat-button-toggle style="margin-left:20px; margin-top:20px; background-color: rgb(18,24,48)" (click)="setEditingSchedule()">Edit Schedule</mat-button-toggle>
+  <mat-button-toggle class = "edit-button" (click)="setEditingSchedule()">Edit Schedule</mat-button-toggle>
   <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="false"></app-event-calendar>
 </div>
 

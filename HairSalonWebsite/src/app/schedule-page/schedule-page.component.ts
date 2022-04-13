@@ -75,10 +75,7 @@ export class SchedulePageComponent implements OnInit
     saturdayStartTime: string | undefined;
     saturdayEndTime: string | undefined;
 
-
-
-
-
+    stylistSelected: string; //the stylist shown on the front end when changing schedule button
 
     //form control for dropdown
     stylistIDControl = new FormControl();
@@ -149,7 +146,7 @@ export class SchedulePageComponent implements OnInit
           this.fullStylistSchedule = fullStylistSchedule; //load full work schedule
           
           ////add work schedule to events list to be shown
-          this.showScheduleBy(stylists[0])
+          this.showWorkScheduleBy(stylists[0])
           
           //set up the dropdown filter
           this.filteredStylists = this.stylistIDControl.valueChanges.pipe(
@@ -206,21 +203,28 @@ export class SchedulePageComponent implements OnInit
     }
 
     /**
-     * 
+     * Function to load stylists onto the calendar with their events being shown
      * @param stylist 
      */
-    showScheduleBy(stylist: Stylist)
+    showWorkScheduleBy(stylist: Stylist)
     {
-        this.events = [];
+        this.events = []; //reset events
+
+        //check if stylist id is null and return if true
         if(stylist.id == null)
         {
             return;
         }
+
+        //load work schedule for stylist
         this.stylistid = stylist.id;
         for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
         {
             this.events.push(this.fullStylistSchedule[index][i]); 
         }
+        
+        //display stylist name on screen
+        this.stylistSelected = stylist.name.split(" ")[0].toUpperCase();
     }
 
     /* Functions surrounding form operations */

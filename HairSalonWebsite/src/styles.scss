@@ -7,14 +7,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-mat-dialog-container 
+.mat-dialog-container 
 {
     background-color: rgb(18,24,48) !important;
 }
 
-.customize+* .mat-menu-panel .mat-option
+.customize+* .mat-menu-panel
 {
     background: rgb(18,24,48);
+}
+
+.customize+* .mat-focus-indicator
+{
+    background-color: rgb(18,24,48)!important;
+    background:rgb(18,24,48) !important;
+    filter: contrast(100%) 
 }
 
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
