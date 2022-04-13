@@ -230,16 +230,87 @@ export class SchedulePageComponent implements OnInit
     /* Functions surrounding form operations */
 
     /**
-     * Validate fields before updating / creating unavailability
+     * Checks the form fields to ensure that the times of the active days are in the form XX:XX, military time
+     * @returns true if the fields are valid, or false if not
      */
-    validateFields() : boolean
+    validateFields(hours: StylistHours) : boolean
     {
-        let valid = true;
+      //declare temp variables to be used later in comparing start and end times
+      let startHH = 0;
+      let startMM = 0;
+      let endHH = 0;
+      let endMM = 0;
 
-        //TODO Check hours
+      
+      //is the startTime entered?
+      if(hours.startTime == undefined)
+      {
+        this.toastr.error("Must enter a time for " + StylistHours.weekDayToString(hours.day));
+        return false;
+      }
+      //is the time formatted properly
+      else if(!hours.startTime.match(/^\d?\d:\d\d$/)) 
+      {
+        this.toastr.error("Time for " + StylistHours.weekDayToString(hours.day) + " is not in hh:mm format");
+        return false;
+      }
+      //the time is formatted but is it in the range?
+      else
+      {
+        let tokens = hours.startTime.split(":");
+        let startHH = parseInt(tokens[0]);
+        let startMM = parseInt(tokens[1]);
+        if( startHH < 0 || startHH > 23 || startMM < 0 || startMM > 59)
+        {
+          this.toastr.error("Time for " + StylistHours.weekDayToString(hours.day) + " is not in 24-hr time");
+          return false;
+        }
+      }
 
-        return valid;
+      //is the time entered?
+      if(hours.endTime == undefined)
+      {
+        this.toastr.error("Must enter a time for " + StylistHours.weekDayToString(hours.day));
+        return false;
+      }
+      //is the time formatted properly
+      else if(!hours.endTime.match(/^\d?\d:\d\d$/)) 
+      {
+        this.toastr.error("Time for " + StylistHours.weekDayToString(hours.day) + " is not in hh:mm format");
+        return false;
+      }
+      //the time is formatted but is it in the range?
+      else
+      {
+        let tokens = hours.endTime.split(":");
+        let endHH = parseInt(tokens[0]);
+        let endMM = parseInt(tokens[1]);
+        if( endHH < 0 || endHH > 23 || endMM < 0 || endMM > 59)
+        {
+          this.toastr.error("Time for " + StylistHours.weekDayToString(hours.day) + " is not in 24-hr time");
+          return false;
+        }
+      }
+
+      console.log(endHH + ":" + endMM)
+      console.log(startHH + ":" + startMM)
+
+      //check that endtime > starttime
+      if(endHH < startHH)
+      {
+        this.toastr.error("End time " + hours.endTime + " must be after " + hours.startTime + " for " + StylistHours.weekDayToString(hours.day))
+        return false;
+      }
+      else if( endHH == startHH && endMM <= startMM )
+      {
+        this.toastr.error("AEnd time " + hours.endTime + " must be after " + hours.startTime + " for " + StylistHours.weekDayToString(hours.day))
+        return false;
+      }
+
+
+      return true;
     }
+    
 
     /**
      * Function to hide the the add unavailability field
@@ -412,6 +483,10 @@ export class SchedulePageComponent implements OnInit
           day: WeekDay.Sunday,
           stylistID: this.stylistid
         }
+        if(!this.validateFields(day))
+        {
+          return;
+        }
         this.addStylistHours(day)
       }
       else if(this.sundayActive && this.sundayID)
@@ -426,6 +501,10 @@ export class SchedulePageComponent implements OnInit
           endTime: this.sundayEndTime,
           day: WeekDay.Sunday,
           stylistID: this.stylistid
+        }
+        if(!this.validateFields(day))
+        {
+          return;
         }
         this.updateStylistHours(day)
       }
@@ -442,6 +521,7 @@ export class SchedulePageComponent implements OnInit
           day: WeekDay.Sunday,
           stylistID: this.stylistid
         }
+        
         this.deleteStylistHours(day)
       }
 
@@ -457,6 +537,10 @@ export class SchedulePageComponent implements OnInit
           day: WeekDay.Monday,
           stylistID: this.stylistid
         }
+        if(!this.validateFields(day))
+        {
+          return;
+        }
         this.addStylistHours(day)
       }
       else if(this.mondayActive && this.mondayID)
@@ -471,6 +555,10 @@ export class SchedulePageComponent implements OnInit
           endTime: this.mondayEndTime,
           day: WeekDay.Monday,
           stylistID: this.stylistid
+        }
+        if(!this.validateFields(day))
+        {
+          return;
         }
         this.updateStylistHours(day)
       }
@@ -502,6 +590,10 @@ export class SchedulePageComponent implements OnInit
           day: WeekDay.Tuesday,
           stylistID: this.stylistid
         }
+        if(!this.validateFields(day))
+        {
+          return;
+        }
         this.addStylistHours(day)
       }
       else if(this.tuesdayActive && this.tuesdayID)
@@ -516,6 +608,10 @@ export class SchedulePageComponent implements OnInit
           endTime: this.tuesdayEndTime,
           day: WeekDay.Tuesday,
           stylistID: this.stylistid
+        }
+        if(!this.validateFields(day))
+        {
+          return;
         }
         this.updateStylistHours(day)
       }
@@ -547,6 +643,10 @@ export class SchedulePageComponent implements OnInit
           day: WeekDay.Wednesday,
           stylistID: this.stylistid
         }
+        if(!this.validateFields(day))
+        {
+          return;
+        }
         this.addStylistHours(day)
       }
       else if(this.wednesdayActive && this.wednesdayID)
@@ -561,6 +661,10 @@ export class SchedulePageComponent implements OnInit
           endTime: this.wednesdayEndTime,
           day: WeekDay.Wednesday,
           stylistID: this.stylistid
+        }
+        if(!this.validateFields(day))
+        {
+          return;
         }
         this.updateStylistHours(day)
       }
@@ -592,6 +696,10 @@ export class SchedulePageComponent implements OnInit
           day: WeekDay.Thursday,
           stylistID: this.stylistid
         }
+        if(!this.validateFields(day))
+        {
+          return;
+        }
         this.addStylistHours(day)
       }
       else if(this.thursdayActive && this.thursdayID)
@@ -606,6 +714,10 @@ export class SchedulePageComponent implements OnInit
           endTime: this.thursdayEndTime,
           day: WeekDay.Thursday,
           stylistID: this.stylistid
+        }
+        if(!this.validateFields(day))
+        {
+          return;
         }
         this.updateStylistHours(day)
       }
@@ -637,6 +749,10 @@ export class SchedulePageComponent implements OnInit
           day: WeekDay.Friday,
           stylistID: this.stylistid
         }
+        if(!this.validateFields(day))
+        {
+          return;
+        }
         this.addStylistHours(day)
       }
       else if(this.fridayActive && this.fridayID)
@@ -651,6 +767,10 @@ export class SchedulePageComponent implements OnInit
           endTime: this.fridayEndTime,
           day: WeekDay.Friday,
           stylistID: this.stylistid
+        }
+        if(!this.validateFields(day))
+        {
+          return;
         }
         this.updateStylistHours(day)
       }
@@ -682,6 +802,10 @@ export class SchedulePageComponent implements OnInit
           day: WeekDay.Saturday,
           stylistID: this.stylistid
         }
+        if(!this.validateFields(day))
+        {
+          return;
+        }
         this.addStylistHours(day)
       }
       else if(this.saturdayActive && this.saturdayID)
@@ -696,6 +820,10 @@ export class SchedulePageComponent implements OnInit
           endTime: this.saturdayEndTime,
           day: WeekDay.Saturday,
           stylistID: this.stylistid
+        }
+        if(!this.validateFields(day))
+        {
+          return;
         }
         this.updateStylistHours(day)
       }
@@ -722,11 +850,13 @@ export class SchedulePageComponent implements OnInit
      */
     addStylistHours(hours: StylistHours)
     {
-        if(!this.validateFields())
+      /*  removed because the form would still submit if one field was valid
+          validate now called in submitEditSchedule
+      if(!this.validateFields(hours))
         {
             return;
         }
-        
+      */
         // TODO Check for conflicts
         // var doesConflict = this.checkUnavailabilityConflict(unavailability);
         // if(doesConflict)
@@ -796,11 +926,13 @@ export class SchedulePageComponent implements OnInit
      */
     updateStylistHours(hours: StylistHours)
     {
-        if(!this.validateFields())
+      /*  removed because the form would still submit if one field was valid
+          validate now called in submitEditSchedule
+        if(!this.validateFields(hours))
         {
             return;
         }
-
+*/
         // Check for unavailability conflicts.
         //var doesConflict = this.checkUnavailabilityConflict(hours);
         //if(doesConflict)
