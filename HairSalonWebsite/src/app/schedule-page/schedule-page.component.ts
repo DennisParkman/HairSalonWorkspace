@@ -235,13 +235,7 @@ export class SchedulePageComponent implements OnInit
      */
     validateFields(hours: StylistHours) : boolean
     {
-      //declare temp variables to be used later in comparing start and end times
-      let startHH = 0;
-      let startMM = 0;
-      let endHH = 0;
-      let endMM = 0;
-
-      
+      console.log("oink");
       //is the startTime entered?
       if(hours.startTime == undefined)
       {
@@ -255,16 +249,14 @@ export class SchedulePageComponent implements OnInit
         return false;
       }
       //the time is formatted but is it in the range?
-      else
+      
+      let tokens = hours.startTime.split(":");
+      let startHH = parseInt(tokens[0]);
+      let startMM = parseInt(tokens[1]);
+      if( startHH < 0 || startHH > 23 || startMM < 0 || startMM > 59)
       {
-        let tokens = hours.startTime.split(":");
-        let startHH = parseInt(tokens[0]);
-        let startMM = parseInt(tokens[1]);
-        if( startHH < 0 || startHH > 23 || startMM < 0 || startMM > 59)
-        {
-          this.toastr.error("Time for " + StylistHours.weekDayToString(hours.day) + " is not in 24-hr time");
-          return false;
-        }
+        this.toastr.error("Time for " + StylistHours.weekDayToString(hours.day) + " is not in 24-hr time");
+        return false;
       }
 
       //is the time entered?
@@ -280,17 +272,16 @@ export class SchedulePageComponent implements OnInit
         return false;
       }
       //the time is formatted but is it in the range?
-      else
+      
+      tokens = hours.endTime.split(":");
+      let endHH = parseInt(tokens[0]);
+      let endMM = parseInt(tokens[1]);
+      if( endHH < 0 || endHH > 23 || endMM < 0 || endMM > 59)
       {
-        let tokens = hours.endTime.split(":");
-        let endHH = parseInt(tokens[0]);
-        let endMM = parseInt(tokens[1]);
-        if( endHH < 0 || endHH > 23 || endMM < 0 || endMM > 59)
-        {
-          this.toastr.error("Time for " + StylistHours.weekDayToString(hours.day) + " is not in 24-hr time");
-          return false;
-        }
+        this.toastr.error("Time for " + StylistHours.weekDayToString(hours.day) + " is not in 24-hr time");
+        return false;
       }
+      
 
       console.log(endHH + ":" + endMM)
       console.log(startHH + ":" + startMM)
@@ -306,7 +297,6 @@ export class SchedulePageComponent implements OnInit
         this.toastr.error("AEnd time " + hours.endTime + " must be after " + hours.startTime + " for " + StylistHours.weekDayToString(hours.day))
         return false;
       }
-
 
       return true;
     }
@@ -475,6 +465,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.sundayStartTime || !this.sundayEndTime)
         {
+          this.toastr.error("Must enter a time for Sunday");
           return;
         }
         let day : StylistHours = {
@@ -493,6 +484,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.sundayStartTime || !this.sundayEndTime)
         {
+          this.toastr.error("Must enter a time for Sunday");
           return;
         }
         let day : StylistHours = {
@@ -512,6 +504,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.sundayStartTime || !this.sundayEndTime)
         {
+          this.toastr.error("Must enter a time for Sunday");
           return;
         }
         let day : StylistHours = {
@@ -529,6 +522,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.mondayEndTime || !this.mondayStartTime)
         {
+          this.toastr.error("Must enter a time for Monday");
           return;
         }
         let day : StylistHours = {
@@ -547,6 +541,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.mondayEndTime || !this.mondayStartTime)
         {
+          this.toastr.error("Must enter a time for Monday");
           return;
         }
         let day : StylistHours = {
@@ -566,6 +561,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.mondayEndTime || !this.mondayStartTime)
         {
+          this.toastr.error("Must enter a time for Monday");
           return;
         }
         let day : StylistHours = {
@@ -582,6 +578,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.tuesdayStartTime || !this.tuesdayEndTime)
         {
+          this.toastr.error("Must enter a time for Tuesday");
           return;
         }
         let day : StylistHours = {
@@ -600,6 +597,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.tuesdayStartTime || !this.tuesdayEndTime)
         {
+          this.toastr.error("Must enter a time for Tuesday");
           return;
         }
         let day : StylistHours = {
@@ -619,6 +617,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.tuesdayStartTime || !this.tuesdayEndTime)
         {
+          this.toastr.error("Must enter a time for Tuesday");
           return;
         }
         let day : StylistHours = {
@@ -635,6 +634,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.wednesdayStartTime || !this.wednesdayEndTime)
         {
+          this.toastr.error("Must enter a time for Wednesday");
           return;
         }
         let day : StylistHours = {
@@ -653,6 +653,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.wednesdayStartTime || !this.wednesdayEndTime)
         {
+          this.toastr.error("Must enter a time for Wednesday");
           return;
         }
         let day : StylistHours = {
@@ -672,6 +673,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.wednesdayStartTime || !this.wednesdayEndTime)
         {
+          this.toastr.error("Must enter a time for Wednesday");
           return;
         }
         let day : StylistHours = {
@@ -688,6 +690,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.thursdayStartTime || !this.thursdayEndTime)
         {
+          this.toastr.error("Must enter a time for Thursday");
           return;
         }
         let day : StylistHours = {
@@ -706,6 +709,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.thursdayStartTime || !this.thursdayEndTime)
         {
+          this.toastr.error("Must enter a time for Thursday");
           return;
         }
         let day : StylistHours = {
@@ -725,6 +729,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.thursdayStartTime || !this.thursdayEndTime)
         {
+          this.toastr.error("Must enter a time for Thursday");
           return;
         }
         let day : StylistHours = {
@@ -741,6 +746,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.fridayStartTime || !this.fridayEndTime)
         {
+          this.toastr.error("Must enter a time for Friday");
           return;
         }
         let day : StylistHours = {
@@ -759,6 +765,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.fridayStartTime || !this.fridayEndTime)
         {
+          this.toastr.error("Must enter a time for Friday");
           return;
         }
         let day : StylistHours = {
@@ -778,6 +785,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.fridayStartTime || !this.fridayEndTime)
         {
+          this.toastr.error("Must enter a time for Friday");
           return;
         }
         let day : StylistHours = {
@@ -794,6 +802,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.saturdayStartTime || !this.saturdayEndTime)
         {
+          this.toastr.error("Must enter a time for Saturday");
           return;
         }
         let day : StylistHours = {
@@ -812,6 +821,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.saturdayStartTime || !this.saturdayEndTime)
         {
+          this.toastr.error("Must enter a time for Saturday");
           return;
         }
         let day : StylistHours = {
@@ -831,6 +841,7 @@ export class SchedulePageComponent implements OnInit
       {
         if(!this.saturdayStartTime || !this.saturdayEndTime)
         {
+          this.toastr.error("Must enter a time for Saturday");
           return;
         }
         let day : StylistHours = {
