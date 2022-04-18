@@ -15,21 +15,36 @@
     display: none !important; //will override all previous styling rules for cal-events
 }
 
-.add-button
+.schedule-page-title
 {
-    margin-left:2%; 
-    margin-right:0.5%; 
-    margin-top:20px; 
-    background-color: rgb(18,24,48);
-    width: 8%;
-    
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-right: 2%;
+    margin-left: 2%;
+    text-align: center;
+    font-weight: 500;
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    font-size: 2.75em;
+    color: rgb(176,151,35);
 }
 
-.schedule-by-button
+.schedule-page-title-box
 {
-    margin-left:2%; 
-    margin-right:0.5%; 
-    margin-top:20px; 
+    background-color:  rgb(18,24,48); 
+    margin-right: 10%; 
+    margin-left: 10%; 
+    margin-top: 2%; 
+    padding-top: 1%;
+    padding-bottom: 1%;
+}
+
+.title
+{   
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 2.15%;
+    text-align: left;
+    font-family:'Edwardian Script ITC';
+    color: rgb(176,151,35);
     background-color: rgb(18,24,48);
-    width: 6%;
 }
