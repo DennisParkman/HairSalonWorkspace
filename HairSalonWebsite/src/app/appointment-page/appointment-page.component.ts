@@ -29,6 +29,8 @@ export class AppointmentPageComponent implements OnInit
 
   stylistSelected: string; //the stylist shown on the front end when changing schedule button
 
+  stylist: Stylist;
+
   //appointment attributes for forms
   id: number;
   stylistid: number;
@@ -119,6 +121,7 @@ export class AppointmentPageComponent implements OnInit
  */
   showWorkScheduleBy(stylist: Stylist)
   {
+      this.stylist = stylist;
       this.events = []; //reset events
 
       //check if stylist id is null and return if true
@@ -363,14 +366,6 @@ export class AppointmentPageComponent implements OnInit
     {
       return;
     }
-    //create a calendar event from appointment object
-    let event = 
-    {
-      id:this.id, 
-      start: this.date, 
-      title: this.name + " - " + this.description,
-      color: {primary: '#228B22', secondary: '#ffffff'}
-    };
 
     //call service to update appointment in database
     this.appointmentService.updateAppointment(appointment);
@@ -383,13 +378,8 @@ export class AppointmentPageComponent implements OnInit
     this.updatingAppointment = false;
     this.clearFields();
     
-    //reload calendar view and close dialog box
-    this.stylistScheduleService.getStylistSchedule().subscribe(value =>
-      {
-          this.fullStylistSchedule = value;
-          console.log(this.stylistid)
-          this.events = value[this.stylistid]
-      });
+    this.showWorkScheduleBy(this.stylist);
+
     this.dialog.closeAll();
   }
 
