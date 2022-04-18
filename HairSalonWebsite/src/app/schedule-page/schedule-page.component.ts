@@ -854,6 +854,10 @@ export class SchedulePageComponent implements OnInit
         this.deleteStylistHours(day)
       }
 
+      //if we get here all the fields are valid and the form should close
+      this.editingSchedule = false;
+      this.dialog.closeAll(); //close dialog box
+      this.clearFields(); //clear form fields
      }
 
     /**
@@ -880,17 +884,15 @@ export class SchedulePageComponent implements OnInit
         //call unavailability service to add unavailability to database
         this.stylistHoursService.addStylistHours(hours).subscribe(value => 
         {
-            this.editingSchedule = false; //hide add unavailability form
+            // this.editingSchedule = false; //hide add unavailability form
 
             this.stylistHours[this.stylistid].push(value); //push unavailability to unavailability list
 
-            // Update with service
-            // Update calendar
+            //these should go in the end of submitEditSchedule
+            //this.dialog.closeAll(); //close dialog box
+            //this.clearFields(); //clear form fields
 
-            this.dialog.closeAll(); //close dialog box
-
-            this.clearFields(); //clear form fields
-
+            // Update with service and Update calendar
             this.stylistScheduleService.getStylistSchedule().subscribe(value =>
               {
                   this.fullStylistSchedule = value;
@@ -917,7 +919,7 @@ export class SchedulePageComponent implements OnInit
             //remove unavailability from unavailability list
             this.stylistHours[this.stylistid].splice(appIndexToDelete, 1);
 
-            this.dialog.closeAll();
+            // this.dialog.closeAll();
 
             //load full work schedule by same stylist
             this.stylistScheduleService.getStylistSchedule().subscribe(value =>
@@ -926,7 +928,7 @@ export class SchedulePageComponent implements OnInit
                 console.log(this.stylistid)
                 this.events = value[this.stylistid]
             });
-            this.clearFields(); //clear form fields
+            // this.clearFields(); //clear form fields
         })
 
     }
@@ -959,9 +961,9 @@ export class SchedulePageComponent implements OnInit
             this.stylistHours[this.stylistid][appIndexToUpdate] = hours;
 
             //clear fields and set booleans
-            this.editingSchedule = false;
+            // this.editingSchedule = false;
 
-            this.dialog.closeAll();
+            // this.dialog.closeAll();
 
             //load full work schedule by same stylist
             this.stylistScheduleService.getStylistSchedule().subscribe(value =>
@@ -970,7 +972,7 @@ export class SchedulePageComponent implements OnInit
                 console.log(this.stylistid)
                 this.events = value[this.stylistid]
             });
-            this.clearFields(); //clear form fields
+            // this.clearFields(); //clear form fields
         });
         
         
