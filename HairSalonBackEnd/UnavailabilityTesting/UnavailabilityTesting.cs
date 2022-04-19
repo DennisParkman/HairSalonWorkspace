@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using HairSalonBackEnd.Database;
 
 namespace UnavailabilityTesting
 {
@@ -8,9 +9,7 @@ namespace UnavailabilityTesting
         [TestMethod]
         public void THEtest()
         {
-            HairSalonBackEnd.Database.SQLiteDbUtility.InitializeDB();
-
-
+            SQLiteDbUtility.InitializeDB();
         }
     }
 }

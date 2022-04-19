@@ -12,10 +12,11 @@ namespace HairSalonBackEnd.Database
 {
     public static class SQLiteDbUtility
     {
-#if UNAVAILABILITY_TESTING
-        private static string DatabaseDirectory = "FileName=Database/sqliteTest.db";
+    // Switch to change whether building with test database or main database. 
+#if DEBUG
+        private static string DatabaseDirectory = "FileName=../sqliteTest.db";
 #else
-        private static string DatabaseDirectory = "FileName=Database/sqlite.db";
+        private static string DatabaseDirectory = "FileName=../sqlite.db";
 #endif
 
         /// <summary>

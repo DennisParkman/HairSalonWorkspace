@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;UNAVAILABILITY_TESTING=1</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,10 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HairSalonBackEnd\HairSalonBackEnd.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\" />
   </ItemGroup>
 
 </Project>
