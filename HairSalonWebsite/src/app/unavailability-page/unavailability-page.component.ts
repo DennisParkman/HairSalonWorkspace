@@ -93,16 +93,18 @@ export class UnavailabilityPageComponent implements OnInit
           //load all unavailabilities into the unavailabilities array
           unavailabilities.forEach(unavailability => 
             {
-              unavailability.startDate = new Date(unavailability.startDate);
-              unavailability.endDate = new Date(unavailability.endDate);
+                //reinitialize the dates so they work right
+                unavailability.startDate = new Date(unavailability.startDate);
+                unavailability.endDate = new Date(unavailability.endDate);
             });
           this.unavailabilities = unavailabilities; //save the list of unavailabilities
   
           //load all appointments into the appointments array
           appointments.forEach(appointments => 
             {
-              appointments.date = new Date(appointments.date);
-              appointments.dateCreated = new Date(appointments.dateCreated);
+                //reinitialize the dates so they work right
+                appointments.date = new Date(appointments.date);
+                appointments.dateCreated = new Date(appointments.dateCreated);
             });
           this.appointments = appointments; //save the list of appointments
   
@@ -139,7 +141,7 @@ export class UnavailabilityPageComponent implements OnInit
     }
 
     /**
-     * helper function for ngOnInit to filter the stylist list by an entered stylist name
+     * helper function to filter the stylist list by an entered stylist name
      */
     private stylistDropdownFilter(name: string): Stylist[]
     {

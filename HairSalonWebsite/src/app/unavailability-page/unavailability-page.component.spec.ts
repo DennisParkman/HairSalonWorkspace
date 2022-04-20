@@ -18,8 +18,124 @@ describe('UnavailabilityPageComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-
+  
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~ngOnInit~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /**
+   * testing ngOnInit
+   * checks enum is set
+   */
+
+  /**
+   * testing ngOnInit
+   * checks the lists are set correctly
+   */
+
+  /**
+   * testing ngOnInit
+   * checks that filteredStylists is the same as stylists
+   */
+  
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~setStylistIdFromDropdown~~~~~~~~~~~~~~~~~~~~~~~~~
+   * testing setStylistIdFromDropdown
+   * checks that this.name and this.stylistid are set
+   */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~stylistDropdownFilter~~~~~~~~~~~~~~~~~~~~~~~~~
+   * testing stylistDropdownFilter
+   * ensures that it returns a properly filtered stylist list
+   */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~stylistDropdownDisplay~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /** 
+   * testing stylistDropdownDisplay
+   * ensures function returns the stylist name for a non-null stylist object
+   */
+
+  /** 
+   * testing stylistDropdownDisplay
+   * ensures function returns empty string for a null stylist object
+   */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~showWorkScheduleBy~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /**
+   * testing showWorkScheduleBy
+   * ensures events is empty for no full schedule
+   */
+
+  /**
+   * testing showWorkScheduleBy
+   * ensures events is correctly populated for a populated full schedule
+   */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~validateFields~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /**
+   * testing validateFields
+   * checks fails on no name
+   */
+  
+  /**
+   * testing validateFields
+   * checks fails on no start date
+   */
+  
+  /**
+   * testing validateFields
+   * checks fails on no end date
+   */
+  
+  /**
+   * testing validateFields
+   * checks fails on no period
+   */
+  
+  /**
+   * testing validateFields
+   * checks fails on end before start
+   */
+  
+  /**
+   * testing validateFields
+   * checks fails on start before now/date created
+   */
+  
+  /**
+   * testing validateFields
+   * checks a valid unavailability passes
+   */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~clearFields~~~~~~~~~~~~~~~~~~~~~~~~~
+   * testing clearFields
+   * ensures the fields are cleared
+   */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~resetDialog~~~~~~~~~~~~~~~~~~~~~~~~~
+   * testing resetDialog
+   * ensures the fields are cleared
+   */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~timePeriodToString~~~~~~~~~~~~~~~~~~~~~~~~~
+   * testing timePeriodToString
+   * checks that each timeperiod gets converted to its string equivalent
+   */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~checkUnavailabilityConflict~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~setCreateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~addUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~deleteUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~startUpdateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~updateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
 });
