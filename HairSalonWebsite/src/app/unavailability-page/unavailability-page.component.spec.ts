@@ -128,14 +128,41 @@ describe('UnavailabilityPageComponent', () => {
    */
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~checkUnavailabilityConflict~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  
+  /**
+   * ensure that an unavailability that conflicts with an appointment returns true
+   */
 
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~setCreateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /**
+   * ensure that an unavailability for one stylist does not conflict an appointment for a different stylist
+   * 
+   */
 
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~addUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /**
+   * ensure that an unavailability that does not conflict with any appointment returns false
+   */
 
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~deleteUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~setCreateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
+   * check that the fields are populated right
+  */
 
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~startUpdateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~addUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
+   * test that unavailability is added to front-end list and fields are set properly
+   * calls to this.stylistScheduleService.refreshStylistScheduleWithUnavailability()
+   *  and this.appCalendar.updateFullCalendar() should be tested in their native modules
+  */
 
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~updateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ */
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~deleteUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
+   * test that unavailability is removed from the front-end list and fields are
+   * reset properly
+   * Does not test methods of external modules
+  */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~startUpdateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
+   * check that the fields from the right unavailability are loaded and booleans updated
+  */
+
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~updateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
+   * check that the right unavailability is updated and the fields are cleared
+  */
 });
