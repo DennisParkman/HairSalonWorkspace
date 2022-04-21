@@ -18,7 +18,7 @@ namespace UnavailabilityTesting
         // Cleanup the database by removing its right to exist.
         // Handled by destructor so that nobody forgets.
         [TestCleanup]
-        public void RemoveDatabase()
+        public void stopDatabase()
         {
             // Note: When a database is built for the test case its put in the bin folder, must be
             // deleted from there as well. The following if statement must be present to 
