@@ -1,77 +1,174 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UnavailabilityPageComponent } from './unavailability-page.component';
+import { Unavailability, TimePeriod } from '../models/unavailability.model';
+import { Stylist } from '../models/stylist.model';
+import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { StylistService } from '../services/stylist-service/stylist.service';
+import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
+import { AppointmentService } from '../services/appointment-service/appointment.service';
+import { Overlay, ToastrService } from 'ngx-toastr';
+import { InjectionToken } from '@angular/core';
+import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
+import { Observable, of } from 'rxjs';
 
 describe('UnavailabilityPageComponent', () => {
   let component: UnavailabilityPageComponent;
   let fixture: ComponentFixture<UnavailabilityPageComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ UnavailabilityPageComponent ]
+  //service stubs
+  let unavailabilityServiceStub: Partial<UnavailabilityService>;
+  let stylistServiceStub: Partial<StylistService>;
+  let stylistScheduleServiceStub: Partial<StylistScheduleService>;
+  let appointmentServiceStub: Partial<AppointmentService>;
+  let dialogStub: Partial<MatDialog>;
+  let toastrStub: Partial<ToastrService>;
+
+  //initialize stubs. all of them
+  unavailabilityServiceStub = 
+  {
+    getUnavailabilities(): Observable<Unavailability[]>
+    {
+      return of(
+        [
+          
+        ]
+      );
+    }
+  };
+  stylistServiceStub = 
+  {
+
+  };
+  stylistScheduleServiceStub = 
+  {
+
+  };
+  appointmentServiceStub = 
+  {
+
+  };
+  dialogStub = 
+  {
+
+  };
+  toastrStub = 
+  {
+    
+  };
+
+  beforeEach(async () => 
+  {
+    await TestBed.configureTestingModule(
+    {
+      declarations: [ UnavailabilityPageComponent ],
+      imports:
+      [
+        MatDialogModule,
+        // InjectionToken
+
+      ],
+      providers: 
+      [
+        Overlay,
+        // InjectionToken,
+        HttpHandler,
+        HttpClient,
+        HttpClientModule,
+        HttpClientTestingModule,
+        {provide: UnavailabilityService, useValue: unavailabilityServiceStub},
+        {provide: MatDialog, useValue: dialogStub},
+        {provide: StylistService, useValue: stylistServiceStub},
+        {provide: StylistScheduleService, useValue: stylistScheduleServiceStub},
+        {provide: AppointmentService, useValue: appointmentServiceStub},
+        {provide: ToastrService, useValue: toastrStub},
+      ]
     })
+    // .overrideComponent(UnavailabilityPageComponent,
+    //     {set: {providers: [{provide}]}})
     .compileComponents();
   });
 
-  beforeEach(() => {
+  beforeEach(() => 
+  {
     fixture = TestBed.createComponent(UnavailabilityPageComponent);
     component = fixture.componentInstance;
+
+    // unavailabilityService = TestBed.inject(UnavailabilityService);
+    // stylistService = TestBed.inject(StylistService);
+    // stylistScheduleService = TestBed.inject(StylistScheduleService);
+    // appointmentService = TestBed.inject(AppointmentService);
+    // dialog = TestBed.inject(MatDialog);
+    // toastr = TestBed.inject(ToastrService);
+
     fixture.detectChanges();
   });
   
-  it('should create', () => {
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~ngOnInit~~~~~~~~~~~~~~~~~~~~~~~~~ **\
+   * testing ngOnInit
+   * checks enum is set.
+   * checks that filteredStylists is the same as stylists.
+   */
+  it('should initialize', () => 
+  {
     expect(component).toBeTruthy();
+
+    //checks enum is set
+    let timePeriods: TimePeriod[] = [
+      TimePeriod.Once,
+      TimePeriod.Daily,
+      TimePeriod.Weekly,
+      TimePeriod.Monthly,
+      TimePeriod.Yearly
+    ]
+
+    expect(component.timePeriods)/*.withContext("timePeriods array set")*/.toEqual(timePeriods);
+    //                            ^ don' as' stoopit questions
   });
-
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~ngOnInit~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-  /**
-   * testing ngOnInit
-   * checks enum is set
-   */
-
-  /**
-   * testing ngOnInit
-   * checks the lists are set correctly
-   */
-
-  /**
-   * testing ngOnInit
-   * checks that filteredStylists is the same as stylists
-   */
-  
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~setStylistIdFromDropdown~~~~~~~~~~~~~~~~~~~~~~~~~
    * testing setStylistIdFromDropdown
    * checks that this.name and this.stylistid are set
    */
+  it('should setStylistIdFromDropdown', () => 
+  {
+    let sty: Stylist = 
+    {
+      name: "test",
+      id: 1,
+      level: 5,
+      bio: "I hate web development",
+      stylistImage: "iAmRealBase64EncodeImage"
+    };
+
+    component.setStylistIdFromDropdown(sty);
+    expect(component.stylistid)/*.withContext('id should be set')*/.toEqual(1);
+    expect(component.stylistName)/*.withContext('id should be set')*/.toEqual("test");
+  });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~stylistDropdownFilter~~~~~~~~~~~~~~~~~~~~~~~~~
    * testing stylistDropdownFilter
    * ensures that it returns a properly filtered stylist list
    */
+   it('should setStylistIdFromDropdown', () => 
+   {
+ 
+   });
 
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~stylistDropdownDisplay~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-  /** 
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~stylistDropdownDisplay~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * testing stylistDropdownDisplay
    * ensures function returns the stylist name for a non-null stylist object
-   */
-
-  /** 
-   * testing stylistDropdownDisplay
    * ensures function returns empty string for a null stylist object
    */
+   it('should stylistDropdownDisplay', () => 
+   {
+ 
+   });
 
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~showWorkScheduleBy~~~~~~~~~~~~~~~~~~~~~~~~~ */
-
-  /**
+  /** ~~~~~~~~~~~~~~~~~~~~~~~~~showWorkScheduleBy~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * testing showWorkScheduleBy
    * ensures events is empty for no full schedule
-   */
-
-  /**
-   * testing showWorkScheduleBy
    * ensures events is correctly populated for a populated full schedule
    */
 
@@ -81,88 +178,159 @@ describe('UnavailabilityPageComponent', () => {
    * testing validateFields
    * checks fails on no name
    */
+   it('should not validate missing name', () => 
+   {
+ 
+   });
   
   /**
    * testing validateFields
    * checks fails on no start date
    */
+   it('should not validate missing start date', () => 
+   {
+ 
+   });
   
   /**
    * testing validateFields
    * checks fails on no end date
    */
+   it('should not validate missing end date', () => 
+   {
+ 
+   });
   
   /**
    * testing validateFields
    * checks fails on no period
    */
+   it('should not validate missing period', () => 
+   {
+ 
+   });
   
   /**
    * testing validateFields
    * checks fails on end before start
    */
+   it('should not validate ending before start', () => 
+   {
+ 
+   });
   
   /**
    * testing validateFields
    * checks fails on start before now/date created
    */
+   it('should not validate starting before now', () => 
+   {
+ 
+   });
   
   /**
    * testing validateFields
    * checks a valid unavailability passes
    */
+   it('should validate', () => 
+   {
+ 
+   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~clearFields~~~~~~~~~~~~~~~~~~~~~~~~~
    * testing clearFields
    * ensures the fields are cleared
    */
+   it('should clear the fields', () => 
+   {
+ 
+   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~resetDialog~~~~~~~~~~~~~~~~~~~~~~~~~
    * testing resetDialog
    * ensures the fields are cleared
    */
+   it('should reset fields', () => 
+   {
+ 
+   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~timePeriodToString~~~~~~~~~~~~~~~~~~~~~~~~~
    * testing timePeriodToString
    * checks that each timeperiod gets converted to its string equivalent
    */
+   it('should convert timePeriodToString', () => 
+   {
+ 
+   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~checkUnavailabilityConflict~~~~~~~~~~~~~~~~~~~~~~~~~ */
   
   /**
    * ensure that an unavailability that conflicts with an appointment returns true
    */
+   it('should find a conflict', () => 
+   {
+ 
+   });
 
   /**
    * ensure that an unavailability for one stylist does not conflict an appointment for a different stylist
-   * 
    */
+   it('should not find a conflict with a different stylist', () => 
+   {
+ 
+   });
 
   /**
    * ensure that an unavailability that does not conflict with any appointment returns false
    */
+   it('should not find a conflict', () => 
+   {
+ 
+   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~setCreateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * check that the fields are populated right
   */
+   it('should populate the create form fields', () => 
+   {
+ 
+   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~addUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * test that unavailability is added to front-end list and fields are set properly
    * calls to this.stylistScheduleService.refreshStylistScheduleWithUnavailability()
    *  and this.appCalendar.updateFullCalendar() should be tested in their native modules
   */
+   it('should add the unavailability', () => 
+   {
+ 
+   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~deleteUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * test that unavailability is removed from the front-end list and fields are
    * reset properly
    * Does not test methods of external modules
   */
+  it('should delete the unavailability', () => 
+  {
+
+  });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~startUpdateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * check that the fields from the right unavailability are loaded and booleans updated
   */
+  it('should populate the update form fields', () => 
+  {
+
+  });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~updateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * check that the right unavailability is updated and the fields are cleared
   */
+  it('should update the unavailability', () => 
+  {
+
+  });
 });
