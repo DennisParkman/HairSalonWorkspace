@@ -25,9 +25,9 @@ namespace UnavailabilityTesting
             // remove test database.
             SQLiteDbUtility.UninitializeDB();
             Controller = null;
-            if (File.Exists("../sqliteTest.db"))
+            if (File.Exists("sqliteTest.db"))
             {
-                File.Delete("../sqliteTest.db");
+                File.Delete("sqliteTest.db");
             }
         }
 
@@ -40,8 +40,8 @@ namespace UnavailabilityTesting
                 return;
             }
 
-            // Initialize the database
-            SQLiteDbUtility.InitializeDB();
+            // Initialize the database in test mode
+            SQLiteDbUtility.InitializeDB(true);
 
             // Create logger
             ILogger<UnavailabilityController> test_logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<UnavailabilityController>();

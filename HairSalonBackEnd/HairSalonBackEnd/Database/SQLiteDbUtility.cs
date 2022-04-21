@@ -12,12 +12,8 @@ namespace HairSalonBackEnd.Database
 {
     public static class SQLiteDbUtility
     {
-    // Switch to change whether building with test database or main database. 
-#if DEBUG
-        private static string DatabaseDirectory = "FileName=../sqliteTest.db";
-#else
-        private static string DatabaseDirectory = "FileName=../sqlite.db";
-#endif
+        // Switch to change whether building with test database or main database. 
+        private static string DatabaseDirectory = "FileName=Database/sqlite.db";
 
         /// <summary>
         /// DbContext for performing query operations on the database.
@@ -50,6 +46,15 @@ namespace HairSalonBackEnd.Database
 
                 isInitialized = true;
             }
+        }
+
+        public static void InitializeDB(bool isTest)
+        {
+            if(isTest)
+            {
+                DatabaseDirectory = "FileName=sqliteTest.db";
+            }
+            InitializeDB();
         }
 
         /// <summary>
