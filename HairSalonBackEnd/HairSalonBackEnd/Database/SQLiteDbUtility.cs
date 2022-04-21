@@ -52,7 +52,23 @@ namespace HairSalonBackEnd.Database
             }
         }
 
-#region Stylist Methods
+        /// <summary>
+        /// Uninitializes the database only if it is already initialized.
+        /// </summary>
+        public static void UninitializeDB()
+        {
+            if (isInitialized)
+            {
+                dbContext.Database.EnsureDeleted();
+                dbContext = null;
+
+                dbAccess = null;
+
+                isInitialized = false;
+            }
+        }
+
+        #region Stylist Methods
         /// <summary> 
         /// A method for adding a stylist data type to the database.
         /// locks the database until completed
