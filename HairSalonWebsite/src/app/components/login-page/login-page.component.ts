@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SessionStorageService } from 'ngx-webstorage';
-import { User, UserRole } from '../models/user.model';
-import { UserService } from '../services/user-service/user.service';
+import { User, UserRole } from '../../models/user.model';
+import { UserService } from '../../services/user-service/user.service';
 
 @Component(
 {

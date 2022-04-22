@@ -1,17 +1,17 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Appointment } from '../models/appointment.model';
+import { Appointment } from '../../models/appointment.model';
 import { CalendarEvent } from 'angular-calendar';
-import { AppointmentService } from '../services/appointment-service/appointment.service';
+import { AppointmentService } from '../../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Stylist } from '../models/stylist.model';
+import { Stylist } from '../../models/stylist.model';
 import { FormControl } from '@angular/forms';
 import { forkJoin, Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { StylistService } from '../services/stylist-service/stylist.service';
-import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
-import  {EventColor} from '../../../node_modules/calendar-utils/calendar-utils.d';
+import { StylistService } from '../../services/stylist-service/stylist.service';
+import { StylistScheduleService } from '../../services/stylist-schedule-service/stylist-schedule.service';
+import  {EventColor} from 'calendar-utils';
 
 
 
