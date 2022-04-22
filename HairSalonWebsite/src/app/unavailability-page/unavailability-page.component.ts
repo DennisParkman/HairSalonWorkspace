@@ -170,7 +170,7 @@ export class UnavailabilityPageComponent implements OnInit
     }
 
     /**
-     * 
+     * Function to show stylist schedule by stylist selected
      * @param stylist 
      */
     showWorkScheduleBy(stylist: Stylist)

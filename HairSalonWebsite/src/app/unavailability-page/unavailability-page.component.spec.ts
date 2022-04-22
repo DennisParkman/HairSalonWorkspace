@@ -8,12 +8,13 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
-import { Overlay, ToastrService } from 'ngx-toastr';
+import { ActiveToast, Overlay, Toast, ToastrService } from 'ngx-toastr';
 import { InjectionToken } from '@angular/core';
 import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
 import { Observable, of } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
 import { CalendarEvent } from 'angular-calendar';
+import { MatMenuModule } from '@angular/material/menu';
 
 describe('UnavailabilityPageComponent', () => {
   let component: UnavailabilityPageComponent;
@@ -26,21 +27,23 @@ describe('UnavailabilityPageComponent', () => {
   let appointmentServiceStub: Partial<AppointmentService>;
   let dialogStub: Partial<MatDialog>;
   let toastrStub: Partial<ToastrService>;
+  let httpClientStub: Partial<HttpClient>;
 
   //make fake lists for stub services
   let fakeUnavailabilityList: Unavailability[] = [];
   let fakeAppointmentList: Appointment[] = [];
   let fakeStylistList: Stylist[] = [];
+  let dayinMillSeconds = 8640000
 
-  for (let i =0; i>5; i++)
+  for (let i =1; i<5; i++)
   {
     //set Unavailability list
     let unavailability: Unavailability = {
       id: i,
       stylistID: i,
       stylistName: "Stylist" + i,
-      startDate: new Date("April 1"+ i + ", 2022 03:24:00"),
-      endDate: new Date("April 1"+ i+1 + ", 2022 03:24:00"),
+      startDate: new Date("April 1"+ i + ", 2022 11:24:00"),
+      endDate: new Date("April 1"+ i+1 + ", 2022 12:24:00"),
       period: TimePeriod.Once
     }
     fakeUnavailabilityList.push(unavailability);
@@ -52,9 +55,9 @@ describe('UnavailabilityPageComponent', () => {
       name: "Temp" + i,
       email: "temp"+i+"@gmail.com" + i,
       phone: "1234567890",
-      date: new Date("April 1"+ i + ", 2022 03:24:00"),
+      date: new Date("April 1"+ i + ", 2022 09:24:00"),
       length: 30,
-      dateCreated: new Date("April 1"+ i+1 + ", 2022 03:24:00"),
+      dateCreated: new Date("April 1"+ i+1 + ", 2022 09:24:00"),
       description: "I hate web development"
     }
     fakeAppointmentList.push(appointment);
@@ -88,9 +91,30 @@ describe('UnavailabilityPageComponent', () => {
 
   stylistScheduleServiceStub = 
   {
+    //This is not an accurate schedule because it does not account for unavailabilities, however this shoule affect testing
     getStylistSchedule(showUnavailabilities: boolean = false): Observable<CalendarEvent[][]>
     {
-        let fakeCal: CalendarEvent[][] = []
+        let fakeCal: CalendarEvent[][] = [
+          [],
+          [
+            {id: 1, start: new Date("Mon Apr 11 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Fri Apr 22 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 1, start: new Date("Tue Apr 12 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Sat Apr 23 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 1, start: new Date("Wed Apr 13 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Mon Apr 25 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 1, start: new Date("Thu Apr 14 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Tue Apr 26 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''}
+          ],
+          [
+            {id: 2, start: new Date("Mon Apr 11 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Fri Apr 22 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 2, start: new Date("Tue Apr 12 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Sat Apr 23 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 2, start: new Date("Wed Apr 13 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Mon Apr 25 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 2, start: new Date("Thu Apr 14 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Tue Apr 26 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''}
+          ],
+          [
+            {id: 3, start: new Date("Mon Apr 11 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Fri Apr 22 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 3, start: new Date("Tue Apr 12 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Sat Apr 23 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 3, start: new Date("Wed Apr 13 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Mon Apr 25 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+            {id: 3, start: new Date("Thu Apr 14 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Tue Apr 26 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''}
+          ]
+        ]
         return of(fakeCal)
     }
   };
@@ -105,7 +129,18 @@ describe('UnavailabilityPageComponent', () => {
 
   dialogStub = { };
 
-  toastrStub = { };
+  toastrStub = 
+  {
+    /*
+    error(message: string) : ActiveToast<any>
+    {
+      let act: ActiveToast<string> = new Toast()
+      return act
+    }
+    */
+  };
+
+  httpClientStub = {};
 
   beforeEach(async () => 
   {
@@ -114,7 +149,8 @@ describe('UnavailabilityPageComponent', () => {
       declarations: [ UnavailabilityPageComponent ],
       imports:
       [
-        MatDialogModule
+        MatDialogModule,
+        MatMenuModule
       ],
       providers: 
       [
@@ -128,7 +164,8 @@ describe('UnavailabilityPageComponent', () => {
         {provide: StylistService, useValue: stylistServiceStub},
         {provide: StylistScheduleService, useValue: stylistScheduleServiceStub},
         {provide: AppointmentService, useValue: appointmentServiceStub},
-        {provide: ToastrService, useValue: toastrStub}
+        {provide: ToastrService, useValue: toastrStub},
+        {provide: HttpClient, useValue: httpClientStub}
       ]
     })
     .compileComponents();
@@ -188,17 +225,6 @@ describe('UnavailabilityPageComponent', () => {
     expect(component.stylistName)/*.withContext('id should be set')*/.toEqual("test");
   });
 
-  /** ~~~~~~~~~~~~~~~~~~~~~~~~~stylistDropdownFilter~~~~~~~~~~~~~~~~~~~~~~~~~
-   * testing stylistDropdownFilter
-   * ensures that it returns a properly filtered stylist list
-   */
-   it('should stylistDropdownFilter', () => 
-   {
-    let name = ""
-
-    let actual = component.stylistDropdownDisplay(sty);
-   });
-
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~stylistDropdownDisplay~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * testing stylistDropdownDisplay
    * ensures function returns the stylist name for a non-null stylist object
@@ -206,7 +232,17 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should stylistDropdownDisplay', () => 
    {
- 
+    let sty: Stylist = 
+    {
+      name: "Stylist1",
+      id: 1,
+      level: 5,
+      bio: "I hate web development",
+      stylistImage: "iAmRealBase64EncodeImage"
+    };
+    
+    let actual = component.stylistDropdownDisplay(sty);
+    expect(sty.name)/*.withContext('id should be set')*/.toEqual(actual);
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~showWorkScheduleBy~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -214,8 +250,37 @@ describe('UnavailabilityPageComponent', () => {
    * ensures events is empty for no full schedule
    * ensures events is correctly populated for a populated full schedule
    */
+   it('should showWorkScheduleBy', () =>
+   {
+    let fakeEvents: CalendarEvent[] = [
+      {id: 1, start: new Date("Mon Apr 11 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Fri Apr 22 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+      {id: 1, start: new Date("Tue Apr 12 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Sat Apr 23 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+      {id: 1, start: new Date("Wed Apr 13 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Mon Apr 25 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''},
+      {id: 1, start: new Date("Thu Apr 14 2022 06:00:50 GMT-0400 (Eastern Daylight Time)"), end: new Date("Tue Apr 26 2022 19:00:50 GMT-0400 (Eastern Daylight Time)"), title: ''}
+    ]
+    component.showWorkScheduleBy(fakeStylistList[0]);
+    expect(fakeEvents)/*.withContext('id should be set')*/.toEqual(component.events);
+    component.fullStylistSchedule = []
+    fakeEvents = []
+    component.showWorkScheduleBy(fakeStylistList[0]);
+    expect(fakeEvents)/*.withContext('id should be set')*/.toEqual(component.events);
+   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~validateFields~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+   /**
+   * testing validateFields
+   * checks a valid unavailability passes
+   */
+    it('should validate', () => 
+    {
+      //unavailability attributes for forms
+      component.stylistName = 'Stylist1';
+      component.startDate = new Date(Date.now());
+      component.endDate = new Date(Date.now() + dayinMillSeconds);
+      component.period = TimePeriod.Once;
+      expect(component.validateFields())/*.withContext('id should be set')*/.toBeTruthy();
+    });
 
   /**
    * testing validateFields
@@ -223,7 +288,12 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should not validate missing name', () => 
    {
- 
+      //unavailability attributes for forms
+      component.stylistName = '';
+      component.startDate = new Date(Date.now());
+      component.endDate = new Date(Date.now() + dayinMillSeconds);
+      component.period = TimePeriod.Once;
+      expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
    });
   
   /**
@@ -232,7 +302,12 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should not validate missing start date', () => 
    {
- 
+    //unavailability attributes for forms
+    component.stylistName = 'Stylist1';
+    component.startDate = new Date();
+    component.endDate = new Date(Date.now() + dayinMillSeconds);
+    component.period = TimePeriod.Once;
+    expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
    });
   
   /**
@@ -241,7 +316,12 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should not validate missing end date', () => 
    {
- 
+      //unavailability attributes for forms
+      component.stylistName = 'Stylist1';
+      component.startDate = new Date(Date.now());
+      component.endDate = new Date();
+      component.period = TimePeriod.Once;
+      expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
    });
   
   /**
@@ -250,7 +330,12 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should not validate missing period', () => 
    {
- 
+    //unavailability attributes for forms
+    component.stylistName = 'Stylist1';
+    component.startDate = new Date(Date.now());
+    component.endDate = new Date(Date.now() + dayinMillSeconds);
+    component.period;
+    expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
    });
   
   /**
@@ -259,7 +344,12 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should not validate ending before start', () => 
    {
- 
+    //unavailability attributes for forms
+    component.stylistName = 'Stylist1';
+    component.startDate = new Date(Date.now());
+    component.endDate = new Date(Date.now() - dayinMillSeconds);
+    component.period = TimePeriod.Once;
+    expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
    });
   
   /**
@@ -268,16 +358,12 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should not validate starting before now', () => 
    {
- 
-   });
-  
-  /**
-   * testing validateFields
-   * checks a valid unavailability passes
-   */
-   it('should validate', () => 
-   {
- 
+    //unavailability attributes for forms
+    component.stylistName = 'Stylist1';
+    component.startDate = new Date(Date.now() - dayinMillSeconds);
+    component.endDate = new Date(Date.now() + dayinMillSeconds);
+    component.period = TimePeriod.Once;
+    expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~clearFields~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -286,7 +372,17 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should clear the fields', () => 
    {
- 
+    //unavailability attributes for forms
+    component.stylistName = 'Stylist1';
+    component.startDate = new Date(Date.now());
+    component.endDate = new Date(Date.now() + dayinMillSeconds);
+    component.period = TimePeriod.Once;
+    component.clearFields();
+    expect(component.stylistName == '')/*.withContext('id should be set')*/.toBeTruthy();
+    expect(component.startDate == new Date)/*.withContext('id should be set')*/.toBeTruthy();
+    expect(component.endDate == new Date)/*.withContext('id should be set')*/.toBeTruthy();
+    expect(component.period == TimePeriod.Once)/*.withContext('id should be set')*/.toBeTruthy(); //apparently this always returns false if component.period is set to anything by Once
+    
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~resetDialog~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -295,7 +391,11 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should reset fields', () => 
    {
- 
+      component.updatingUnavailability  = true;
+      component.addingUnavailability  = true;
+      component.resetDialog();
+      expect(component.updatingUnavailability)/*.withContext('id should be set')*/.toBeFalsy();
+      expect(component.addingUnavailability)/*.withContext('id should be set')*/.toBeFalsy();
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~timePeriodToString~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -304,7 +404,11 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should convert timePeriodToString', () => 
    {
- 
+      expect(component.timePeriodToString(TimePeriod.Once))/*.withContext('id should be set')*/.toEqual("Once");
+      expect(component.timePeriodToString(TimePeriod.Daily))/*.withContext('id should be set')*/.toEqual("Daily");
+      expect(component.timePeriodToString(TimePeriod.Weekly))/*.withContext('id should be set')*/.toEqual("Weekly");
+      expect(component.timePeriodToString(TimePeriod.Monthly))/*.withContext('id should be set')*/.toEqual("Monthly");
+      expect(component.timePeriodToString(TimePeriod.Yearly))/*.withContext('id should be set')*/.toEqual("Yearly");
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~checkUnavailabilityConflict~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -314,7 +418,16 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should find a conflict', () => 
    {
- 
+      component.appointments = fakeAppointmentList;
+      let unavailability: Unavailability = {
+        id: 1,
+        stylistID: 1,
+        stylistName: "Stylist1",
+        startDate: new Date("April 12, 2022 08:24:00"),
+        endDate: new Date("April 13, 2022 12:24:00"),
+        period: TimePeriod.Once
+      }
+      expect(component.checkUnavailabilityConflict(unavailability))/*.withContext('id should be set')*/.toBeTruthy();
    });
 
   /**
@@ -322,7 +435,16 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should not find a conflict with a different stylist', () => 
    {
- 
+      component.appointments = fakeAppointmentList;
+      let unavailability: Unavailability = {
+        id: 1,
+        stylistID: 1,
+        stylistName: "Stylist1",
+        startDate: new Date("April 12, 2022 08:24:00"),
+        endDate: new Date("April 13, 2022 12:24:00"),
+        period: TimePeriod.Once
+      }
+      expect(component.checkUnavailabilityConflict(unavailability))/*.withContext('id should be set')*/.toBeTruthy();
    });
 
   /**
@@ -330,7 +452,16 @@ describe('UnavailabilityPageComponent', () => {
    */
    it('should not find a conflict', () => 
    {
- 
+    component.appointments = fakeAppointmentList;
+    let unavailability: Unavailability = {
+      id: 1,
+      stylistID: 7,
+      stylistName: "Stylist1",
+      startDate: new Date("April 12, 2022 08:24:00"),
+      endDate: new Date("April 13, 2022 12:24:00"),
+      period: TimePeriod.Once
+    }
+    expect(component.checkUnavailabilityConflict(unavailability))/*.withContext('id should be set')*/.toBeFalsy();
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~setCreateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -338,7 +469,21 @@ describe('UnavailabilityPageComponent', () => {
   */
    it('should populate the create form fields', () => 
    {
- 
+      //unavailability attributes for forms
+      component.stylistName = 'Stylist1';
+      component.startDate = new Date(Date.now());
+      component.endDate = new Date(Date.now() + dayinMillSeconds);
+      component.period = TimePeriod.Once;
+      component.addingUnavailability = false;
+
+      component.setCreateUnavailability();
+
+      expect(component.stylistName == '')/*.withContext('id should be set')*/.toBeTruthy();
+      expect(component.startDate == new Date())/*.withContext('id should be set')*/.toBeTruthy();
+      expect(component.endDate == new Date())/*.withContext('id should be set')*/.toBeTruthy();
+      expect(component.period == TimePeriod.Once)/*.withContext('id should be set')*/.toBeTruthy();
+      expect(component.addingUnavailability)/*.withContext('id should be set')*/.toBeTruthy();
+
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~addUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
