@@ -33,7 +33,7 @@ describe('UnavailabilityPageComponent', () => {
   let fakeUnavailabilityList: Unavailability[] = [];
   let fakeAppointmentList: Appointment[] = [];
   let fakeStylistList: Stylist[] = [];
-  let dayinMillSeconds = 8640000
+  let dayinMillSeconds = 86400000
 
   for (let i =1; i<5; i++)
   {
@@ -283,7 +283,7 @@ describe('UnavailabilityPageComponent', () => {
       component.startDate = new Date(Date.now());
       component.endDate = new Date(Date.now() + dayinMillSeconds);
       component.period = TimePeriod.Once;
-      expect(component.validateFields())/*.withContext('id should be set')*/.toBeTruthy();
+      expect(component.validateFields()).toBeTruthy();
     });
 
   /**
@@ -297,7 +297,7 @@ describe('UnavailabilityPageComponent', () => {
       component.startDate = new Date(Date.now());
       component.endDate = new Date(Date.now() + dayinMillSeconds);
       component.period = TimePeriod.Once;
-      expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
+      expect(component.validateFields()).toBeFalsy();
    });
   
   /**
@@ -308,10 +308,10 @@ describe('UnavailabilityPageComponent', () => {
    {
     //unavailability attributes for forms
     component.stylistName = 'Stylist1';
-    component.startDate = new Date();
+    component.startDate;
     component.endDate = new Date(Date.now() + dayinMillSeconds);
     component.period = TimePeriod.Once;
-    expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
+    expect(component.validateFields()).toBeFalsy();
    });
   
   /**
@@ -325,7 +325,7 @@ describe('UnavailabilityPageComponent', () => {
       component.startDate = new Date(Date.now());
       component.endDate;
       component.period = TimePeriod.Once;
-      expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
+      expect(component.validateFields()).toBeFalsy();
    });
   
   /**
@@ -339,7 +339,7 @@ describe('UnavailabilityPageComponent', () => {
     component.startDate = new Date(Date.now());
     component.endDate = new Date(Date.now() + dayinMillSeconds);
     component.period;
-    expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
+    expect(component.validateFields()).toBeFalsy();
    });
   
   /**
@@ -353,7 +353,7 @@ describe('UnavailabilityPageComponent', () => {
     component.startDate = new Date(Date.now());
     component.endDate = new Date(Date.now() - dayinMillSeconds);
     component.period = TimePeriod.Once;
-    expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
+    expect(component.validateFields()).toBeFalsy();
    });
   
   /**
@@ -364,10 +364,10 @@ describe('UnavailabilityPageComponent', () => {
    {
     //unavailability attributes for forms
     component.stylistName = 'Stylist1';
-    component.startDate = new Date(Date.now() - dayinMillSeconds);
+    component.startDate = new Date(Date.now() - dayinMillSeconds - dayinMillSeconds);
     component.endDate = new Date(Date.now() + dayinMillSeconds);
     component.period = TimePeriod.Once;
-    expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
+    expect(component.validateFields()).toBeFalsy();
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~clearFields~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -383,8 +383,8 @@ describe('UnavailabilityPageComponent', () => {
     component.period = TimePeriod.Once;
     component.clearFields();
     expect(component.stylistName == '')/*.withContext('id should be set')*/.toBeTruthy();
-    expect(component.startDate == new Date)/*.withContext('id should be set')*/.toBeTruthy();
-    expect(component.endDate == new Date)/*.withContext('id should be set')*/.toBeTruthy();
+    expect(component.startDate <= new Date)/*.withContext('id should be set')*/.toBeTruthy(); //use <= since current time keeps advancing as code executes
+    expect(component.endDate <= new Date)/*.withContext('id should be set')*/.toBeTruthy(); //use <= since current time keeps advancing as code executes
     expect(component.period == TimePeriod.Once)/*.withContext('id should be set')*/.toBeTruthy(); //apparently this always returns false if component.period is set to anything by Once
     
    });
@@ -450,7 +450,7 @@ describe('UnavailabilityPageComponent', () => {
         endDate: new Date("April 13, 2022 12:24:00"),
         period: TimePeriod.Once
       }
-      expect(component.checkUnavailabilityConflict(unavailability))/*.withContext('id should be set')*/.toBeTruthy();
+      expect(component.checkUnavailabilityConflict(unavailability))/*.withContext('id should be set')*/.toBeFalsy();
    });
 
   /**
