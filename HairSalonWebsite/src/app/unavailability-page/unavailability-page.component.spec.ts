@@ -12,6 +12,8 @@ import { Overlay, ToastrService } from 'ngx-toastr';
 import { InjectionToken } from '@angular/core';
 import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
 import { Observable, of } from 'rxjs';
+import { Appointment } from '../models/appointment.model';
+import { CalendarEvent } from 'angular-calendar';
 
 describe('UnavailabilityPageComponent', () => {
   let component: UnavailabilityPageComponent;
@@ -25,29 +27,77 @@ describe('UnavailabilityPageComponent', () => {
   let dialogStub: Partial<MatDialog>;
   let toastrStub: Partial<ToastrService>;
 
+  //make fake lists for stub services
+  let fakeUnavailabilityList: Unavailability[] = [];
+  let fakeAppointmentList: Appointment[] = [];
+  let fakeStylistList: Stylist[] = [];
+
+  for (let i =0; i>5; i++)
+  {
+    //set Unavailability list
+    let unavailability: Unavailability = {
+      id: i,
+      stylistID: i,
+      stylistName: "Stylist" + i,
+      startDate: new Date("April 1"+ i + ", 2022 03:24:00"),
+      endDate: new Date("April 1"+ i+1 + ", 2022 03:24:00"),
+      period: TimePeriod.Once
+    }
+    fakeUnavailabilityList.push(unavailability);
+
+    //set Appointment list
+    let appointment: Appointment = {
+      id: i,
+      stylistID: i,
+      name: "Temp" + i,
+      email: "temp"+i+"@gmail.com" + i,
+      phone: "1234567890",
+      date: new Date("April 1"+ i + ", 2022 03:24:00"),
+      length: 30,
+      dateCreated: new Date("April 1"+ i+1 + ", 2022 03:24:00"),
+      description: "I hate web development"
+    }
+    fakeAppointmentList.push(appointment);
+
+    //set Appointment list
+    let stylist: Stylist = {
+      id: i,
+      name: "Stylist" + i,
+      level: i+1,
+      bio: "I hate web development"
+    }
+    fakeStylistList.push(stylist);
+  }
+
   //initialize stubs. all of them
   unavailabilityServiceStub = 
   {
     getUnavailabilities(): Observable<Unavailability[]>
     {
-      return of(
-        [
-          
-        ]
-      );
+      return of(fakeUnavailabilityList);
     }
   };
   stylistServiceStub = 
   {
-
+    getStylists(): Observable<Stylist[]>
+    {
+      return of(fakeStylistList);
+    }
   };
   stylistScheduleServiceStub = 
   {
-
+    getStylistSchedule(showUnavailabilities: boolean = false): Observable<CalendarEvent[][]>
+    {
+        let fakeCal: CalendarEvent[][] = []
+        return of(fakeCal)
+    }
   };
   appointmentServiceStub = 
   {
-
+    getAppointment(): Observable<Appointment[]>
+    {
+        return of(fakeAppointmentList);
+    }
   };
   dialogStub = 
   {
