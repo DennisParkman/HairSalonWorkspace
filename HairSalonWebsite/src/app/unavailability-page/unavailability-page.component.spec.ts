@@ -107,8 +107,13 @@ describe('UnavailabilityPageComponent', () => {
     {
       console.log("delete from addUnavailability");
       return of(unavailability);
-    }
+    },
 
+    updateUnavailability(unavailability: Unavailability): Observable<Unavailability>
+    {
+      console.log("update to addUnavailability");
+      return of(unavailability);
+    }
   };
   
   stylistServiceStub = 
@@ -633,6 +638,28 @@ describe('UnavailabilityPageComponent', () => {
   */
   it('should update the unavailability', () => 
   {
+    component.unavailabilities = fakeUnavailabilityList;
 
+      //set fields
+      component.id = 1;
+      component.stylistid = 7;
+      component.stylistName = "Stylist1";
+      component.startDate = new Date(Date.now() + dayinMillSeconds);
+      component.endDate = new Date(component.startDate.valueOf() + dayinMillSeconds);
+      component.period = TimePeriod.Weekly;
+
+      // console.log(component.unavailabilities.length);
+      //add the unavailability
+      component.updateUnavailability();
+      // console.log(component.unavailabilities.length);
+      //check the stuff
+      expect(component.updatingUnavailability).toBeFalsy();
+      
+      expect(component.unavailabilities.find(x => (x.stylistID == component.stylistid &&
+                                                  x.stylistName == component.stylistName &&
+                                                  x.startDate == component.startDate &&
+                                                  x.endDate == component.endDate &&
+                                                  x.period == component.period)))
+            .toBeDefined();
   });
 });
