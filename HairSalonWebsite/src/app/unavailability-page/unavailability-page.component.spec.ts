@@ -597,7 +597,35 @@ describe('UnavailabilityPageComponent', () => {
   */
   it('should populate the update form fields', () => 
   {
+    
+    let unavailability: Unavailability = 
+    {
+      id: 1,
+      stylistID: 7,
+      stylistName: "Stylist1",
+      startDate: new Date("April 12, 2022 08:24:00"),
+      endDate: new Date("April 13, 2022 12:24:00"),
+      period: TimePeriod.Weekly
+    }
+    component.unavailabilities = [unavailability];
 
+    let eventToUpdate: CalendarEvent = 
+    {
+      id: 1,
+      start: unavailability.startDate,
+      end: unavailability.endDate,
+      title: "Unavailable",
+      color: {primary: '#8b0000', secondary: '#008b8b'}
+    }
+
+    component.startUpdateUnavailability(eventToUpdate);
+
+    expect(component.unavailabilities.find(x => (x.stylistID == component.stylistid &&
+                                            x.stylistName == component.stylistName &&
+                                            x.startDate == component.startDate &&
+                                            x.endDate == component.endDate &&
+                                            x.period == component.period)))
+                                            .toBeDefined();
   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~updateUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
