@@ -4,12 +4,12 @@ import { UnavailabilityPageComponent } from './unavailability-page.component';
 import { Unavailability, TimePeriod } from '../models/unavailability.model';
 import { Stylist } from '../models/stylist.model';
 import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_SCROLL_STRATEGY_FACTORY } from '@angular/material/dialog';
 import { StylistService } from '../services/stylist-service/stylist.service';
 import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { ActiveToast, Overlay, Toast, ToastrService } from 'ngx-toastr';
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, TemplateRef } from '@angular/core';
 import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
 import { Observable, of } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
@@ -127,17 +127,20 @@ describe('UnavailabilityPageComponent', () => {
     }
   };
 
-  dialogStub = { };
+  dialogStub = 
+  { 
+    open(a: any): any { }
+  };
 
   toastrStub = 
   {
-    /*
-    error(message: string) : ActiveToast<any>
+    
+    error(message: string) : any //ActiveToast<any>
     {
-      let act: ActiveToast<string> = new Toast()
-      return act
+      // let act: ActiveToast<string> = new Toast()
+      // return act
     }
-    */
+    
   };
 
   httpClientStub = {};
@@ -260,8 +263,8 @@ describe('UnavailabilityPageComponent', () => {
     ]
     component.showWorkScheduleBy(fakeStylistList[0]);
     expect(fakeEvents)/*.withContext('id should be set')*/.toEqual(component.events);
-    component.fullStylistSchedule = []
-    fakeEvents = []
+    component.fullStylistSchedule = [];
+    fakeEvents = [];
     component.showWorkScheduleBy(fakeStylistList[0]);
     expect(fakeEvents)/*.withContext('id should be set')*/.toEqual(component.events);
    });
@@ -319,7 +322,7 @@ describe('UnavailabilityPageComponent', () => {
       //unavailability attributes for forms
       component.stylistName = 'Stylist1';
       component.startDate = new Date(Date.now());
-      component.endDate = new Date();
+      component.endDate;
       component.period = TimePeriod.Once;
       expect(component.validateFields())/*.withContext('id should be set')*/.toBeFalsy();
    });

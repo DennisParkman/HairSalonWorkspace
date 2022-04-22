@@ -184,9 +184,12 @@ export class UnavailabilityPageComponent implements OnInit
         }
 
         //load work schedule for stylist
-        for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
+        if(this.fullStylistSchedule[stylist.id])
         {
-            this.events.push(this.fullStylistSchedule[index][i]); 
+            for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
+            {
+                this.events.push(this.fullStylistSchedule[index][i]); 
+            }
         }
 
         //display stylist name on screen
@@ -227,12 +230,12 @@ export class UnavailabilityPageComponent implements OnInit
         else if(startDateValue > endDateValue)
         {
         valid = false;
-        this.toastr.warning("Start date after end date")
+        this.toastr.error("Start date after end date")
         }
         else if(new Date(this.startDate).getTime() < Date.now() - (24 * 60 * 60 * 1000))
         {
         valid = false;
-        this.toastr.warning("Start date too early")
+        this.toastr.error("Start date too early")
         }
 
         return valid;
@@ -315,14 +318,14 @@ export class UnavailabilityPageComponent implements OnInit
     /**
      * function to show create form from dialog box of events
      */
-     setCreateUnavailability(date: Date = new Date())
-     {
+    setCreateUnavailability(date: Date = new Date())
+    {
         this.resetDialog();
         this.startDate = date;
         this.endDate = date;
         this.addingUnavailability = true;
         this.dialog.open(this.formDialog);
-     }
+    }
 
     /**
      * function to add a new unavailability to the database and front end lists
