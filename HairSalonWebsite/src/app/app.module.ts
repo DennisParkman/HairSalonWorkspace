@@ -4,30 +4,31 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomePageComponent } from './home-page/home-page.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'src/app/material.module';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 import { StylistService } from './services/stylist-service/stylist.service';
-import { FooterComponent } from './footer/footer.component';
-import { StylistPageComponent } from './stylist-page/stylist-page.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { StylistPageComponent } from './components/stylist-page/stylist-page.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SchedulePageComponent } from './schedule-page/schedule-page.component';
-import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
+import { SchedulePageComponent } from './components/schedule-page/schedule-page.component';
+import { AppointmentPageComponent } from './components/appointment-page/appointment-page.component';
 import { AppointmentService } from './services/appointment-service/appointment.service';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { DayDialogBoxComponent } from './day-dialog-box/day-dialog-box.component';
-import { EventCalendarComponent } from './event-calendar/event-calendar.component';
-import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
+import { DayDialogBoxComponent } from './components/day-dialog-box/day-dialog-box.component';
+import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
+import { UnavailabilityPageComponent } from './components/unavailability-page/unavailability-page.component';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { ToastrModule } from 'ngx-toastr';
-import { UsersPageComponent } from './users-page/users-page.component';
-import { LoginPageComponent } from './login-page/login-page.component';
+import { UsersPageComponent } from './components/users-page/users-page.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxWebstorageModule } from 'ngx-webstorage';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule(
 {
@@ -48,6 +49,7 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
   ],
   imports: 
   [
+    MatDialogModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
