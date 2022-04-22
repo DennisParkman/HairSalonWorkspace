@@ -59,11 +59,11 @@ describe('UnavailabilityPageComponent', () => {
     }
     fakeAppointmentList.push(appointment);
 
-    //set Appointment list
+    //set Stylist list
     let stylist: Stylist = {
       id: i,
       name: "Stylist" + i,
-      level: i+1,
+      level: ((i + 1) % 5) + 1,
       bio: "I hate web development"
     }
     fakeStylistList.push(stylist);
@@ -77,6 +77,7 @@ describe('UnavailabilityPageComponent', () => {
       return of(fakeUnavailabilityList);
     }
   };
+  
   stylistServiceStub = 
   {
     getStylists(): Observable<Stylist[]>
@@ -84,6 +85,7 @@ describe('UnavailabilityPageComponent', () => {
       return of(fakeStylistList);
     }
   };
+
   stylistScheduleServiceStub = 
   {
     getStylistSchedule(showUnavailabilities: boolean = false): Observable<CalendarEvent[][]>
@@ -92,6 +94,7 @@ describe('UnavailabilityPageComponent', () => {
         return of(fakeCal)
     }
   };
+
   appointmentServiceStub = 
   {
     getAppointment(): Observable<Appointment[]>
@@ -99,14 +102,10 @@ describe('UnavailabilityPageComponent', () => {
         return of(fakeAppointmentList);
     }
   };
-  dialogStub = 
-  {
 
-  };
-  toastrStub = 
-  {
-    
-  };
+  dialogStub = { };
+
+  toastrStub = { };
 
   beforeEach(async () => 
   {
@@ -115,14 +114,11 @@ describe('UnavailabilityPageComponent', () => {
       declarations: [ UnavailabilityPageComponent ],
       imports:
       [
-        MatDialogModule,
-        // InjectionToken
-
+        MatDialogModule
       ],
       providers: 
       [
         Overlay,
-        // InjectionToken,
         HttpHandler,
         HttpClient,
         HttpClientModule,
@@ -132,11 +128,9 @@ describe('UnavailabilityPageComponent', () => {
         {provide: StylistService, useValue: stylistServiceStub},
         {provide: StylistScheduleService, useValue: stylistScheduleServiceStub},
         {provide: AppointmentService, useValue: appointmentServiceStub},
-        {provide: ToastrService, useValue: toastrStub},
+        {provide: ToastrService, useValue: toastrStub}
       ]
     })
-    // .overrideComponent(UnavailabilityPageComponent,
-    //     {set: {providers: [{provide}]}})
     .compileComponents();
   });
 
@@ -144,13 +138,6 @@ describe('UnavailabilityPageComponent', () => {
   {
     fixture = TestBed.createComponent(UnavailabilityPageComponent);
     component = fixture.componentInstance;
-
-    // unavailabilityService = TestBed.inject(UnavailabilityService);
-    // stylistService = TestBed.inject(StylistService);
-    // stylistScheduleService = TestBed.inject(StylistScheduleService);
-    // appointmentService = TestBed.inject(AppointmentService);
-    // dialog = TestBed.inject(MatDialog);
-    // toastr = TestBed.inject(ToastrService);
 
     fixture.detectChanges();
   });
@@ -175,6 +162,10 @@ describe('UnavailabilityPageComponent', () => {
 
     expect(component.timePeriods)/*.withContext("timePeriods array set")*/.toEqual(timePeriods);
     //                            ^ don' as' stoopit questions
+    expect(component.stylists)/*.withContext("stylists array set")*/.toEqual(fakeStylistList);
+    expect(component.appointments)/*.withContext("timePeriods array set")*/.toEqual(fakeAppointmentList);
+    expect(component.unavailabilities)/*.withContext("timePeriods array set")*/.toEqual(fakeUnavailabilityList);
+    //and we'll skip testing fullStylistSchedule for now....
   });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~setStylistIdFromDropdown~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -201,9 +192,11 @@ describe('UnavailabilityPageComponent', () => {
    * testing stylistDropdownFilter
    * ensures that it returns a properly filtered stylist list
    */
-   it('should setStylistIdFromDropdown', () => 
+   it('should stylistDropdownFilter', () => 
    {
- 
+    let name = ""
+
+    let actual = component.stylistDropdownDisplay(sty);
    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~stylistDropdownDisplay~~~~~~~~~~~~~~~~~~~~~~~~~ 
