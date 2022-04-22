@@ -49,7 +49,8 @@ describe('UnavailabilityPageComponent', () => {
     fakeUnavailabilityList.push(unavailability);
 
     //set Appointment list
-    let appointment: Appointment = {
+    let appointment: Appointment = 
+    {
       id: i,
       stylistID: i,
       name: "Temp" + i,
@@ -57,7 +58,7 @@ describe('UnavailabilityPageComponent', () => {
       phone: "1234567890",
       date: new Date("April 1"+ i + ", 2022 09:24:00"),
       length: 30,
-      dateCreated: new Date("April 1"+ i+1 + ", 2022 09:24:00"),
+      dateCreated: new Date("April 1"+ (i-1) + ", 2022 09:24:00"),
       description: "I hate web development"
     }
     fakeAppointmentList.push(appointment);
@@ -422,14 +423,16 @@ describe('UnavailabilityPageComponent', () => {
    it('should find a conflict', () => 
    {
       component.appointments = fakeAppointmentList;
-      let unavailability: Unavailability = {
+      let unavailability: Unavailability = 
+      {
         id: 1,
-        stylistID: 1,
+        stylistID: 2,
         stylistName: "Stylist1",
         startDate: new Date("April 12, 2022 08:24:00"),
         endDate: new Date("April 13, 2022 12:24:00"),
         period: TimePeriod.Once
-      }
+      };
+
       expect(component.checkUnavailabilityConflict(unavailability))/*.withContext('id should be set')*/.toBeTruthy();
    });
 
@@ -472,18 +475,19 @@ describe('UnavailabilityPageComponent', () => {
   */
    it('should populate the create form fields', () => 
    {
+      let date = new Date();
       //unavailability attributes for forms
       component.stylistName = 'Stylist1';
-      component.startDate = new Date(Date.now());
-      component.endDate = new Date(Date.now() + dayinMillSeconds);
-      component.period = TimePeriod.Once;
+      component.startDate = date;
+      component.endDate = date;
+      // component.period = TimePeriod.Weekly;// period not set by setCreateUnavailability
       component.addingUnavailability = false;
 
-      component.setCreateUnavailability();
+      component.setCreateUnavailability(date);
 
       expect(component.stylistName == '')/*.withContext('id should be set')*/.toBeTruthy();
-      expect(component.startDate == new Date())/*.withContext('id should be set')*/.toBeTruthy();
-      expect(component.endDate == new Date())/*.withContext('id should be set')*/.toBeTruthy();
+      expect(component.startDate == date)/*.withContext('id should be set')*/.toBeTruthy();
+      expect(component.endDate == date)/*.withContext('id should be set')*/.toBeTruthy();
       expect(component.period == TimePeriod.Once)/*.withContext('id should be set')*/.toBeTruthy();
       expect(component.addingUnavailability)/*.withContext('id should be set')*/.toBeTruthy();
 
