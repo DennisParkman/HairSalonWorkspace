@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CalendarDatePipe } from 'angular-calendar/modules/common/calendar-date.pipe';
 
 import { EventCalendarComponent } from './event-calendar.component';
 
@@ -8,7 +10,8 @@ describe('EventCalendarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventCalendarComponent ]
+      declarations: [ EventCalendarComponent ],
+      imports: [MatDialogModule]
     })
     .compileComponents();
   });

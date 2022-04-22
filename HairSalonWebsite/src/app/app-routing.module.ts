@@ -4,17 +4,17 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppointmentPageComponent } from './appointment-page/appointment-page.component';
+import { AppointmentPageComponent } from './components/appointment-page/appointment-page.component';
 
-import { HomePageComponent } from './home-page/home-page.component';
-import { StylistPageComponent } from './stylist-page/stylist-page.component';
-import { SchedulePageComponent } from './schedule-page/schedule-page.component';
-import { UnavailabilityPageComponent } from './unavailability-page/unavailability-page.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { StylistPageComponent } from './components/stylist-page/stylist-page.component';
+import { SchedulePageComponent } from './components/schedule-page/schedule-page.component';
+import { UnavailabilityPageComponent } from './components/unavailability-page/unavailability-page.component';
 import { ManagerGuard } from './guards/manager.guard';
 import { StylistGuard } from './guards/stylist.guard';
 import { ReceptionistGuard } from './guards/receptionist.guard';
-import { LoginPageComponent } from './login-page/login-page.component';
-import { UsersPageComponent } from './users-page/users-page.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
+import { UsersPageComponent } from './components/users-page/users-page.component';
 
 //list of url endings and associated components
 const routes: Routes = 

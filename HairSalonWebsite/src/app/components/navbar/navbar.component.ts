@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User,UserRole } from '../models/user.model';
+import { UserRole } from '../../models/user.model';
 import { SessionStorageService } from 'ngx-webstorage';
 
 @Component(
@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit
 
   ngOnInit(): void 
   {
+    console.log(this.sessionStorage)
     if(this.sessionStorage.retrieve('user') != null)
     {
       this.userData = this.sessionStorage.retrieve('user');

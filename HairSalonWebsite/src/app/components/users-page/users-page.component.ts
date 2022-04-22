@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import { User, UserRole } from '../models/user.model';
-import { UserService } from '../services/user-service/user.service';
+import { User, UserRole } from '../../models/user.model';
+import { UserService } from '../../services/user-service/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 

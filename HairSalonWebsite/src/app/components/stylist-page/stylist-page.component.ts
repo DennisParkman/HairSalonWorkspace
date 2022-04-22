@@ -1,9 +1,9 @@
 import { Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 //import { Console } from 'console';
-import { Stylist } from '../models/stylist.model';
-import { StylistService } from '../services/stylist-service/stylist.service';
+import { Stylist } from '../../models/stylist.model';
+import { StylistService } from '../../services/stylist-service/stylist.service';
 import { MatDialog } from '@angular/material/dialog';
-import { User,UserRole } from '../models/user.model';
+import { User,UserRole } from '../../models/user.model';
 import { SessionStorageService } from 'ngx-webstorage';
 
 
