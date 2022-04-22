@@ -9,12 +9,25 @@ import { StylistService } from '../services/stylist-service/stylist.service';
 import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
 import { AppointmentService } from '../services/appointment-service/appointment.service';
 import { ActiveToast, Overlay, Toast, ToastrService } from 'ngx-toastr';
-import { InjectionToken, TemplateRef } from '@angular/core';
+import { Component, InjectionToken, TemplateRef } from '@angular/core';
 import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
 import { Observable, of } from 'rxjs';
 import { Appointment } from '../models/appointment.model';
 import { CalendarEvent } from 'angular-calendar';
 import { MatMenuModule } from '@angular/material/menu';
+import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
+
+@Component({
+  selector: 'app-event-calendar',
+  template: '',
+})
+class eventCalendarComponentFakeClass
+{
+    deleteCalendarEvent(even: any)
+    {
+
+    }
+};
 
 describe('UnavailabilityPageComponent', () => {
   let component: UnavailabilityPageComponent;
@@ -35,7 +48,9 @@ describe('UnavailabilityPageComponent', () => {
   let fakeStylistList: Stylist[] = [];
   let dayinMillSeconds = 86400000
 
-  for (let i =1; i<5; i++)
+  const MAX_TEST_DATA_COUNT = 5;
+
+  for (let i =1; i<MAX_TEST_DATA_COUNT; i++)
   {
     //set Unavailability list
     let unavailability: Unavailability = {
@@ -79,7 +94,21 @@ describe('UnavailabilityPageComponent', () => {
     getUnavailabilities(): Observable<Unavailability[]>
     {
       return of(fakeUnavailabilityList);
+    },
+
+    addUnavailability(unavailability: Unavailability): Observable<Unavailability>
+    {
+      console.log("add to addUnavailability");
+      unavailability.id = MAX_TEST_DATA_COUNT + 1;
+      return of(unavailability);
+    },
+
+    deleteUnavailability(unavailability: Unavailability): Observable<Unavailability>
+    {
+      console.log("delete from addUnavailability");
+      return of(unavailability);
     }
+
   };
   
   stylistServiceStub = 
@@ -146,11 +175,13 @@ describe('UnavailabilityPageComponent', () => {
 
   httpClientStub = {};
 
+  
+
   beforeEach(async () => 
   {
     await TestBed.configureTestingModule(
     {
-      declarations: [ UnavailabilityPageComponent ],
+      declarations: [ UnavailabilityPageComponent],
       imports:
       [
         MatDialogModule,
@@ -169,7 +200,7 @@ describe('UnavailabilityPageComponent', () => {
         {provide: StylistScheduleService, useValue: stylistScheduleServiceStub},
         {provide: AppointmentService, useValue: appointmentServiceStub},
         {provide: ToastrService, useValue: toastrStub},
-        {provide: HttpClient, useValue: httpClientStub}
+        {provide: HttpClient, useValue: httpClientStub},
       ]
     })
     .compileComponents();
@@ -179,6 +210,7 @@ describe('UnavailabilityPageComponent', () => {
   {
     fixture = TestBed.createComponent(UnavailabilityPageComponent);
     component = fixture.componentInstance;
+    
 
     fixture.detectChanges();
   });
@@ -499,9 +531,31 @@ describe('UnavailabilityPageComponent', () => {
    *  and this.appCalendar.updateFullCalendar() should be tested in their native modules
   */
    it('should add the unavailability', () => 
-   {
- 
-   });
+    {
+      component.unavailabilities = fakeUnavailabilityList;
+
+      //set fields
+      component.stylistid = 7,
+      component.stylistName = "Stylist1",
+      component.startDate = new Date(Date.now() + dayinMillSeconds),
+      component.endDate = new Date(component.startDate.valueOf() + dayinMillSeconds),
+      component.period = TimePeriod.Weekly
+
+      console.log(component.unavailabilities.length);
+      //add the unavailability
+      component.addUnavailability();
+      console.log(component.unavailabilities.length);
+      //check the stuff
+      expect(component.addingUnavailability).toBeFalsy();
+      
+      expect(component.unavailabilities.find(x => (x.stylistID == component.stylistid &&
+                                                  x.stylistName == component.stylistName &&
+                                                  x.startDate == component.startDate &&
+                                                  x.endDate == component.endDate &&
+                                                  x.period == component.period)))
+            .toBeDefined();
+      
+    });
 
   /** ~~~~~~~~~~~~~~~~~~~~~~~~~deleteUnavailability~~~~~~~~~~~~~~~~~~~~~~~~~ 
    * test that unavailability is removed from the front-end list and fields are
@@ -510,6 +564,31 @@ describe('UnavailabilityPageComponent', () => {
   */
   it('should delete the unavailability', () => 
   {
+    component.appCalendar = TestBed.createComponent(eventCalendarComponentFakeClass).componentInstance as EventCalendarComponent;
+    let unavailability: Unavailability = 
+    {
+      id: 1,
+      stylistID: 7,
+      stylistName: "Stylist1",
+      startDate: new Date("April 12, 2022 08:24:00"),
+      endDate: new Date("April 13, 2022 12:24:00"),
+      period: TimePeriod.Once
+    }
+    component.unavailabilities = [unavailability];
+
+    let delEvent: CalendarEvent = 
+    {
+      id: 1,
+      start: unavailability.startDate,
+      end: unavailability.endDate,
+      title: "Unavailable",
+      color: {primary: '#8b0000', secondary: '#008b8b'}
+    }
+    component.events = [delEvent];
+    
+    component.deleteUnavailability(delEvent);
+
+    expect(component.unavailabilities).toEqual([]);
 
   });
 
