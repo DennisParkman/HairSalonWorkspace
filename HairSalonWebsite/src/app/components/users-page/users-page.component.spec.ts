@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ToastrModule } from 'ngx-toastr';
 
 import { UsersPageComponent } from './users-page.component';
 
@@ -8,7 +11,9 @@ describe('UsersPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UsersPageComponent ]
+      declarations: [ UsersPageComponent ],
+      imports: [HttpClientTestingModule, MatDialogModule,
+        ToastrModule.forRoot()]
     })
     .compileComponents();
   });

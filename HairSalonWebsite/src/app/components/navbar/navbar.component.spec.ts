@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SessionStorageService } from 'ngx-webstorage';
 
 import { NavbarComponent } from './navbar.component';
 
@@ -11,7 +12,8 @@ describe('NavbarComponent', () =>
   {
     await TestBed.configureTestingModule(
     {
-      declarations: [ NavbarComponent ]
+      declarations: [ NavbarComponent ],
+      providers: [SessionStorageService]
     })
     .compileComponents();
   });

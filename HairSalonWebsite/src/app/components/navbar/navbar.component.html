@@ -15,6 +15,6 @@
         <span class="btn btn-light" routerLink = "/schedule" *ngIf = "canAccess(managerRole)">Work Schedules</span>
         <span class="btn btn-light" routerLink = "/users" *ngIf = "canAccess(managerRole)">Users</span>
         <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "!isLoggedIn()">Login</span>
-        <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "isLoggedIn()" (click) = "logout()">Logout {{ username }}</span>
+        <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "isLoggedIn()" (click) = "logout()">Logout &#8629; {{ username }}</span>
     </div>
 </mat-toolbar>

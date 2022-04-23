@@ -1,17 +1,17 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Appointment } from '../models/appointment.model';
+import { Appointment } from '../../models/appointment.model';
 import { CalendarEvent } from 'angular-calendar';
-import { AppointmentService } from '../services/appointment-service/appointment.service';
+import { AppointmentService } from '../../services/appointment-service/appointment.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Stylist } from '../models/stylist.model';
+import { Stylist } from '../../models/stylist.model';
 import { FormControl } from '@angular/forms';
 import { forkJoin, Observable, startWith } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { StylistService } from '../services/stylist-service/stylist.service';
-import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
-import  {EventColor} from '../../../node_modules/calendar-utils/calendar-utils.d';
+import { StylistService } from '../../services/stylist-service/stylist.service';
+import { StylistScheduleService } from '../../services/stylist-schedule-service/stylist-schedule.service';
+import  {EventColor} from 'calendar-utils';
 
 
 
@@ -28,6 +28,8 @@ export class AppointmentPageComponent implements OnInit
   @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
   stylistSelected: string; //the stylist shown on the front end when changing schedule button
+
+  stylist: Stylist;
 
   //appointment attributes for forms
   id: number;
@@ -119,6 +121,7 @@ export class AppointmentPageComponent implements OnInit
  */
   showWorkScheduleBy(stylist: Stylist)
   {
+      this.stylist = stylist;
       this.events = []; //reset events
 
       //check if stylist id is null and return if true
@@ -363,14 +366,6 @@ export class AppointmentPageComponent implements OnInit
     {
       return;
     }
-    //create a calendar event from appointment object
-    let event = 
-    {
-      id:this.id, 
-      start: this.date, 
-      title: this.name + " - " + this.description,
-      color: {primary: '#228B22', secondary: '#ffffff'}
-    };
 
     //call service to update appointment in database
     this.appointmentService.updateAppointment(appointment);
@@ -383,13 +378,8 @@ export class AppointmentPageComponent implements OnInit
     this.updatingAppointment = false;
     this.clearFields();
     
-    //reload calendar view and close dialog box
-    this.stylistScheduleService.getStylistSchedule().subscribe(value =>
-      {
-          this.fullStylistSchedule = value;
-          console.log(this.stylistid)
-          this.events = value[this.stylistid]
-      });
+    this.showWorkScheduleBy(this.stylist);
+
     this.dialog.closeAll();
   }
 
