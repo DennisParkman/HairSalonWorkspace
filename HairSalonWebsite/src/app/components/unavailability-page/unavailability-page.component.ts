@@ -1,20 +1,20 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
-import { TimePeriod, Unavailability } from '../models/unavailability.model';
+import { TimePeriod, Unavailability } from '../../models/unavailability.model';
 import { CalendarView } from 'angular-calendar';
 import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { startOfDay } from 'date-fns';
-import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
+import { UnavailabilityService } from '../../services/unavailability-service/unavailability.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { forkJoin, map, Observable, startWith, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
-import { Stylist } from '../models/stylist.model';
-import { StylistService } from '../services/stylist-service/stylist.service';
-import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
+import { Stylist } from '../../models/stylist.model';
+import { StylistService } from '../../services/stylist-service/stylist.service';
+import { StylistScheduleService } from '../../services/stylist-schedule-service/stylist-schedule.service';
 import { ToastrService } from 'ngx-toastr';
-import { UserRole } from '../models/user.model';
-import { AppointmentService } from '../services/appointment-service/appointment.service';
-import { Appointment } from '../models/appointment.model';
+import { UserRole } from '../../models/user.model';
+import { AppointmentService } from '../../services/appointment-service/appointment.service';
+import { Appointment } from '../../models/appointment.model';
 
 @Component(
 {
