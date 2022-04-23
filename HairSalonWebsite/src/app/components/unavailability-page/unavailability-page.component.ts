@@ -93,16 +93,18 @@ export class UnavailabilityPageComponent implements OnInit
           //load all unavailabilities into the unavailabilities array
           unavailabilities.forEach(unavailability => 
             {
-              unavailability.startDate = new Date(unavailability.startDate);
-              unavailability.endDate = new Date(unavailability.endDate);
+                //reinitialize the dates so they work right
+                unavailability.startDate = new Date(unavailability.startDate);
+                unavailability.endDate = new Date(unavailability.endDate);
             });
           this.unavailabilities = unavailabilities; //save the list of unavailabilities
   
           //load all appointments into the appointments array
           appointments.forEach(appointments => 
             {
-              appointments.date = new Date(appointments.date);
-              appointments.dateCreated = new Date(appointments.dateCreated);
+                //reinitialize the dates so they work right
+                appointments.date = new Date(appointments.date);
+                appointments.dateCreated = new Date(appointments.dateCreated);
             });
           this.appointments = appointments; //save the list of appointments
   
@@ -139,7 +141,7 @@ export class UnavailabilityPageComponent implements OnInit
     }
 
     /**
-     * helper function for ngOnInit to filter the stylist list by an entered stylist name
+     * helper function to filter the stylist list by an entered stylist name
      */
     private stylistDropdownFilter(name: string): Stylist[]
     {
@@ -168,7 +170,7 @@ export class UnavailabilityPageComponent implements OnInit
     }
 
     /**
-     * 
+     * Function to show stylist schedule by stylist selected
      * @param stylist 
      */
     showWorkScheduleBy(stylist: Stylist)
@@ -182,9 +184,12 @@ export class UnavailabilityPageComponent implements OnInit
         }
 
         //load work schedule for stylist
-        for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
+        if(this.fullStylistSchedule[stylist.id])
         {
-            this.events.push(this.fullStylistSchedule[index][i]); 
+            for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
+            {
+                this.events.push(this.fullStylistSchedule[index][i]); 
+            }
         }
 
         //display stylist name on screen
@@ -225,12 +230,12 @@ export class UnavailabilityPageComponent implements OnInit
         else if(startDateValue > endDateValue)
         {
         valid = false;
-        this.toastr.warning("Start date after end date")
+        this.toastr.error("Start date after end date")
         }
         else if(new Date(this.startDate).getTime() < Date.now() - (24 * 60 * 60 * 1000))
         {
         valid = false;
-        this.toastr.warning("Start date too early")
+        this.toastr.error("Start date too early")
         }
 
         return valid;
@@ -313,14 +318,14 @@ export class UnavailabilityPageComponent implements OnInit
     /**
      * function to show create form from dialog box of events
      */
-     setCreateUnavailability(date: Date = new Date())
-     {
+    setCreateUnavailability(date: Date = new Date())
+    {
         this.resetDialog();
         this.startDate = date;
         this.endDate = date;
         this.addingUnavailability = true;
         this.dialog.open(this.formDialog);
-     }
+    }
 
     /**
      * function to add a new unavailability to the database and front end lists
@@ -434,6 +439,7 @@ export class UnavailabilityPageComponent implements OnInit
      */
     updateUnavailability()
     {
+        console.log("Any log")
         if(!this.validateFields())
         {
             return;

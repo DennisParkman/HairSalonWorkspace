@@ -25,7 +25,7 @@
     ]
   },
   "angularCompilerOptions": {
-    "types" : ["node", "jest"],
+    "types" : ["node","jest"],
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
