@@ -439,6 +439,7 @@ export class UnavailabilityPageComponent implements OnInit
      */
     updateUnavailability()
     {
+        console.log("Any log")
         if(!this.validateFields())
         {
             return;

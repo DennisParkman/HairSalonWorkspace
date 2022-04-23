@@ -164,7 +164,8 @@ describe('UnavailabilityPageComponent', () => {
 
   dialogStub = 
   { 
-    open(a: any): any { }
+    open(a: any): any { },
+    closeAll() {}
   };
 
   toastrStub = 
@@ -638,28 +639,40 @@ describe('UnavailabilityPageComponent', () => {
   */
   it('should update the unavailability', () => 
   {
-    component.unavailabilities = fakeUnavailabilityList;
-
+    let today = new Date(Date.now() + dayinMillSeconds)
+    
+    let unavailability: Unavailability = 
+    {
+      id: 1,
+      stylistID: 7,
+      stylistName: "Stylist7",
+      startDate : new Date(today.valueOf()),
+      endDate : new Date(today.valueOf() + dayinMillSeconds),
+      period: TimePeriod.Weekly
+    }
+    component.unavailabilities = [unavailability];
       //set fields
       component.id = 1;
-      component.stylistid = 7;
-      component.stylistName = "Stylist1";
-      component.startDate = new Date(Date.now() + dayinMillSeconds);
-      component.endDate = new Date(component.startDate.valueOf() + dayinMillSeconds);
-      component.period = TimePeriod.Weekly;
+      component.stylistid = unavailability.stylistID;
+      component.stylistName = "Stylist7";
+      component.startDate = unavailability.startDate;
+      component.endDate = unavailability.endDate;
+      component.period = unavailability.period;
 
       // console.log(component.unavailabilities.length);
       //add the unavailability
+      console.log("before", component.unavailabilities)
       component.updateUnavailability();
+      console.log("after",component.unavailabilities)
       // console.log(component.unavailabilities.length);
       //check the stuff
       expect(component.updatingUnavailability).toBeFalsy();
       
-      expect(component.unavailabilities.find(x => (x.stylistID == component.stylistid &&
-                                                  x.stylistName == component.stylistName &&
-                                                  x.startDate == component.startDate &&
-                                                  x.endDate == component.endDate &&
-                                                  x.period == component.period)))
+      expect(component.unavailabilities.find(x => (x.stylistID == 7 &&
+                                                  x.stylistName == "Stylist7" &&
+                                                  x.startDate == unavailability.startDate &&
+                                                  x.endDate == unavailability.endDate &&
+                                                  x.period == unavailability.period)))
             .toBeDefined();
   });
 });
