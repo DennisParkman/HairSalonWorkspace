@@ -29,6 +29,7 @@ export class UnavailabilityPageComponent implements OnInit
     @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
     stylistSelected: string; //the stylist shown on the front end when changing schedule button
+    stylist: Stylist;
 
     unavailabilities: Unavailability[]; //list of unavailabilities
     appointments: Appointment[]; //list of appointments
@@ -175,6 +176,7 @@ export class UnavailabilityPageComponent implements OnInit
      */
     showWorkScheduleBy(stylist: Stylist)
     {
+        this.stylist = stylist;
         this.events = []; //reset events
 
         //check if stylist id is null and return if true
@@ -369,6 +371,7 @@ export class UnavailabilityPageComponent implements OnInit
             this.stylistScheduleService.refreshStylistScheduleWithUnavailability(this.events, value);
             this.clearFields(); //clear form fields
             this.appCalendar.updateFullCalendar(this.events);
+            this.showWorkScheduleBy(this.stylist);
         });
         
     }
@@ -399,6 +402,7 @@ export class UnavailabilityPageComponent implements OnInit
                 this.fullStylistSchedule = value;
                 console.log(this.stylistid)
                 this.events = value[this.stylistid]
+                this.showWorkScheduleBy(this.stylist);
             });
             this.clearFields(); //clear form fields
         })
@@ -490,6 +494,7 @@ export class UnavailabilityPageComponent implements OnInit
                 this.fullStylistSchedule = value;
                 console.log(this.stylistid)
                 this.events = value[this.stylistid]
+                this.showWorkScheduleBy(this.stylist);
             });
             this.clearFields(); //clear form fields
         });
