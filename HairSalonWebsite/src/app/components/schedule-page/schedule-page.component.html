@@ -1,0 +1,147 @@
+<mat-toolbar class = "title">
+  <h4>Work Schedules Page</h4>
+</mat-toolbar>
+<!--TODO: Add canAccess so that only Receptionist/Stylist/Manager can view page, redirect to login if not allowed-->
+<div *ngIf="!scheduleLoading"> <!--If the the schedule page is done loading then show the calendar component-->
+  <mat-button-toggle [matMenuTriggerFor]="infoMenu"  class = "schedule-by-button">{{stylistSelected}}</mat-button-toggle>
+    <mat-menu #infoMenu="matMenu" backdropClass="customize" style="background-color: rgb(18,24,48)">
+        <mat-option *ngFor="let stylist of stylists" [value]="stylist"  (click)="showWorkScheduleBy(stylist)">{{stylist.name}}</mat-option>
+    </mat-menu>
+  <mat-button-toggle class = "schedule-create-button" (click)="setEditingSchedule()">Edit Schedule</mat-button-toggle>
+  
+  <div class = "schedule-page-title-box">
+    <h2 class = "schedule-page-title">{{stylistSelected}}'s Schedule</h2>
+  </div>
+  <app-event-calendar #appCalendar [calEvents]="events" [supportCRUD]="false"></app-event-calendar>
+</div>
+
+
+
+<ng-template #formDialog>
+  <div *ngIf="editingSchedule" class = "container">
+    
+    <div style="float:left; margin:20px">
+      <h4>Sunday</h4>
+
+      <mat-slide-toggle [(ngModel)]="sundayActive">Activate Day</mat-slide-toggle>
+
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>Start Time</mat-label>
+        <input matInput [disabled]="!sundayActive" [(ngModel)]="this.sundayStartTime">
+      </mat-form-field>
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>End Time</mat-label>
+        <input matInput [disabled]="!sundayActive" [(ngModel)]="this.sundayEndTime">
+      </mat-form-field>
+    </div>
+    
+    <div style="float:left; margin:20px">
+      <h4>Monday</h4>
+
+      <mat-slide-toggle [(ngModel)]="mondayActive">Activate Day</mat-slide-toggle>
+
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>Start Time</mat-label>
+        <input matInput [disabled]="!mondayActive" [(ngModel)]="this.mondayStartTime">
+      </mat-form-field>
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>End Time</mat-label>
+        <input matInput [disabled]="!mondayActive" [(ngModel)]="this.mondayEndTime">
+      </mat-form-field>
+    </div>
+
+    <div style="float:left; margin:20px">
+      <h4>Tuesday</h4>
+
+      <mat-slide-toggle [(ngModel)]="tuesdayActive">Activate Day</mat-slide-toggle>
+
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>Start Time</mat-label>
+        <input matInput [disabled]="!tuesdayActive" [(ngModel)]="this.tuesdayStartTime">
+      </mat-form-field>
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>End Time</mat-label>
+        <input matInput [disabled]="!tuesdayActive" [(ngModel)]="this.tuesdayEndTime">
+      </mat-form-field>
+    </div>
+
+    <div style="float:left; margin:20px">
+      <h4>Wednesday</h4>
+
+      <mat-slide-toggle [(ngModel)]="wednesdayActive">Activate Day</mat-slide-toggle>
+
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>Start Time</mat-label>
+        <input matInput [disabled]="!wednesdayActive" [(ngModel)]="this.wednesdayStartTime">
+      </mat-form-field>
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>End Time</mat-label>
+        <input matInput [disabled]="!wednesdayActive" [(ngModel)]="this.wednesdayEndTime">
+      </mat-form-field>
+    </div>
+
+    <div style="float:left; margin:20px">
+      <h4>Thursday</h4>
+
+      <mat-slide-toggle [(ngModel)]="thursdayActive">Activate Day</mat-slide-toggle>
+
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>Start Time</mat-label>
+        <input matInput [disabled]="!thursdayActive" [(ngModel)]="this.thursdayStartTime">
+      </mat-form-field>
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>End Time</mat-label>
+        <input matInput [disabled]="!thursdayActive" [(ngModel)]="this.thursdayEndTime">
+      </mat-form-field>
+    </div>
+    
+    <div style="float:left; margin:20px">
+      <h4>Friday</h4>
+
+      <mat-slide-toggle [(ngModel)]="fridayActive">Activate Day</mat-slide-toggle>
+
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>Start Time</mat-label>
+        <input matInput [disabled]="!fridayActive" [(ngModel)]="this.fridayStartTime">
+      </mat-form-field>
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>End Time</mat-label>
+        <input matInput [disabled]="!fridayActive" [(ngModel)]="this.fridayEndTime">
+      </mat-form-field>
+    </div>
+    
+    <div style="float:left; margin:20px">
+      <h4>Saturday</h4>
+
+      <mat-slide-toggle [(ngModel)]="saturdayActive">Activate Day</mat-slide-toggle>
+
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>Start Time</mat-label>
+        <input matInput [disabled]="!saturdayActive" [(ngModel)]="this.saturdayStartTime">
+      </mat-form-field>
+      <br>
+      <mat-form-field><!--Input for Stylist Name-->
+        <mat-label>End Time</mat-label>
+        <input matInput [disabled]="!saturdayActive" [(ngModel)]="this.saturdayEndTime">
+      </mat-form-field>
+    </div>
+
+    <!--Buttons to submit or cancel appointment-->
+    <button mat-flat-button color="primary" style = "margin: 1%" type="submit" (click)="submitEditSchedule()">Submit</button>
+    <button mat-flat-button style = "margin: 1%" (click)="closeDialog()">Cancel</button>
+  </div>
+</ng-template>
+

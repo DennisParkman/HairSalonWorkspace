@@ -2,7 +2,8 @@ export enum UserRole
 {
     Manager,
     Stylist,
-    Receptionist
+    Receptionist,
+    Client
 }
 
 export class User 
@@ -22,6 +23,8 @@ export class User
                 return "Stylist";
             case UserRole.Receptionist:
                 return "Receptionist";
+            case UserRole.Client:
+                return "Client";
             default:
                 return "Error"
         }

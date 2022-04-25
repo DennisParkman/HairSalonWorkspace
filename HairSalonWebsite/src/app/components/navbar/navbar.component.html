@@ -1,0 +1,20 @@
+<!--Website Title-->
+<div class = "headerTop">
+    <h1>Frankie's Salon</h1>
+</div>
+<!--header image-->
+<img width="100%" src="assets\images\banner-dots-long.jpg">
+
+<!--navigation bar to show website pages-->
+<mat-toolbar  class = "navbar navbar-light bg-light">
+    <div class = "navB"> <!--canAccess restricts links shown on depending on which role the user is (Receptionist/Stylist/Manager)-->
+        <span class="btn btn-light" routerLink = "">Home</span>
+        <span class="btn btn-light" routerLink = "/stylists" *ngIf = "canAccess(managerRole) || canAccess(stylistRole)"> Stylists</span> 
+        <span class="btn btn-light" routerLink = "/appointments" *ngIf = "canAccess(managerRole) || canAccess(stylistRole) || canAccess(receptionistRole)">Appointments</span> 
+        <span class="btn btn-light" routerLink = "/unavailabilities" *ngIf = "canAccess(managerRole)">Unavailabilities</span>
+        <span class="btn btn-light" routerLink = "/schedule" *ngIf = "canAccess(managerRole)">Work Schedules</span>
+        <span class="btn btn-light" routerLink = "/users" *ngIf = "canAccess(managerRole)">Users</span>
+        <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "!isLoggedIn()">Login</span>
+        <span class="btn btn-light" routerLink = "/loginpage" *ngIf = "isLoggedIn()" (click) = "logout()">Logout &#8629; {{ username }}</span>
+    </div>
+</mat-toolbar>
