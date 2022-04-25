@@ -12,6 +12,9 @@ namespace HairSalonBackEnd.Database
 {
     public static class SQLiteDbUtility
     {
+        // Switch to change whether building with test database or main database. 
+        private static string DatabaseDirectory = "FileName=Database/sqlite.db";
+
         /// <summary>
         /// DbContext for performing query operations on the database.
         /// It contains the database tables in a list-like format
@@ -42,6 +45,31 @@ namespace HairSalonBackEnd.Database
                 dbAccess = new Semaphore(1, 1);
 
                 isInitialized = true;
+            }
+        }
+
+        public static void InitializeDB(bool isTest)
+        {
+            if(isTest)
+            {
+                DatabaseDirectory = "FileName=sqliteTest.db";
+            }
+            InitializeDB();
+        }
+
+        /// <summary>
+        /// Uninitializes the database only if it is already initialized.
+        /// </summary>
+        public static void UninitializeDB()
+        {
+            if (isInitialized)
+            {
+                dbContext.Database.EnsureDeleted();
+                dbContext = null;
+
+                dbAccess = null;
+
+                isInitialized = false;
             }
         }
 
@@ -124,9 +152,9 @@ namespace HairSalonBackEnd.Database
             dbAccess.Release();
         }
 
-        #endregion
+#endregion
 
-        #region Appointment Methods
+#region Appointment Methods
 
         /// <summary>
         /// Method for adding an appointment record to the database.
@@ -214,9 +242,9 @@ namespace HairSalonBackEnd.Database
             dbAccess.Release();
             return stylistAppointments;
         }
-        #endregion
+#endregion
 
-        #region Unavailability Methods
+#region Unavailability Methods
 
         /// <summary>
         /// Adds a unavailability to the database
@@ -294,9 +322,9 @@ namespace HairSalonBackEnd.Database
             return unavailabilities;
         }
 
-        #endregion
+#endregion
 
-        #region User Methods
+#region User Methods
 
         /// <summary>
         /// Method for adding an user record to the database.
@@ -366,9 +394,9 @@ namespace HairSalonBackEnd.Database
             dbContext.SaveChanges();
             dbAccess.Release();
         }
-        #endregion
+#endregion
 
-        #region StylistHours Methods
+#region StylistHours Methods
 
         /// <summary>
         /// Method for adding a stylisthours record to the database.
@@ -440,7 +468,7 @@ namespace HairSalonBackEnd.Database
             dbAccess.Release();
         }
 
-        #endregion
+#endregion
 
         private class SQLiteDbContext : DbContext
         {
@@ -476,7 +504,7 @@ namespace HairSalonBackEnd.Database
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
                 //first argument specifies the database file to read from
-                optionsBuilder.UseSqlite("FileName=Database/sqlite.db", option =>
+                optionsBuilder.UseSqlite(DatabaseDirectory, option =>
                 {
                     option.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
                 });

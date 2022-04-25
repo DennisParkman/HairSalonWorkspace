@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { StylistPageComponent } from './stylist-page.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SessionStorageService } from 'ngx-webstorage';
 
 describe('StylistPageComponent', () => 
 {
@@ -13,7 +15,8 @@ describe('StylistPageComponent', () =>
     await TestBed.configureTestingModule(
     {
       declarations: [ StylistPageComponent ],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule, MatDialogModule],
+      providers: [SessionStorageService]
     })
     .compileComponents();
   });

@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ToastrModule } from 'ngx-toastr';
 
 import { SchedulePageComponent } from './schedule-page.component';
 
@@ -10,7 +13,9 @@ describe('SchedulePageComponent', () =>
   beforeEach(async () => 
   {
     await TestBed.configureTestingModule({
-      declarations: [ SchedulePageComponent ]
+      declarations: [ SchedulePageComponent ],
+      imports: [HttpClientTestingModule, MatDialogModule,
+        ToastrModule.forRoot()]
     })
     .compileComponents();
   });

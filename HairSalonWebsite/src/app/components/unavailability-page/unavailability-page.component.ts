@@ -1,20 +1,20 @@
 import { Component, OnInit, TemplateRef, ViewChild, ViewChildren } from '@angular/core';
-import { TimePeriod, Unavailability } from '../models/unavailability.model';
+import { TimePeriod, Unavailability } from '../../models/unavailability.model';
 import { CalendarView } from 'angular-calendar';
 import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { startOfDay } from 'date-fns';
-import { UnavailabilityService } from '../services/unavailability-service/unavailability.service';
+import { UnavailabilityService } from '../../services/unavailability-service/unavailability.service';
 import { EventCalendarComponent } from '../event-calendar/event-calendar.component';
 import { forkJoin, map, Observable, startWith, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
-import { Stylist } from '../models/stylist.model';
-import { StylistService } from '../services/stylist-service/stylist.service';
-import { StylistScheduleService } from '../services/stylist-schedule-service/stylist-schedule.service';
+import { Stylist } from '../../models/stylist.model';
+import { StylistService } from '../../services/stylist-service/stylist.service';
+import { StylistScheduleService } from '../../services/stylist-schedule-service/stylist-schedule.service';
 import { ToastrService } from 'ngx-toastr';
-import { UserRole } from '../models/user.model';
-import { AppointmentService } from '../services/appointment-service/appointment.service';
-import { Appointment } from '../models/appointment.model';
+import { UserRole } from '../../models/user.model';
+import { AppointmentService } from '../../services/appointment-service/appointment.service';
+import { Appointment } from '../../models/appointment.model';
 
 @Component(
 {
@@ -29,6 +29,7 @@ export class UnavailabilityPageComponent implements OnInit
     @ViewChild('formDialog', {static: true}) formDialog: TemplateRef<any>; //tag used for the add and update forms
 
     stylistSelected: string; //the stylist shown on the front end when changing schedule button
+    stylist: Stylist;
 
     unavailabilities: Unavailability[]; //list of unavailabilities
     appointments: Appointment[]; //list of appointments
@@ -93,16 +94,18 @@ export class UnavailabilityPageComponent implements OnInit
           //load all unavailabilities into the unavailabilities array
           unavailabilities.forEach(unavailability => 
             {
-              unavailability.startDate = new Date(unavailability.startDate);
-              unavailability.endDate = new Date(unavailability.endDate);
+                //reinitialize the dates so they work right
+                unavailability.startDate = new Date(unavailability.startDate);
+                unavailability.endDate = new Date(unavailability.endDate);
             });
           this.unavailabilities = unavailabilities; //save the list of unavailabilities
   
           //load all appointments into the appointments array
           appointments.forEach(appointments => 
             {
-              appointments.date = new Date(appointments.date);
-              appointments.dateCreated = new Date(appointments.dateCreated);
+                //reinitialize the dates so they work right
+                appointments.date = new Date(appointments.date);
+                appointments.dateCreated = new Date(appointments.dateCreated);
             });
           this.appointments = appointments; //save the list of appointments
   
@@ -139,7 +142,7 @@ export class UnavailabilityPageComponent implements OnInit
     }
 
     /**
-     * helper function for ngOnInit to filter the stylist list by an entered stylist name
+     * helper function to filter the stylist list by an entered stylist name
      */
     private stylistDropdownFilter(name: string): Stylist[]
     {
@@ -168,11 +171,12 @@ export class UnavailabilityPageComponent implements OnInit
     }
 
     /**
-     * 
+     * Function to show stylist schedule by stylist selected
      * @param stylist 
      */
     showWorkScheduleBy(stylist: Stylist)
     {
+        this.stylist = stylist;
         this.events = []; //reset events
 
         //check if stylist id is null and return if true
@@ -182,9 +186,12 @@ export class UnavailabilityPageComponent implements OnInit
         }
 
         //load work schedule for stylist
-        for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
+        if(this.fullStylistSchedule[stylist.id])
         {
-            this.events.push(this.fullStylistSchedule[index][i]); 
+            for (let i: number = 0, index: number = stylist.id; i < this.fullStylistSchedule[index].length; i++) 
+            {
+                this.events.push(this.fullStylistSchedule[index][i]); 
+            }
         }
 
         //display stylist name on screen
@@ -225,12 +232,12 @@ export class UnavailabilityPageComponent implements OnInit
         else if(startDateValue > endDateValue)
         {
         valid = false;
-        this.toastr.warning("Start date after end date")
+        this.toastr.error("Start date after end date")
         }
         else if(new Date(this.startDate).getTime() < Date.now() - (24 * 60 * 60 * 1000))
         {
         valid = false;
-        this.toastr.warning("Start date too early")
+        this.toastr.error("Start date too early")
         }
 
         return valid;
@@ -313,14 +320,14 @@ export class UnavailabilityPageComponent implements OnInit
     /**
      * function to show create form from dialog box of events
      */
-     setCreateUnavailability(date: Date = new Date())
-     {
+    setCreateUnavailability(date: Date = new Date())
+    {
         this.resetDialog();
         this.startDate = date;
         this.endDate = date;
         this.addingUnavailability = true;
         this.dialog.open(this.formDialog);
-     }
+    }
 
     /**
      * function to add a new unavailability to the database and front end lists
@@ -364,6 +371,7 @@ export class UnavailabilityPageComponent implements OnInit
             this.stylistScheduleService.refreshStylistScheduleWithUnavailability(this.events, value);
             this.clearFields(); //clear form fields
             this.appCalendar.updateFullCalendar(this.events);
+            this.showWorkScheduleBy(this.stylist);
         });
         
     }
@@ -394,6 +402,7 @@ export class UnavailabilityPageComponent implements OnInit
                 this.fullStylistSchedule = value;
                 console.log(this.stylistid)
                 this.events = value[this.stylistid]
+                this.showWorkScheduleBy(this.stylist);
             });
             this.clearFields(); //clear form fields
         })
@@ -434,6 +443,7 @@ export class UnavailabilityPageComponent implements OnInit
      */
     updateUnavailability()
     {
+        console.log("Any log")
         if(!this.validateFields())
         {
             return;
@@ -484,6 +494,7 @@ export class UnavailabilityPageComponent implements OnInit
                 this.fullStylistSchedule = value;
                 console.log(this.stylistid)
                 this.events = value[this.stylistid]
+                this.showWorkScheduleBy(this.stylist);
             });
             this.clearFields(); //clear form fields
         });
