@@ -66,7 +66,7 @@ export class UsersPageComponent implements OnInit {
       {
         this.users = u; 
         this.usersLoading = false; 
-        console.log(this.users); //debug
+        // console.log(this.users); //debug but security risk (shows password hashes)
       }
     );
     
@@ -119,9 +119,6 @@ export class UsersPageComponent implements OnInit {
     //hash the password
     //TODO: test with async hashing instead?
     this.hashedPassword = this.bcrypt.hashSync(this.password, this.salt);
-
-    //debug; DELETE AFTER USE
-    console.log("hashedPassword type" + (typeof this.hashedPassword) + "pwd hash: " + this.hashedPassword)
 
     //create user object to add to the database
     let user: User = {username: this.username, password: this.hashedPassword, role: this.role};
@@ -176,14 +173,11 @@ export class UsersPageComponent implements OnInit {
     //hash the password if there is a new password
     if(this.password != "" && this.password != null)
     {
-      console.log(this.password);
       //TODO: test with async hashing instead?
       this.hashedPassword = this.bcrypt.hashSync(this.password, this.salt);
     }
     // Temorary user object that will replace the object being updated.
     let user: User = {id: this.userUpdateId, username: this.username, password: this.hashedPassword, role: this.role};
-
-    console.log(user);
 
     // Query the database for the user being updated.
     var index = this.users.findIndex(x => x.id === this.userUpdateId);

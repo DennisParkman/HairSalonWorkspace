@@ -26,7 +26,7 @@ export class UserService
    {
        let url = this.baseURL.concat("User");
        console.log(url);
-       console.log(user);
+      //  console.log(user);
        return this.http.post<User>(url, user);
    }
    

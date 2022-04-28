@@ -37,7 +37,7 @@ export class LoginPageComponent implements OnInit
     this.userService.getUsers().subscribe(s => 
     {
       this.users = s; 
-      console.log(this.users); //debug
+      // console.log(this.users); //debug, but security risk (shows password hashes)
     }
     );
   }
