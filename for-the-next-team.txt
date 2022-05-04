@@ -1,0 +1,37 @@
+ VS code is the best documentation that Angular has....
+if you come across a function that you have no idea how it works, you type it in VS code, right-click it, and hit "go to definition". That will take you to the code for the function. Hopefully the author put in documentation comments or you can read and understand the code.
+
+ Setting up Angular....
+sorry, we're burned out. You're gonna have to find this yourselves. We used Node Package Manager from nodejs, Visual Studio for the C# code, and VS Code for the Angular code. In order to run npm and ng commands from the VS Code terminal (on Windows, at least) you have to go into Settings >> Update & Security >> For developers >> scroll to PowerShell, and check "change execution policy to allow local PowerShell...."
+
+ What is Angular....
+Angular is weird. :steamsalty:
+This link gives some basics: https://angular.io/guide/what-is-angular
+Highly recommend working your way through this tutorial to get a little used to angular code: https://angular.io/tutorial
+
+ Package weirdness....
+Often we would have to reinstall packages when we change branches because Angular would decide to forget that packages were actually installed.
+This was done using these installations
+```
+npm install ngx-webstorage
+npm install @angular/flex-layout
+```
+Sometimes we also had to run "npm install" and/or "ng add @angular/material" [select "Pink/Blue Grey" prebuilt theme] to get rid of some of these errors
+
+ Angular Material...
+This is a useful form/assest/html tags package that makes forms play a lot nicer with Angular. reference for it is found 
+here: https://material.angular.io/components/categories
+
+ unit tests....
+backend should be run in debug mode for the unit tests to run. Backend unit tests use preprocessor directives to load a testing database rather than the "production" one. 
+
+ The calendar...
+we got our calendar component from: 
+https://javascript.plainenglish.io/create-calendar-using-angular-and-bootstrap-monthly-weekly-and-daily-calendar-c441f1cb8b18
+
+ The database....
+Whenever you change the schema for the sqlite database, you need to delete the sqlite.db database file and recreate it by running the backend. We recommend creating a helper program that will populate the database with a bunch of hard-coded test data.
+
+some useful resources:
+https://docs.microsoft.com/en-us/visualstudio/ide/class-designer/how-to-add-class-diagrams-to-projects?view=vs-2022
+https://marketplace.visualstudio.com/items?itemName=AlexShen.classdiagram-ts

@@ -268,13 +268,8 @@ export class AppointmentPageComponent implements OnInit
             this.clearFields(); //clear form fields
             this.appointments.push(value); //push appointment to appointment list
 
-            //call calendar event component function to reload event list with new item
-            this.stylistScheduleService.getStylistSchedule().subscribe(value =>
-              {
-                  this.fullStylistSchedule = value;
-                  console.log(this.stylistid)
-                  this.events = value[this.stylistid]
-              });
+            //reload the calendar
+            this.showWorkScheduleBy(this.stylist)
             this.dialog.closeAll(); //close dialog box
           }
         );
@@ -297,12 +292,8 @@ export class AppointmentPageComponent implements OnInit
     //remove appointment from appointment list
     this.appointments.splice(appIndexToDelete, 1);
 
-    this.stylistScheduleService.getStylistSchedule().subscribe(value =>
-      {
-          this.fullStylistSchedule = value;
-          console.log(this.stylistid)
-          this.events = value[this.stylistid]
-      });
+    //reload the calendar
+    this.showWorkScheduleBy(this.stylist)
   }
 
   /**
